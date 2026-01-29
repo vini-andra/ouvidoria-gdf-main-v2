@@ -1,0 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Visby CF - Fonte Oficial GDF */
+@font-face {
+  font-family: 'Visby CF';
+  src: url('/fonts/VisbyCF-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Visby CF';
+  src: url('/fonts/VisbyCF-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Visby CF';
+  src: url('/fonts/VisbyCF-DemiBold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Visby CF';
+  src: url('/fonts/VisbyCF-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Participa DF - Design System
+   Cores Institucionais do GDF
+   Acessibilidade WCAG 2.1 AA
+*/
+
+@layer base {
+  :root {
+    /* Cores Institucionais GDF */
+    --background: 0 0% 96%; /* #F5F5F5 */
+    --foreground: 0 0% 20%; /* #333333 */
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 20%;
+
+    /* Azul GDF #005CA9 */
+    --primary: 207 100% 33%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Verde Institucional #00A859 */
+    --secondary: 153 100% 33%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 20% 93%;
+    --muted-foreground: 0 0% 40%;
+
+    /* Amarelo Accent #FFB81C */
+    --accent: 42 100% 55%;
+    --accent-foreground: 0 0% 10%;
+
+    /* Vermelho Erro #DC2626 */
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Verde Sucesso #16A34A */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+
+    --border: 214 20% 85%;
+    --input: 214 20% 85%;
+    --ring: 207 100% 33%;
+
+    --radius: 0.5rem;
+
+    /* Sidebar (mantido para compatibilidade) */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 207 100% 33%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 42 100% 55%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 207 100% 33%;
+  }
+
+  .dark {
+    --background: 222 20% 10%;
+    --foreground: 0 0% 95%;
+
+    --card: 222 20% 12%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 222 20% 12%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 207 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 153 100% 40%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 217 20% 20%;
+    --muted-foreground: 0 0% 70%;
+
+    /* Amarelo mais vibrante no modo escuro */
+    --accent: 42 100% 60%;
+    --accent-foreground: 0 0% 5%;
+
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 142 70% 40%;
+    --success-foreground: 0 0% 100%;
+
+    --border: 217 20% 25%;
+    --input: 217 20% 25%;
+    --ring: 207 100% 50%;
+
+    --sidebar-background: 222 20% 10%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 207 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 42 100% 55%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 217 20% 25%;
+    --sidebar-ring: 207 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Visby CF', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Focus indicators para acessibilidade - WCAG 2.1 AA */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Alto contraste para foco em inputs e botões */
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  button:focus-visible,
+  [role="button"]:focus-visible,
+  [role="checkbox"]:focus-visible,
+  [role="radio"]:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+    box-shadow: 0 0 0 3px hsl(var(--primary) / 0.3);
+  }
+
+  /* Skip link para navegação por teclado */
+  .skip-link {
+    @apply absolute -top-full left-4 z-50 bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium;
+    transition: top 0.2s ease;
+  }
+
+  .skip-link:focus {
+    @apply top-4;
+  }
+
+  /* Labels devem ter cursor pointer */
+  label[for] {
+    cursor: pointer;
+  }
+
+  /* Transições suaves para estados de foco */
+  input, textarea, select, button, [role="button"] {
+    transition: box-shadow 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  }
+
+  /* Screen reader only - para anúncios acessíveis */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
