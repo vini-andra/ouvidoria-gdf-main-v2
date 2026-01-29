@@ -35,8 +35,8 @@ export function StepProgress({
             {steps[currentStep - 1]?.name}
           </span>
         </div>
-        <Progress 
-          value={progressPercentage} 
+        <Progress
+          value={progressPercentage}
           className="h-2"
           aria-label={`Progresso: ${progressPercentage}%`}
         />
@@ -73,7 +73,7 @@ export function StepProgress({
 
   // Desktop: Vertical sidebar
   return (
-    <aside 
+    <aside
       className="w-64 shrink-0 bg-card border-r border-border p-6"
       role="navigation"
       aria-label="Etapas da manifestação"
@@ -81,7 +81,7 @@ export function StepProgress({
       {/* Logo */}
       <div className="mb-8">
         <img
-          src="/logo-ouvidoria.png"
+          src={`${import.meta.env.BASE_URL}logo-ouvidoria.png`}
           alt="Ouvidoria do Distrito Federal"
           className="h-12 w-auto"
         />
@@ -109,11 +109,10 @@ export function StepProgress({
                     isClickable && "cursor-pointer",
                     !isClickable && "cursor-not-allowed"
                   )}
-                  aria-label={`Etapa ${step.id}: ${step.name} - ${
-                    status === "completed" ? "Concluída" :
-                    status === "active" ? "Atual" :
-                    status === "error" ? "Com erro" : "Pendente"
-                  }`}
+                  aria-label={`Etapa ${step.id}: ${step.name} - ${status === "completed" ? "Concluída" :
+                      status === "active" ? "Atual" :
+                        status === "error" ? "Com erro" : "Pendente"
+                    }`}
                   aria-current={status === "active" ? "step" : undefined}
                 >
                   {/* Step indicator */}
@@ -159,7 +158,7 @@ export function StepProgress({
 
                 {/* Connector line */}
                 {index < steps.length - 1 && (
-                  <div 
+                  <div
                     className={cn(
                       "ml-[22px] w-0.5 h-4",
                       stepStatuses[index] === "completed" ? "bg-primary" : "bg-border"
@@ -179,8 +178,8 @@ export function StepProgress({
           <span className="text-muted-foreground">Progresso</span>
           <span className="font-medium">{progressPercentage}%</span>
         </div>
-        <Progress 
-          value={progressPercentage} 
+        <Progress
+          value={progressPercentage}
           className="h-2"
           aria-label={`Progresso: ${progressPercentage}%`}
         />

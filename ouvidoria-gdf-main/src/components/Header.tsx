@@ -15,20 +15,20 @@ const Header = () => {
   const { user, profile, signOut, loading } = useAuth();
 
   return (
-    <header 
+    <header
       className="sticky top-0 z-40 w-full border-b bg-card shadow-sm"
       role="banner"
     >
       <div className="container flex h-14 sm:h-16 items-center justify-between gap-2">
         {/* Logo - mais compacto no mobile */}
-        <Link 
-          to="/" 
+        <Link
+          to="/"
           className="flex items-center gap-2 sm:gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 shrink-0"
           aria-label="Ir para página inicial do Participa DF"
         >
-          <img 
-            src="/logo-ouvidoria.png" 
-            alt="Logo Ouvidoria GDF" 
+          <img
+            src={`${import.meta.env.BASE_URL}logo-ouvidoria.png`}
+            alt="Logo Ouvidoria GDF"
             className="h-8 sm:h-10 w-auto"
           />
           <div className="flex flex-col">
@@ -42,7 +42,7 @@ const Header = () => {
         </Link>
 
         {/* Navegação - reorganizada para mobile */}
-        <nav 
+        <nav
           className="flex items-center gap-1 sm:gap-2"
           role="navigation"
           aria-label="Navegação principal e acesso à conta"
@@ -51,7 +51,7 @@ const Header = () => {
           <div className="hidden xs:flex">
             <AccessibilityBar />
           </div>
-          
+
           {!loading && (
             <>
               {user && profile ? (
@@ -135,10 +135,10 @@ const Header = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               )}
-              
+
               {/* Botões visíveis apenas em telas maiores */}
               {!user && (
-                <div 
+                <div
                   className="hidden sm:flex items-center gap-2"
                   role="group"
                   aria-label="Opções de acesso à conta"
@@ -154,7 +154,7 @@ const Header = () => {
                       Entrar
                     </Link>
                   </Button>
-                  
+
                   <Button
                     asChild
                     size="default"

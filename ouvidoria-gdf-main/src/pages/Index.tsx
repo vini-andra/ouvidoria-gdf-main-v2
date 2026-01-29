@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { 
-  MessageSquare, 
-  CheckCircle, 
-  FileText, 
-  Shield, 
-  Clock, 
+import {
+  MessageSquare,
+  CheckCircle,
+  FileText,
+  Shield,
+  Clock,
   Users,
   Mic,
   Image,
@@ -34,7 +34,7 @@ const Index = () => {
               Manifeste-se da forma que for mais conveniente para você
             </p>
           </div>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-3xl mx-auto">
             {[
               { icon: Type, label: "Texto", desc: "50 a 5.000 caracteres" },
@@ -42,12 +42,12 @@ const Index = () => {
               { icon: Image, label: "Imagem", desc: "JPG, PNG, WebP" },
               { icon: Video, label: "Vídeo", desc: "MP4, WebM" },
             ].map((channel, index) => (
-              <Card 
+              <Card
                 key={channel.label}
                 className="text-center border-2 hover:border-primary hover:shadow-md transition-all cursor-pointer group"
               >
                 <CardContent className="pt-6 pb-4">
-                  <div 
+                  <div
                     className="w-14 h-14 mx-auto mb-3 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all"
                     aria-hidden="true"
                   >
@@ -63,7 +63,7 @@ const Index = () => {
       </section>
 
       {/* Como Funciona */}
-      <section 
+      <section
         id="como-funciona"
         className="py-12 md:py-20 scroll-mt-16"
         aria-labelledby="como-funciona-title"
@@ -73,7 +73,7 @@ const Index = () => {
             <span className="inline-block px-3 py-1 mb-4 text-xs font-medium bg-secondary/10 text-secondary rounded-full">
               Passo a passo
             </span>
-            <h2 
+            <h2
               id="como-funciona-title"
               className="text-2xl md:text-3xl font-bold mb-3"
             >
@@ -83,13 +83,13 @@ const Index = () => {
               Em apenas 3 passos simples, sua manifestação chega aos órgãos responsáveis
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* Step 1 */}
             <div className="relative">
               <div className="text-center">
                 <div className="relative inline-block mb-6">
-                  <div 
+                  <div
                     className="w-20 h-20 rounded-full bg-primary flex items-center justify-center shadow-lg"
                     aria-hidden="true"
                   >
@@ -112,7 +112,7 @@ const Index = () => {
             <div className="relative">
               <div className="text-center">
                 <div className="relative inline-block mb-6">
-                  <div 
+                  <div
                     className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center shadow-lg"
                     aria-hidden="true"
                   >
@@ -134,7 +134,7 @@ const Index = () => {
             {/* Step 3 */}
             <div className="text-center">
               <div className="relative inline-block mb-6">
-                <div 
+                <div
                   className="w-20 h-20 rounded-full bg-accent flex items-center justify-center shadow-lg"
                   aria-hidden="true"
                 >
@@ -154,7 +154,7 @@ const Index = () => {
       </section>
 
       {/* Benefícios */}
-      <section 
+      <section
         className="py-12 md:py-20 bg-muted/50"
         aria-labelledby="beneficios-title"
       >
@@ -163,14 +163,14 @@ const Index = () => {
             <span className="inline-block px-3 py-1 mb-4 text-xs font-medium bg-primary/10 text-primary rounded-full">
               Por que usar
             </span>
-            <h2 
+            <h2
               id="beneficios-title"
               className="text-2xl md:text-3xl font-bold mb-3"
             >
               Benefícios do Participa DF
             </h2>
           </div>
-          
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
               {
@@ -210,24 +210,22 @@ const Index = () => {
                 color: "accent"
               },
             ].map((benefit) => (
-              <Card 
+              <Card
                 key={benefit.title}
                 className="border-0 shadow-sm hover:shadow-md transition-shadow bg-card"
               >
                 <CardContent className="p-6">
-                  <div 
-                    className={`w-12 h-12 mb-4 rounded-xl flex items-center justify-center ${
-                      benefit.color === 'primary' ? 'bg-primary/10' :
-                      benefit.color === 'secondary' ? 'bg-secondary/10' :
-                      'bg-accent/20 dark:bg-accent/10'
-                    }`}
+                  <div
+                    className={`w-12 h-12 mb-4 rounded-xl flex items-center justify-center ${benefit.color === 'primary' ? 'bg-primary/10' :
+                        benefit.color === 'secondary' ? 'bg-secondary/10' :
+                          'bg-accent/20 dark:bg-accent/10'
+                      }`}
                     aria-hidden="true"
                   >
-                    <benefit.icon className={`w-6 h-6 ${
-                      benefit.color === 'primary' ? 'text-primary' :
-                      benefit.color === 'secondary' ? 'text-secondary' :
-                      'text-accent dark:text-accent'
-                    }`} />
+                    <benefit.icon className={`w-6 h-6 ${benefit.color === 'primary' ? 'text-primary' :
+                        benefit.color === 'secondary' ? 'text-secondary' :
+                          'text-accent dark:text-accent'
+                      }`} />
                   </div>
                   <h3 className="font-bold text-lg mb-2">{benefit.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">
@@ -248,9 +246,9 @@ const Index = () => {
         <div className="container">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
-              <img 
-                src="/logo-ouvidoria.png" 
-                alt="Logo Ouvidoria GDF" 
+              <img
+                src={`${import.meta.env.BASE_URL}logo-ouvidoria.png`}
+                alt="Logo Ouvidoria GDF"
                 className="h-8 w-auto"
               />
               <span>Ouvidoria-Geral do Distrito Federal</span>
