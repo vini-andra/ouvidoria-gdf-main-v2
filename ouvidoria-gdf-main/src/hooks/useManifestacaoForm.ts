@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useDraftPersistence } from "@/hooks/useDraftPersistence";
+import { useOfflineQueue } from "@/hooks/useOfflineQueue";
 import type { Database } from "@/integrations/supabase/types";
 import type { CategoriaManifestacao } from "@/components/manifestacao/TipoManifestacaoSelect";
 
@@ -55,6 +56,7 @@ interface SubmitResult {
 export function useManifestacaoForm() {
   const { user } = useAuth();
   const { saveDraft, loadDraft, clearDraft, hasDraft } = useDraftPersistence();
+  const { addToQueue, isOnline, pendingCount, syncPendingManifestacoes } = useOfflineQueue();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [submitResult, setSubmitResult] = useState<SubmitResult | null>(null);
@@ -343,11 +345,72 @@ export function useManifestacaoForm() {
 
     } catch (error) {
       console.error("Submit error:", error);
-      toast({
-        title: "Erro ao enviar",
-        description: error instanceof Error ? error.message : "Tente novamente mais tarde",
-        variant: "destructive",
-      });
+
+      // Check if it's a network error - save to offline queue
+      const isNetworkError =
+        !navigator.onLine ||
+        (error instanceof Error && (
+          error.message.includes("fetch") ||
+          error.message.includes("network") ||
+          error.message.includes("Failed to fetch") ||
+          error.message.includes("NetworkError")
+        ));
+
+      if (isNetworkError) {
+        // Prepare data for offline queue (text-only, no file uploads in offline mode)
+        const offlineData = {
+          tipo: formState.tipo === "texto" ? "texto" : "texto", // Fallback to texto for offline
+          conteudo: formState.conteudo || "Manifestação enviada offline (anexos serão perdidos)",
+          arquivo_url: null,
+          categoria: formState.selectedCategories.length > 0
+            ? formState.selectedCategories[0]
+            : "geral",
+          anonimo: formState.isAnonymous,
+          nome: formState.isAnonymous ? null : formState.nome || null,
+          email: formState.isAnonymous ? null : formState.email || null,
+          categoria_tipo: formState.categoriaTipo,
+          orgao_id: formState.orgaoId,
+          local_ocorrencia: formState.localOcorrencia || null,
+          data_ocorrencia: formState.dataOcorrencia
+            ? formState.dataOcorrencia.toISOString().split('T')[0]
+            : null,
+          envolvidos: formState.envolvidos || null,
+          testemunhas: formState.testemunhas || null,
+          sigilo_dados: formState.sigiloDados,
+          user_id: user?.id || null,
+        };
+
+        try {
+          await addToQueue(offlineData);
+          // Clear draft since it's queued for sync
+          clearDraft();
+
+          // Show pending result with temporary protocol
+          setSubmitResult({
+            protocolo: "PENDENTE-OFFLINE",
+            senha: "",
+          });
+          setIsSubmitted(true);
+
+          toast({
+            title: "Manifestação salva para envio posterior",
+            description: "Será enviada automaticamente quando a conexão for restabelecida.",
+          });
+        } catch (queueError) {
+          console.error("Error queuing offline:", queueError);
+          toast({
+            title: "Erro ao salvar offline",
+            description: "Não foi possível salvar a manifestação. Tente novamente.",
+            variant: "destructive",
+          });
+        }
+      } else {
+        toast({
+          title: "Erro ao enviar",
+          description: error instanceof Error ? error.message : "Tente novamente mais tarde",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -377,5 +440,9 @@ export function useManifestacaoForm() {
     saveCurrentDraft,
     clearDraft,
     hasDraft,
+    // Offline support
+    isOnline,
+    pendingCount,
+    syncPendingManifestacoes,
   };
 }
