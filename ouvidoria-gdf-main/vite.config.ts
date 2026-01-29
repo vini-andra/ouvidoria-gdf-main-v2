@@ -6,6 +6,7 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  base: "/ouvidoria-gdf-main-v2/",
   server: {
     host: "::",
     port: 8080,
