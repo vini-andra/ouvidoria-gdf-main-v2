@@ -18,6 +18,7 @@ import {
   AlertCircle,
   Calendar,
   Building2,
+  Download,
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -27,6 +28,7 @@ interface Manifestacao {
   protocolo: string;
   tipo: "texto" | "audio" | "imagem" | "video";
   conteudo: string | null;
+  arquivo_url: string | null;
   categoria_tipo: string | null;
   status: StatusManifestacao;
   created_at: string;
@@ -45,6 +47,15 @@ interface Resposta {
   id: string;
   conteudo: string;
   autor: string | null;
+  created_at: string;
+}
+
+interface Anexo {
+  id: string;
+  tipo: 'audio' | 'imagem' | 'video';
+  arquivo_url: string;
+  nome_arquivo: string | null;
+  tamanho_bytes: number | null;
   created_at: string;
 }
 
@@ -69,6 +80,7 @@ const Acompanhamento = () => {
   const [manifestacao, setManifestacao] = useState<Manifestacao | null>(null);
   const [historico, setHistorico] = useState<Historico[]>([]);
   const [respostas, setRespostas] = useState<Resposta[]>([]);
+  const [anexos, setAnexos] = useState<Anexo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -84,7 +96,7 @@ const Acompanhamento = () => {
         .from("manifestacoes")
         .select(
           `
-          id, protocolo, tipo, conteudo, categoria_tipo, status, created_at,
+          id, protocolo, tipo, conteudo, arquivo_url, categoria_tipo, status, created_at,
           orgaos (nome, sigla)
         `
         )
@@ -127,6 +139,17 @@ const Acompanhamento = () => {
 
       if (!respostasResult.error) {
         setRespostas((respostasResult.data as Resposta[]) || []);
+      }
+
+      // Buscar anexos
+      const { data: anexosData } = await supabase
+        .from("manifestacao_anexos" as any)
+        .select("id, tipo, arquivo_url, nome_arquivo, tamanho_bytes, created_at")
+        .eq("manifestacao_id", manifestacaoData.id)
+        .order("created_at", { ascending: true });
+
+      if (anexosData) {
+        setAnexos(anexosData as unknown as Anexo[]);
       }
 
       setLoading(false);
@@ -201,15 +224,89 @@ const Acompanhamento = () => {
                   </div>
                 </CardHeader>
 
-                {manifestacao.conteudo && (
-                  <CardContent>
+                <CardContent className="space-y-4">
+                  {/* Conteúdo de texto */}
+                  {manifestacao.conteudo && (
                     <div className="p-4 rounded-lg bg-muted/50">
-                      <p className="text-sm whitespace-pre-wrap line-clamp-6">
+                      <p className="text-sm whitespace-pre-wrap">
                         {manifestacao.conteudo}
                       </p>
                     </div>
-                  </CardContent>
-                )}
+                  )}
+
+                  {/* Anexos da manifestação */}
+                  {anexos.length > 0 && (
+                    <div className="space-y-4">
+                      <h3 className="text-sm font-medium text-muted-foreground">
+                        Arquivos anexados ({anexos.length})
+                      </h3>
+
+                      {/* Áudios */}
+                      {anexos.filter(a => a.tipo === 'audio').map((anexo) => (
+                        <div key={anexo.id} className="space-y-2">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Mic className="h-4 w-4" />
+                            <span>Áudio</span>
+                          </div>
+                          <div className="p-4 rounded-lg bg-muted/30 border">
+                            <audio
+                              controls
+                              className="w-full"
+                              src={anexo.arquivo_url}
+                              aria-label="Áudio da manifestação"
+                            >
+                              Seu navegador não suporta o elemento de áudio.
+                            </audio>
+                          </div>
+                        </div>
+                      ))}
+
+                      {/* Imagens */}
+                      {anexos.filter(a => a.tipo === 'imagem').map((anexo) => (
+                        <div key={anexo.id} className="space-y-2">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <ImageIcon className="h-4 w-4" />
+                            <span>{anexo.nome_arquivo || 'Imagem'}</span>
+                          </div>
+                          <div className="p-4 rounded-lg bg-muted/30 border">
+                            <img
+                              src={anexo.arquivo_url}
+                              alt={anexo.nome_arquivo || "Imagem anexada à manifestação"}
+                              className="max-w-full h-auto rounded-md max-h-96 mx-auto"
+                              loading="lazy"
+                            />
+                          </div>
+                        </div>
+                      ))}
+
+                      {/* Vídeos - apenas link de download */}
+                      {anexos.filter(a => a.tipo === 'video').map((anexo) => (
+                        <div key={anexo.id} className="space-y-2">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Video className="h-4 w-4" />
+                            <span>{anexo.nome_arquivo || 'Vídeo'}</span>
+                          </div>
+                          <a
+                            href={anexo.arquivo_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 p-4 rounded-lg bg-muted/30 border hover:bg-muted/50 transition-colors"
+                          >
+                            <Download className="h-5 w-5 text-primary" />
+                            <span className="text-sm text-primary hover:underline">
+                              Baixar vídeo
+                              {anexo.tamanho_bytes && (
+                                <span className="text-muted-foreground ml-2">
+                                  ({(anexo.tamanho_bytes / 1024 / 1024).toFixed(2)} MB)
+                                </span>
+                              )}
+                            </span>
+                          </a>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
               </Card>
 
               {/* Respostas */}

@@ -29,7 +29,7 @@ export async function uploadFile(
 
   try {
     // Retry upload with exponential backoff
-    const result = await retryWithBackoff(
+    await retryWithBackoff(
       async () => {
         const { error } = await supabase.storage
           .from("manifestacoes-arquivos")
@@ -54,7 +54,12 @@ export async function uploadFile(
       }
     );
 
-    return result;
+    // Return the complete public URL
+    const { data } = supabase.storage
+      .from("manifestacoes-arquivos")
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
   } catch (error) {
     logError(
       error instanceof Error ? error : new Error(String(error)),

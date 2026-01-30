@@ -18,40 +18,96 @@ export interface SubmitResult {
   senha: string;
 }
 
+export interface UploadedFile {
+  tipo: 'audio' | 'imagem' | 'video';
+  arquivo_url: string;
+  nome_arquivo: string;
+  tamanho_bytes: number;
+}
+
 /**
- * Process file uploads based on manifestation type
+ * Process file uploads - uploads all media files (audio, image, video, anexos)
  * @param formState - The form state containing files
- * @returns Object with content and file URL
+ * @returns Object with content, main file URL, and array of all uploaded files
  */
 export async function processFileUploads(formState: ManifestacaoFormState): Promise<{
   conteudo: string | null;
   arquivoUrl: string | null;
+  uploadedFiles: UploadedFile[];
 }> {
   let arquivoUrl: string | null = null;
-  let conteudo: string | null = null;
+  const conteudo: string | null = formState.conteudo || null;
+  const uploadedFiles: UploadedFile[] = [];
 
-  switch (formState.tipo) {
-    case "texto":
-      conteudo = formState.conteudo;
-      break;
-    case "audio":
-      if (formState.audioBlob) {
-        arquivoUrl = await uploadFile(formState.audioBlob, "audio.webm", "audios");
-      }
-      break;
-    case "imagem":
-      if (formState.imageFile) {
-        arquivoUrl = await uploadFile(formState.imageFile, formState.imageFile.name, "imagens");
-      }
-      break;
-    case "video":
-      if (formState.videoFile) {
-        arquivoUrl = await uploadFile(formState.videoFile, formState.videoFile.name, "videos");
-      }
-      break;
+  // Upload audio if present
+  if (formState.audioBlob) {
+    try {
+      const url = await uploadFile(formState.audioBlob, "audio.webm", "audios");
+      uploadedFiles.push({
+        tipo: 'audio',
+        arquivo_url: url,
+        nome_arquivo: 'audio.webm',
+        tamanho_bytes: formState.audioBlob.size,
+      });
+      if (!arquivoUrl) arquivoUrl = url;
+    } catch (error) {
+      console.error("Error uploading audio:", error);
+    }
   }
 
-  return { conteudo, arquivoUrl };
+  // Upload image if present
+  if (formState.imageFile) {
+    try {
+      const url = await uploadFile(formState.imageFile, formState.imageFile.name, "imagens");
+      uploadedFiles.push({
+        tipo: 'imagem',
+        arquivo_url: url,
+        nome_arquivo: formState.imageFile.name,
+        tamanho_bytes: formState.imageFile.size,
+      });
+      if (!arquivoUrl) arquivoUrl = url;
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  }
+
+  // Upload video if present
+  if (formState.videoFile) {
+    try {
+      const url = await uploadFile(formState.videoFile, formState.videoFile.name, "videos");
+      uploadedFiles.push({
+        tipo: 'video',
+        arquivo_url: url,
+        nome_arquivo: formState.videoFile.name,
+        tamanho_bytes: formState.videoFile.size,
+      });
+      if (!arquivoUrl) arquivoUrl = url;
+    } catch (error) {
+      console.error("Error uploading video:", error);
+    }
+  }
+
+  // Upload additional anexos
+  for (const anexo of formState.anexos) {
+    try {
+      const tipo = anexo.type.startsWith('image/') ? 'imagem'
+        : anexo.type.startsWith('video/') ? 'video'
+          : anexo.type.startsWith('audio/') ? 'audio'
+            : 'imagem'; // default to imagem
+      const folder = tipo === 'audio' ? 'audios' : tipo === 'video' ? 'videos' : 'imagens';
+      const url = await uploadFile(anexo, anexo.name, folder);
+      uploadedFiles.push({
+        tipo,
+        arquivo_url: url,
+        nome_arquivo: anexo.name,
+        tamanho_bytes: anexo.size,
+      });
+    } catch (error) {
+      console.error("Error uploading anexo:", error);
+    }
+  }
+
+  return { conteudo, arquivoUrl, uploadedFiles };
 }
 
 /**
@@ -67,7 +123,7 @@ export function prepareInsertData(
   conteudo: string | null,
   arquivoUrl: string | null,
   userId: string | null
-): Database["public"]["Tables"]["manifestacoes"]["Insert"] {
+): Omit<Database["public"]["Tables"]["manifestacoes"]["Insert"], "protocolo"> {
   // Determine category - use first selected or "geral"
   const categoria =
     formState.selectedCategories.length > 0 ? formState.selectedCategories[0] : "geral";
@@ -99,16 +155,16 @@ export function prepareInsertData(
 /**
  * Insert manifestação into database
  * @param insertData - The data to insert
- * @returns Submit result with protocol and password
+ * @returns Submit result with protocol, password, and manifestacao ID
  * @throws Error if insertion fails
  */
 export async function insertManifestacao(
   insertData: Database["public"]["Tables"]["manifestacoes"]["Insert"]
-): Promise<SubmitResult> {
+): Promise<SubmitResult & { id: string }> {
   const { data, error } = await supabase
     .from("manifestacoes")
     .insert(insertData)
-    .select("protocolo, senha_acompanhamento")
+    .select("id, protocolo, senha_acompanhamento")
     .single();
 
   if (error) {
@@ -123,9 +179,45 @@ export async function insertManifestacao(
   }
 
   return {
+    id: data.id,
     protocolo: data.protocolo,
     senha: data.senha_acompanhamento || "",
   };
+}
+
+/**
+ * Insert anexos for a manifestação
+ * @param manifestacaoId - The manifestação ID
+ * @param uploadedFiles - Array of uploaded files to insert
+ */
+export async function insertAnexos(
+  manifestacaoId: string,
+  uploadedFiles: UploadedFile[]
+): Promise<void> {
+  if (uploadedFiles.length === 0) return;
+
+  const anexosData = uploadedFiles.map((file) => ({
+    manifestacao_id: manifestacaoId,
+    tipo: file.tipo,
+    arquivo_url: file.arquivo_url,
+    nome_arquivo: file.nome_arquivo,
+    tamanho_bytes: file.tamanho_bytes,
+  }));
+
+  const { error } = await supabase
+    .from("manifestacao_anexos" as any)
+    .insert(anexosData as any);
+
+  if (error) {
+    console.error("Error inserting anexos:", error);
+    logError(
+      error.message,
+      ErrorCategory.DATABASE,
+      ErrorSeverity.MEDIUM,
+      { manifestacaoId, filesCount: uploadedFiles.length }
+    );
+    // Don't throw - manifestação was created, just log the error
+  }
 }
 
 /**

@@ -13,6 +13,27 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [protocoloBusca, setProtocoloBusca] = useState("");
 
+  // Formata o protocolo no padrão OUV-AAAAMMDD-XXXXXX
+  const formatProtocolo = (value: string) => {
+    // Remove tudo que não seja letra ou número
+    const cleaned = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
+
+    // Aplica a máscara: OUV-AAAAMMDD-XXXXXX
+    let formatted = "";
+    for (let i = 0; i < cleaned.length && i < 17; i++) {
+      if (i === 3 || i === 11) {
+        formatted += "-";
+      }
+      formatted += cleaned[i];
+    }
+    return formatted;
+  };
+
+  const handleProtocoloChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatProtocolo(e.target.value);
+    setProtocoloBusca(formatted);
+  };
+
   const handleBuscarProtocolo = (e: React.FormEvent) => {
     e.preventDefault();
     if (protocoloBusca.trim()) {
@@ -134,10 +155,11 @@ export default function Dashboard() {
                   <Input
                     id="protocolo-busca"
                     type="text"
-                    placeholder="Ex: 2026-DF-00001"
+                    placeholder="Ex: OUV-20260101-000001"
                     value={protocoloBusca}
-                    onChange={(e) => setProtocoloBusca(e.target.value)}
+                    onChange={handleProtocoloChange}
                     aria-describedby="protocolo-hint"
+                    className="uppercase"
                   />
                   <p id="protocolo-hint" className="sr-only">
                     Digite o número do protocolo da manifestação que deseja consultar

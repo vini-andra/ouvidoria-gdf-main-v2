@@ -57,21 +57,22 @@ const Header = () => {
 
           {!loading && (
             <>
-              {user && profile ? (
+              {user ? (
                 // Usuário autenticado - Menu dropdown
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
-                      variant="outline"
                       size="sm"
-                      className="gap-1 sm:gap-2 min-h-[40px] sm:min-h-[44px] px-2 sm:px-4"
-                      aria-label={`Menu do usuário: ${profile.nome_completo.split(" ")[0]}`}
+                      className="gap-1 sm:gap-2 min-h-[40px] sm:min-h-[44px] px-2 sm:px-4 bg-accent text-accent-foreground hover:bg-accent/90"
+                      aria-label={`Menu do usuário${profile ? `: ${profile.nome_completo.split(" ")[0]}` : ""}`}
                       aria-haspopup="menu"
                     >
                       <User className="h-4 w-4" aria-hidden="true" />
-                      <span className="hidden sm:inline max-w-[100px] truncate">
-                        {profile.nome_completo.split(" ")[0]}
-                      </span>
+                      {profile && (
+                        <span className="hidden sm:inline max-w-[100px] truncate">
+                          {profile.nome_completo.split(" ")[0]}
+                        </span>
+                      )}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48 bg-popover z-50">

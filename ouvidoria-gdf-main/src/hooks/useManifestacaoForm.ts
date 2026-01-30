@@ -12,6 +12,7 @@ import {
   processFileUploads,
   prepareInsertData,
   insertManifestacao,
+  insertAnexos,
   prepareOfflineData,
   isNetworkError,
   type SubmitResult,
@@ -147,8 +148,8 @@ export function useManifestacaoForm() {
    * Handle online submission
    */
   const handleOnlineSubmit = useCallback(async (): Promise<void> => {
-    // Process file uploads
-    const { conteudo, arquivoUrl } = await processFileUploads(formState);
+    // Process file uploads - now handles all media types
+    const { conteudo, arquivoUrl, uploadedFiles } = await processFileUploads(formState);
 
     // Prepare insert data
     const insertData = prepareInsertData(
@@ -158,8 +159,13 @@ export function useManifestacaoForm() {
       user?.id || null
     );
 
-    // Insert into database
-    const result = await insertManifestacao(insertData);
+    // Insert into database (type assertion needed because protocolo is auto-generated)
+    const result = await insertManifestacao(insertData as any);
+
+    // Insert anexos if any files were uploaded
+    if (uploadedFiles.length > 0) {
+      await insertAnexos(result.id, uploadedFiles);
+    }
 
     // Clear draft after successful submission
     clearDraft();

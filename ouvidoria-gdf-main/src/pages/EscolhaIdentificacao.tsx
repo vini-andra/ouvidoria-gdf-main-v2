@@ -48,8 +48,8 @@ const EscolhaIdentificacao = () => {
                                         className="w-full bg-accent text-accent-foreground hover:bg-accent/90 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 font-semibold h-14"
                                     >
                                         <Link
-                                            to="/cadastro"
-                                            aria-label="Cadastrar-se para fazer manifestação identificada"
+                                            to="/auth"
+                                            aria-label="Fazer login para manifestação identificada"
                                         >
                                             Continuar
                                         </Link>

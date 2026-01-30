@@ -25,6 +25,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
+  completeProfile: (profileData: Omit<Profile, "id">) => Promise<{ error: Error | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -37,14 +38,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
 
   const fetchProfile = async (userId: string) => {
+    console.log("[fetchProfile] Fetching profile for userId:", userId);
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
       .eq("id", userId)
       .maybeSingle();
 
+    console.log("[fetchProfile] Response:", { data, error: error ? JSON.stringify(error) : null });
+
     if (error) {
-      console.error("Error fetching profile:", error);
+      console.error("Error fetching profile:", JSON.stringify(error, null, 2));
       return null;
     }
     return data as Profile | null;
@@ -177,6 +181,48 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const completeProfile = async (
+    profileData: Omit<Profile, "id">
+  ): Promise<{ error: Error | null }> => {
+    try {
+      if (!user) {
+        return { error: new Error("Usuário não autenticado.") };
+      }
+
+      const { error: profileError } = await supabase.from("profiles").insert({
+        id: user.id,
+        nome_completo: profileData.nome_completo,
+        cpf: profileData.cpf,
+        data_nascimento: profileData.data_nascimento,
+        sexo: profileData.sexo,
+        telefone: profileData.telefone,
+      });
+
+      if (profileError) {
+        if (profileError.message.includes("duplicate")) {
+          if (profileError.message.includes("cpf")) {
+            return { error: new Error("Este CPF já está cadastrado.") };
+          }
+        }
+        console.error("Profile creation error:", profileError);
+        return { error: new Error("Erro ao criar perfil. Tente novamente.") };
+      }
+
+      // Refresh the profile after creation
+      await refreshProfile();
+
+      toast({
+        title: "Perfil criado!",
+        description: "Seu perfil foi criado com sucesso.",
+      });
+
+      return { error: null };
+    } catch (err) {
+      console.error("Complete profile error:", err);
+      return { error: err as Error };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -188,6 +234,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signIn,
         signOut,
         refreshProfile,
+        completeProfile,
       }}
     >
       {children}

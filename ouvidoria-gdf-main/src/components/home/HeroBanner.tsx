@@ -5,7 +5,7 @@ import { useAuth } from "@/hooks/useAuth";
 import bannerImage from "@/assets/banner-ouvidoria-1.png";
 
 const HeroBanner = () => {
-  const { user, profile, loading } = useAuth();
+  const { user, loading } = useAuth();
 
   return (
     <section
@@ -56,7 +56,7 @@ const HeroBanner = () => {
           {/* CTAs baseados no estado de autenticação */}
           {loading ? (
             <div className="h-16" aria-hidden="true" />
-          ) : user && profile ? (
+          ) : user ? (
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 asChild
