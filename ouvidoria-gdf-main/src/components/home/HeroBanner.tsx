@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Search, Plus } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import bannerImage from "@/assets/banner-ouvidoria-1.png";
 
@@ -80,23 +80,44 @@ const HeroBanner = () => {
             </div>
           ) : (
             <div className="space-y-6">
-              {/* Botão principal - Registrar Manifestação */}
-              <Button
-                asChild
-                size="lg"
-                className="w-full sm:w-auto bg-accent text-accent-foreground hover:bg-accent/90 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 text-xl px-10 py-7 h-auto font-bold shadow-xl hover:shadow-2xl transition-all duration-200 group"
-              >
-                <Link
-                  to="/escolha-identificacao"
-                  aria-label="Registrar nova manifestação - escolher forma de identificação"
+              {/* Botões de CTA - Principal e Secundário */}
+              <div className="flex flex-col sm:flex-row gap-4 items-center">
+                {/* Botão principal - Registrar Manifestação */}
+                <Button
+                  asChild
+                  size="lg"
+                  className="w-full sm:w-auto min-h-[56px] bg-accent text-accent-foreground hover:bg-accent/90 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 text-base px-8 font-bold shadow-xl hover:shadow-2xl transition-all duration-200 group"
                 >
-                  Registrar Manifestação
-                  <ArrowRight
-                    className="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform"
-                    aria-hidden="true"
-                  />
-                </Link>
-              </Button>
+                  <Link
+                    to="/escolha-identificacao"
+                    aria-label="Registrar nova manifestação - escolher forma de identificação"
+                  >
+                    <Plus className="h-5 w-5 mr-2" aria-hidden="true" />
+                    <span className="text-base">Registrar Manifestação</span>
+                  </Link>
+                </Button>
+
+                {/* Botão secundário - Consultar Protocolo */}
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="w-full sm:w-auto min-h-[56px] bg-white/10 dark:bg-card/50 border-2 border-primary-foreground/30 dark:border-foreground/30 text-primary-foreground dark:text-foreground hover:bg-white/20 dark:hover:bg-card/70 text-base px-8 font-medium backdrop-blur-sm"
+                >
+                  <Link
+                    to="/consulta"
+                    aria-label="Consultar protocolo de manifestação existente"
+                  >
+                    <Search className="h-5 w-5 mr-2" aria-hidden="true" />
+                    <span className="text-base">Consultar Protocolo</span>
+                  </Link>
+                </Button>
+              </div>
+
+              {/* Texto auxiliar para contexto */}
+              <p className="text-primary-foreground/70 dark:text-foreground/70 text-sm">
+                Já enviou uma manifestação? Use "Consultar Protocolo" para acompanhar
+              </p>
 
               <p className="text-primary-foreground/80 dark:text-foreground/80 text-sm">
                 Já tem conta?{" "}

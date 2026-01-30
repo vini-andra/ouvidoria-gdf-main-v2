@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import AccessibilityBar from "./accessibility/AccessibilityBar";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { User, LogOut, LogIn, UserPlus } from "lucide-react";
+import { User, LogOut, LogIn, UserPlus, Search } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -94,6 +94,12 @@ const Header = () => {
                         Nova Manifestação
                       </Link>
                     </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/consulta" className="cursor-pointer gap-2">
+                        <Search className="h-4 w-4" aria-hidden="true" />
+                        Consultar Protocolo
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       onClick={signOut}
@@ -135,6 +141,13 @@ const Header = () => {
                         Criar Conta
                       </Link>
                     </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                      <Link to="/consulta" className="cursor-pointer gap-2">
+                        <Search className="h-4 w-4" aria-hidden="true" />
+                        Consultar Protocolo
+                      </Link>
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               )}
@@ -164,6 +177,13 @@ const Header = () => {
                         <Link to="/cadastro" className="cursor-pointer gap-2">
                           <UserPlus className="h-4 w-4" aria-hidden="true" />
                           Criar Conta
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild className="hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <Link to="/consulta" className="cursor-pointer gap-2">
+                          <Search className="h-4 w-4" aria-hidden="true" />
+                          Consultar Protocolo
                         </Link>
                       </DropdownMenuItem>
                     </DropdownMenuContent>

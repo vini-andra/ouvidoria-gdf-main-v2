@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Search,
   FileText,
@@ -49,24 +51,29 @@ const tipoLabels = {
 };
 
 const Consulta = () => {
-  const [protocolo, setProtocolo] = useState("");
+  const [searchParams] = useSearchParams();
+  const [protocolo, setProtocolo] = useState(searchParams.get("protocolo") || "");
+  const [senha, setSenha] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [manifestacao, setManifestacao] = useState<Manifestacao | null>(null);
   const [notFound, setNotFound] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const formatProtocolo = (value: string) => {
     // Remove non-alphanumeric characters
     const cleaned = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
 
-    // Format as YYYY-DF-XXXXX
-    if (cleaned.length <= 4) {
+    // Format as OUV-YYYYMMDD-XXXXXX
+    if (cleaned.length <= 3) {
       return cleaned;
-    } else if (cleaned.length <= 6) {
-      return `${cleaned.slice(0, 4)}-${cleaned.slice(4)}`;
+    } else if (cleaned.length <= 11) {
+      // OUV-YYYYMMDD
+      return `${cleaned.slice(0, 3)}-${cleaned.slice(3)}`;
     } else {
-      return `${cleaned.slice(0, 4)}-${cleaned.slice(4, 6)}-${cleaned.slice(6, 11)}`;
+      // OUV-YYYYMMDD-XXXXXX
+      return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 11)}-${cleaned.slice(11, 17)}`;
     }
   };
 
@@ -74,17 +81,26 @@ const Consulta = () => {
     const formatted = formatProtocolo(e.target.value);
     setProtocolo(formatted);
     setNotFound(false);
+    setError(null);
+  };
+
+  const handleSenhaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSenha(e.target.value.toUpperCase());
+    setError(null);
   };
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
 
-    if (!protocolo || protocolo.length < 13) {
-      toast({
-        title: "Protocolo inválido",
-        description: "Digite o número completo do protocolo (ex: 2026-DF-00001)",
-        variant: "destructive",
-      });
+    // Validate both protocol and password
+    if (!protocolo || protocolo.length < 18) {
+      setError("Digite o número completo do protocolo (ex: OUV-20260101-000000)");
+      return;
+    }
+
+    if (!senha || senha.length !== 6) {
+      setError("Digite a senha de 6 caracteres fornecida após o envio");
       return;
     }
 
@@ -94,34 +110,28 @@ const Consulta = () => {
     setHasSearched(true);
 
     try {
-      const { data, error } = await supabase
+      const { data, error: queryError } = await supabase
         .from("manifestacoes")
         .select("id, protocolo, tipo, categoria, anonimo, nome, created_at, conteudo")
         .eq("protocolo", protocolo)
+        .eq("senha_acompanhamento", senha.toUpperCase())
         .maybeSingle();
 
-      if (error) {
-        console.error("Error fetching manifestacao:", error);
-        toast({
-          title: "Erro na consulta",
-          description: "Não foi possível consultar o protocolo. Tente novamente.",
-          variant: "destructive",
-        });
+      if (queryError) {
+        console.error("Error fetching manifestacao:", queryError);
+        setError("Não foi possível consultar o protocolo. Tente novamente.");
         return;
       }
 
       if (!data) {
+        setError("Protocolo ou senha incorretos. Verifique e tente novamente.");
         setNotFound(true);
       } else {
         setManifestacao(data);
       }
     } catch (err) {
       console.error("Unexpected error:", err);
-      toast({
-        title: "Erro inesperado",
-        description: "Ocorreu um erro ao consultar. Tente novamente.",
-        variant: "destructive",
-      });
+      setError("Ocorreu um erro ao consultar. Tente novamente.");
     } finally {
       setIsLoading(false);
     }
@@ -142,16 +152,16 @@ const Consulta = () => {
   return (
     <Layout>
       {/* Header */}
-      <section className="bg-gradient-to-br from-primary to-primary/90 py-12 md:py-16">
+      <section className="bg-gradient-to-br from-primary/95 to-primary/70 py-12 md:py-16">
         <div className="container text-center">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-accent/20 flex items-center justify-center">
-            <Search className="w-8 h-8 text-accent" />
+          <div className="w-20 h-20 mx-auto mb-4 rounded-2xl bg-accent/40 shadow-lg flex items-center justify-center">
+            <Search className="w-10 h-10 text-accent" />
           </div>
           <h1 className="text-2xl md:text-4xl font-bold text-primary-foreground mb-3">
             Consultar Manifestação
           </h1>
           <p className="text-primary-foreground/90 max-w-lg mx-auto">
-            Digite o número do protocolo para consultar os detalhes da sua manifestação.
+            Digite o número do protocolo e a senha de acompanhamento para consultar sua manifestação.
           </p>
         </div>
       </section>
@@ -167,43 +177,90 @@ const Consulta = () => {
                   Buscar por Protocolo
                 </CardTitle>
                 <CardDescription>
-                  O número do protocolo foi gerado quando você registrou sua manifestação
+                  O protocolo e a senha foram gerados quando você registrou sua manifestação
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSearch} className="space-y-4">
+                <form onSubmit={handleSearch} className="space-y-6">
+                  {/* Campo de Protocolo */}
                   <div className="space-y-2">
-                    <Label htmlFor="protocolo">Número do Protocolo</Label>
+                    <Label htmlFor="protocolo" className="text-base font-medium">
+                      Número do Protocolo
+                      <span className="text-destructive ml-1" aria-label="obrigatório">*</span>
+                    </Label>
                     <Input
                       id="protocolo"
+                      name="protocolo"
                       type="text"
-                      placeholder="2026-DF-00001"
+                      placeholder="OUV-20260101-000000"
                       value={protocolo}
                       onChange={handleProtocoloChange}
-                      className="text-lg font-mono text-center tracking-wider"
-                      maxLength={14}
-                      aria-describedby="protocolo-help"
+                      className="text-base font-mono text-center tracking-wider"
+                      maxLength={19}
+                      required
+                      aria-required="true"
+                      aria-invalid={!!error}
+                      aria-describedby={error ? "form-error" : "protocolo-hint"}
+                      autoComplete="off"
                     />
-                    <p id="protocolo-help" className="text-sm text-muted-foreground">
-                      Formato: AAAA-DF-XXXXX (ex: 2026-DF-00001)
+                    <p id="protocolo-hint" className="text-sm text-muted-foreground">
+                      Formato: OUV-AAAAMMDD-XXXXXX (ex: OUV-20260101-000000)
                     </p>
                   </div>
 
+                  {/* Campo de Senha */}
+                  <div className="space-y-2">
+                    <Label htmlFor="senha" className="text-base font-medium">
+                      Senha de Acompanhamento
+                      <span className="text-destructive ml-1" aria-label="obrigatório">*</span>
+                    </Label>
+                    <Input
+                      id="senha"
+                      name="senha"
+                      type="password"
+                      placeholder="ABC123"
+                      value={senha}
+                      onChange={handleSenhaChange}
+                      className="text-base font-mono tracking-wider text-center"
+                      maxLength={6}
+                      required
+                      aria-required="true"
+                      aria-invalid={!!error}
+                      aria-describedby={error ? "form-error" : "senha-hint"}
+                      autoComplete="off"
+                    />
+                    <p id="senha-hint" className="text-sm text-muted-foreground">
+                      6 caracteres fornecidos após o envio
+                    </p>
+                  </div>
+
+                  {/* Mensagem de Erro com ARIA Live Region */}
+                  {error && (
+                    <Alert variant="destructive" role="alert" aria-live="polite">
+                      <AlertCircle className="h-4 w-4" aria-hidden="true" />
+                      <AlertDescription id="form-error">
+                        {error}
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
+                  {/* Botão de Submit */}
                   <Button
                     type="submit"
-                    className="w-full"
+                    className="w-full min-h-[44px]"
                     size="lg"
-                    disabled={isLoading || protocolo.length < 13}
+                    disabled={!protocolo || !senha || isLoading}
+                    aria-busy={isLoading}
                   >
                     {isLoading ? (
                       <>
-                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                        Consultando...
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" aria-hidden="true" />
+                        <span>Consultando...</span>
                       </>
                     ) : (
                       <>
-                        <Search className="w-5 h-5 mr-2" />
-                        Consultar
+                        <Search className="w-5 h-5 mr-2" aria-hidden="true" />
+                        <span>Consultar Manifestação</span>
                       </>
                     )}
                   </Button>

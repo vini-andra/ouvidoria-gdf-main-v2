@@ -112,8 +112,8 @@
     --muted-foreground: 0 0% 70%;
 
     /* Amarelo mais vibrante no modo escuro */
-    --accent: 42 100% 60%;
-    --accent-foreground: 0 0% 5%;
+    --accent: 42 100% 55%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 70% 45%;
     --destructive-foreground: 0 0% 100%;
