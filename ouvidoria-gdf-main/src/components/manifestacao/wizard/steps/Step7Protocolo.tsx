@@ -72,14 +72,16 @@ export function Step7Protocolo({
   // Estado: Manifestação enviada com sucesso
   return (
     <div className="space-y-6 text-center">
+      {/* Ícone de sucesso com animação scale-in */}
       <div
-        className="w-20 h-20 mx-auto rounded-full bg-success/10 flex items-center justify-center"
+        className="w-20 h-20 mx-auto rounded-full bg-success/10 flex items-center justify-center scale-in"
         aria-hidden="true"
       >
-        <CheckCircle className="w-12 h-12 text-success" />
+        <CheckCircle className="w-12 h-12 text-success animate-bounce" />
       </div>
 
-      <div className="space-y-2">
+      {/* Título e descrição com fade-in */}
+      <div className="space-y-2 fade-in-up">
         <h3 className="text-2xl font-semibold text-success">Manifestação Registrada!</h3>
         <p className="text-muted-foreground">
           Sua manifestação foi enviada com sucesso. Guarde as informações abaixo para
@@ -87,18 +89,24 @@ export function Step7Protocolo({
         </p>
       </div>
 
-      {/* Protocolo e Senha */}
+      {/* Protocolo e Senha com animação escalonada */}
       {protocolo && senha && (
         <>
-          <ProtocoloCard protocolo={protocolo} senha={senha} />
-          <QRCodeDisplay protocolo={protocolo} senha={senha} />
-          <CompartilharButtons protocolo={protocolo} senha={senha} />
+          <div className="fade-in-up-delay-1">
+            <ProtocoloCard protocolo={protocolo} senha={senha} />
+          </div>
+          <div className="fade-in-up-delay-2">
+            <QRCodeDisplay protocolo={protocolo} senha={senha} />
+          </div>
+          <div className="fade-in-up-delay-3">
+            <CompartilharButtons protocolo={protocolo} senha={senha} />
+          </div>
         </>
       )}
 
-      {/* CTAs */}
-      <div className="flex flex-col gap-3 pt-4 border-t">
-        <Button asChild className="w-full">
+      {/* CTAs com animação de entrada */}
+      <div className="flex flex-col gap-3 pt-4 border-t fade-in-up-delay-3">
+        <Button asChild className="w-full pulse-success">
           <Link to={`/consulta?protocolo=${encodeURIComponent(protocolo || "")}`}>
             <Search className="w-4 h-4 mr-2" aria-hidden="true" />
             Acompanhar Manifestação
@@ -114,3 +122,4 @@ export function Step7Protocolo({
     </div>
   );
 }
+

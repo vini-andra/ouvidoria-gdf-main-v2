@@ -206,3 +206,123 @@
     border-width: 0;
   }
 }
+
+/* ========================================
+   Animações UX - Melhorias de Usabilidade
+   ======================================== */
+
+/* Fade In from Bottom - para cards e conteúdos */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+/* Delay variants para animações escalonadas */
+.fade-in-up-delay-1 {
+  animation: fadeInUp 0.4s ease-out 0.1s forwards;
+  opacity: 0;
+}
+
+.fade-in-up-delay-2 {
+  animation: fadeInUp 0.4s ease-out 0.2s forwards;
+  opacity: 0;
+}
+
+.fade-in-up-delay-3 {
+  animation: fadeInUp 0.4s ease-out 0.3s forwards;
+  opacity: 0;
+}
+
+/* Slide In from Right - para alertas e notificações */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s ease-out forwards;
+}
+
+/* Pulse Success - para confirmações */
+@keyframes pulseSuccess {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}
+
+.pulse-success {
+  animation: pulseSuccess 0.6s ease-in-out;
+}
+
+/* Scale In - para ícones de sucesso */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.scale-in {
+  animation: scaleIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Shimmer Effect - para skeletons */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 25%,
+    hsl(var(--muted-foreground) / 0.1) 50%,
+    hsl(var(--muted)) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Transições suaves para steps do wizard */
+.step-transition {
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.step-enter {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.step-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+}

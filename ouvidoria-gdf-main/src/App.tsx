@@ -15,6 +15,7 @@ import Consulta from "./pages/Consulta";
 import Auth from "./pages/Auth";
 import Cadastro from "./pages/Cadastro";
 import RecuperarSenha from "./pages/RecuperarSenha";
+import EscolhaIdentificacao from "./pages/EscolhaIdentificacao";
 import Dashboard from "./pages/Dashboard";
 import Perfil from "./pages/Perfil";
 import Acompanhamento from "./pages/Acompanhamento";
@@ -44,6 +45,7 @@ const App = () => (
                   <Route path="/auth" element={<Auth />} />
                   <Route path="/cadastro" element={<Cadastro />} />
                   <Route path="/recuperar-senha" element={<RecuperarSenha />} />
+                  <Route path="/escolha-identificacao" element={<EscolhaIdentificacao />} />
                   <Route
                     path="/dashboard"
                     element={

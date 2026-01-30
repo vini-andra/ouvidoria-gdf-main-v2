@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, UserPlus, Eye } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import bannerImage from "@/assets/banner-ouvidoria-1.png";
 
@@ -79,32 +79,24 @@ const HeroBanner = () => {
               </Button>
             </div>
           ) : (
-            <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  asChild
-                  size="lg"
-                  className="bg-accent text-accent-foreground hover:bg-accent/90 text-lg px-8 py-6 h-auto font-semibold shadow-lg group"
+            <div className="space-y-6">
+              {/* Botão principal - Registrar Manifestação */}
+              <Button
+                asChild
+                size="lg"
+                className="w-full sm:w-auto bg-accent text-accent-foreground hover:bg-accent/90 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 text-xl px-10 py-7 h-auto font-bold shadow-xl hover:shadow-2xl transition-all duration-200 group"
+              >
+                <Link
+                  to="/escolha-identificacao"
+                  aria-label="Registrar nova manifestação - escolher forma de identificação"
                 >
-                  <Link to="/cadastro">
-                    <UserPlus className="mr-2 w-5 h-5" aria-hidden="true" />
-                    Quero me identificar
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
-
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="bg-white/10 dark:bg-card/50 border-2 border-primary-foreground/30 dark:border-foreground/30 text-primary-foreground dark:text-foreground hover:bg-white/20 dark:hover:bg-card/70 text-lg px-8 py-6 h-auto font-medium group backdrop-blur-sm"
-                >
-                  <Link to="/manifestacao?modo=anonimo">
-                    <Eye className="mr-2 w-5 h-5" aria-hidden="true" />
-                    Quero ficar anônimo
-                  </Link>
-                </Button>
-              </div>
+                  Registrar Manifestação
+                  <ArrowRight
+                    className="ml-3 w-6 h-6 group-hover:translate-x-1 transition-transform"
+                    aria-hidden="true"
+                  />
+                </Link>
+              </Button>
 
               <p className="text-primary-foreground/80 dark:text-foreground/80 text-sm">
                 Já tem conta?{" "}

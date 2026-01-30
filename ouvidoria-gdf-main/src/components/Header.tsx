@@ -16,31 +16,37 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-card shadow-sm" role="banner">
-      <div className="container flex h-14 sm:h-16 items-center justify-between gap-2">
-        {/* Logo - mais compacto no mobile */}
+      <div className="container flex h-14 sm:h-16 items-center justify-between gap-2 relative">
+        {/* Logo - esquerda no mobile e desktop */}
         <Link
           to="/"
-          className="flex items-center gap-2 sm:gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 shrink-0"
+          className="flex items-center gap-2 sm:gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 shrink-0 sm:relative absolute left-4 sm:left-auto"
           aria-label="Ir para página inicial do Participa DF"
         >
           <img
             src={`${import.meta.env.BASE_URL}logo-ouvidoria.png`}
             alt="Logo Ouvidoria GDF"
-            className="h-8 sm:h-10 w-auto"
+            className="h-10 sm:h-[86px] w-auto"
           />
-          <div className="flex flex-col">
-            <span className="text-sm sm:text-lg font-semibold text-foreground leading-tight">
+          {/* Texto visível apenas no desktop */}
+          <div className="hidden sm:flex flex-col">
+            <span className="text-lg font-semibold text-foreground leading-tight">
               Participa DF
             </span>
-            <span className="text-xs text-muted-foreground hidden sm:block">
+            <span className="text-xs text-muted-foreground">
               Sistema de Ouvidoria
             </span>
           </div>
         </Link>
 
-        {/* Navegação - reorganizada para mobile */}
+        {/* Texto "Participa DF" centralizado - apenas mobile */}
+        <span className="sm:hidden text-base font-semibold text-foreground absolute left-1/2 -translate-x-1/2">
+          Participa DF
+        </span>
+
+        {/* Navegação - direita */}
         <nav
-          className="flex items-center gap-1 sm:gap-2"
+          className="flex items-center gap-1 sm:gap-2 absolute right-4 sm:relative sm:right-auto"
           role="navigation"
           aria-label="Navegação principal e acesso à conta"
         >
@@ -133,35 +139,35 @@ const Header = () => {
                 </DropdownMenu>
               )}
 
-              {/* Botões visíveis apenas em telas maiores */}
+              {/* Botão de usuário para desktop */}
               {!user && (
-                <div
-                  className="hidden sm:flex items-center gap-2"
-                  role="group"
-                  aria-label="Opções de acesso à conta"
-                >
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="default"
-                    className="min-h-[44px] px-4 gap-2 border-primary/30 hover:border-primary hover:bg-primary/5"
-                  >
-                    <Link to="/auth" aria-label="Fazer login na sua conta">
-                      <LogIn className="h-4 w-4" aria-hidden="true" />
-                      Entrar
-                    </Link>
-                  </Button>
-
-                  <Button
-                    asChild
-                    size="default"
-                    className="min-h-[44px] px-4 gap-2 bg-accent text-accent-foreground hover:bg-accent/90 font-semibold shadow-sm"
-                  >
-                    <Link to="/cadastro" aria-label="Criar uma nova conta">
-                      <UserPlus className="h-4 w-4" aria-hidden="true" />
-                      Criar Conta
-                    </Link>
-                  </Button>
+                <div className="hidden sm:flex items-center" role="group" aria-label="Menu de acesso">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        size="icon"
+                        className="h-11 w-11 rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 data-[state=open]:bg-accent shadow-sm"
+                        aria-label="Menu de acesso"
+                        aria-haspopup="menu"
+                      >
+                        <User className="h-5 w-5" aria-hidden="true" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-52 bg-popover">
+                      <DropdownMenuItem asChild className="hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <Link to="/auth" className="cursor-pointer gap-2">
+                          <LogIn className="h-4 w-4" aria-hidden="true" />
+                          Entrar
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild className="hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                        <Link to="/cadastro" className="cursor-pointer gap-2">
+                          <UserPlus className="h-4 w-4" aria-hidden="true" />
+                          Criar Conta
+                        </Link>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               )}
             </>

@@ -95,7 +95,8 @@ export function ManifestacaoWizard({
             <CardContent>
               {/* Step content rendered by children */}
               <div
-                className="min-h-[300px]"
+                key={currentStep}
+                className="min-h-[300px] fade-in-up"
                 role="region"
                 aria-label={`Conteúdo da etapa ${currentStep}: ${currentStepData?.name}`}
               >

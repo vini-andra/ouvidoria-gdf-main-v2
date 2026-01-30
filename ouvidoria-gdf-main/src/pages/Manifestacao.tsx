@@ -84,7 +84,10 @@ const Manifestacao = () => {
                   categoriaTipo={formState.categoriaTipo}
                   onCategoriaTipoChange={(value) => updateField("categoriaTipo", value)}
                   orgaoId={formState.orgaoId}
-                  onOrgaoChange={(value) => updateField("orgaoId", value)}
+                  onOrgaoChange={(id, nome) => {
+                    updateField("orgaoId", id);
+                    updateField("orgaoNome", nome || "");
+                  }}
                   errors={errors}
                 />
               )}
@@ -114,6 +117,7 @@ const Manifestacao = () => {
                   selectedCategories={formState.selectedCategories}
                   categoriaTipo={formState.categoriaTipo}
                   orgaoId={formState.orgaoId}
+                  orgaoNome={formState.orgaoNome}
                   localOcorrencia={formState.localOcorrencia}
                   dataOcorrencia={formState.dataOcorrencia}
                   envolvidos={formState.envolvidos}

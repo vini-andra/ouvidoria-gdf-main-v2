@@ -55,6 +55,7 @@ export function useManifestacaoForm() {
     // Campos estendidos
     categoriaTipo: null,
     orgaoId: null,
+    orgaoNome: "",
     localOcorrencia: "",
     dataOcorrencia: null,
     envolvidos: "",

@@ -16,6 +16,7 @@ export interface ManifestacaoFormState {
   email: string;
   categoriaTipo: CategoriaManifestacao | null;
   orgaoId: string | null;
+  orgaoNome: string;
   localOcorrencia: string;
   dataOcorrencia: Date | null;
   envolvidos: string;
@@ -37,8 +38,8 @@ export interface ValidationErrors {
   aceiteLGPD?: string;
 }
 
-const MIN_TEXT_CHARS = 50;
-const MAX_TEXT_CHARS = 5000;
+const MIN_TEXT_CHARS = 20;
+const MAX_TEXT_CHARS = 13000;
 
 /**
  * Custom hook for validating manifestação form data.

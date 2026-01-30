@@ -16,7 +16,7 @@ interface Orgao {
 
 interface OrgaoSelectProps {
   value: string | null;
-  onChange: (orgaoId: string | null) => void;
+  onChange: (orgaoId: string | null, orgaoNome?: string) => void;
   error?: string;
 }
 
@@ -92,9 +92,8 @@ export function OrgaoSelect({ value, onChange, error }: OrgaoSelectProps) {
             aria-expanded={open}
             aria-describedby="orgao-help"
             aria-invalid={!!error}
-            className={`w-full justify-between min-h-[44px] ${
-              !selectedOrgao ? "text-muted-foreground" : ""
-            }`}
+            className={`w-full justify-between min-h-[44px] ${!selectedOrgao ? "text-muted-foreground" : ""
+              }`}
           >
             <span className="flex items-center gap-2 truncate">
               <Building2 className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -134,7 +133,7 @@ export function OrgaoSelect({ value, onChange, error }: OrgaoSelectProps) {
                     variant="ghost"
                     className="w-full justify-start text-muted-foreground mb-1"
                     onClick={() => {
-                      onChange(null);
+                      onChange(null, undefined);
                       setOpen(false);
                     }}
                   >
@@ -153,11 +152,10 @@ export function OrgaoSelect({ value, onChange, error }: OrgaoSelectProps) {
                         <Button
                           key={orgao.id}
                           variant="ghost"
-                          className={`w-full justify-start gap-2 h-auto py-2 px-2 ${
-                            value === orgao.id ? "bg-accent" : ""
-                          }`}
+                          className={`w-full justify-start gap-2 h-auto py-2 px-2 ${value === orgao.id ? "bg-accent" : ""
+                            }`}
                           onClick={() => {
-                            onChange(orgao.id);
+                            onChange(orgao.id, `${orgao.sigla} - ${orgao.nome}`);
                             setOpen(false);
                             setSearch("");
                           }}

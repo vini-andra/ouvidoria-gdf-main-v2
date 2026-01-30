@@ -10,8 +10,8 @@ interface TextChannelProps {
   error?: string;
 }
 
-const MIN_CHARS = 50;
-const MAX_CHARS = 5000;
+const MIN_CHARS = 20;
+const MAX_CHARS = 13000;
 
 export function TextChannel({
   content,
@@ -47,13 +47,12 @@ export function TextChannel({
           </p>
           <p
             id="texto-counter"
-            className={`font-medium ${
-              charCount < MIN_CHARS
+            className={`font-medium ${charCount < MIN_CHARS
                 ? "text-muted-foreground"
                 : isNearLimit
                   ? "text-destructive"
                   : "text-secondary"
-            }`}
+              }`}
             aria-live="polite"
           >
             {charCount}/{MAX_CHARS}
