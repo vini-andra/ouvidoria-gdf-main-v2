@@ -40,9 +40,13 @@ const Header = () => {
         </Link>
 
         {/* Texto "Participa DF" centralizado - apenas mobile */}
-        <span className="sm:hidden text-base font-semibold text-foreground absolute left-1/2 -translate-x-1/2">
+        <Link
+          to="/"
+          className="sm:hidden text-base font-semibold text-foreground absolute left-1/2 -translate-x-1/2 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          aria-label="Ir para página inicial do Participa DF"
+        >
           Participa DF
-        </span>
+        </Link>
 
         {/* Navegação - direita */}
         <nav

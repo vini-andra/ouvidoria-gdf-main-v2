@@ -5,12 +5,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CheckCircle, ArrowLeft, Mail, Loader2, Search } from "lucide-react";
+import { CheckCircle, ArrowLeft, Mail, Loader2, Search, Eye } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import QRCodeDisplay from "@/components/confirmacao/QRCodeDisplay";
 import ProtocoloCard from "@/components/confirmacao/ProtocoloCard";
 import CompartilharButtons from "@/components/confirmacao/CompartilharButtons";
+import { useAuth } from "@/hooks/useAuth";
 
 interface LocationState {
   protocolo?: string;
@@ -26,6 +27,7 @@ const Confirmacao = () => {
   const submittedEmail = state?.email;
 
   const { toast } = useToast();
+  const { user } = useAuth();
   const [email, setEmail] = useState(submittedEmail || "");
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
@@ -167,9 +169,20 @@ const Confirmacao = () => {
               {/* CTAs */}
               <div className="flex flex-col gap-3 pt-4 border-t">
                 <Button asChild className="w-full">
-                  <Link to={`/consulta?protocolo=${encodeURIComponent(protocolo)}`}>
-                    <Search className="w-4 h-4 mr-2" aria-hidden="true" />
-                    Acompanhar Manifestação
+                  <Link
+                    to={
+                      user
+                        ? `/acompanhamento/${protocolo}`
+                        : `/consulta?protocolo=${encodeURIComponent(protocolo)}`
+                    }
+                    aria-label={user ? "Ver detalhes da manifestação" : "Acompanhar manifestação na página de consulta"}
+                  >
+                    {user ? (
+                      <Eye className="w-4 h-4 mr-2" aria-hidden="true" />
+                    ) : (
+                      <Search className="w-4 h-4 mr-2" aria-hidden="true" />
+                    )}
+                    {user ? "Ver Manifestação" : "Acompanhar Manifestação"}
                   </Link>
                 </Button>
                 <Button asChild variant="ghost" className="w-full">
