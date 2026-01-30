@@ -1,14 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { StatusBadge, type StatusManifestacao } from "./StatusBadge";
-import { 
-  FileText, 
-  Mic, 
-  ImageIcon, 
-  Video,
-  ChevronRight,
-  Calendar
-} from "lucide-react";
+import { FileText, Mic, ImageIcon, Video, ChevronRight, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -56,17 +49,12 @@ export function ManifestacaoCard({
         <div className="flex items-center justify-between gap-4">
           {/* Left side: Icon + Protocol + Category */}
           <div className="flex items-center gap-3 min-w-0 flex-1">
-            <div 
-              className="p-2 rounded-lg bg-primary/10 text-primary shrink-0"
-              aria-hidden="true"
-            >
+            <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0" aria-hidden="true">
               <TipoIcon className="h-5 w-5" />
             </div>
-            
+
             <div className="min-w-0 flex-1">
-              <p className="font-semibold text-sm sm:text-base truncate">
-                {protocolo}
-              </p>
+              <p className="font-semibold text-sm sm:text-base truncate">{protocolo}</p>
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 {categoriaLabel && (
                   <>
@@ -85,7 +73,7 @@ export function ManifestacaoCard({
           {/* Right side: Status + Action */}
           <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <StatusBadge status={status} size="sm" />
-            
+
             <Button
               asChild
               variant="ghost"

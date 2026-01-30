@@ -29,8 +29,8 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <main 
-        id="main-content" 
+      <main
+        id="main-content"
         className="flex-1 py-8 px-4"
         role="main"
         aria-label="Painel do usuário"
@@ -42,17 +42,10 @@ export default function Dashboard() {
               <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
                 Olá, {primeiroNome}!
               </h1>
-              <p className="text-muted-foreground">
-                Bem-vindo ao seu painel de manifestações
-              </p>
+              <p className="text-muted-foreground">Bem-vindo ao seu painel de manifestações</p>
             </div>
             <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                asChild
-                className="gap-2"
-              >
+              <Button variant="outline" size="sm" asChild className="gap-2">
                 <Link to="/perfil">
                   <User className="h-4 w-4" aria-hidden="true" />
                   <span className="hidden sm:inline">Meu Perfil</span>
@@ -107,14 +100,15 @@ export default function Dashboard() {
               {user?.id ? (
                 <ManifestacaoList userId={user.id} />
               ) : (
-                <div 
+                <div
                   className="flex flex-col items-center justify-center py-12 text-center"
                   role="status"
                 >
-                  <FileText className="h-12 w-12 text-muted-foreground/50 mb-4" aria-hidden="true" />
-                  <p className="text-muted-foreground">
-                    Carregando suas manifestações...
-                  </p>
+                  <FileText
+                    className="h-12 w-12 text-muted-foreground/50 mb-4"
+                    aria-hidden="true"
+                  />
+                  <p className="text-muted-foreground">Carregando suas manifestações...</p>
                 </div>
               )}
             </CardContent>
@@ -132,10 +126,7 @@ export default function Dashboard() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form 
-                onSubmit={handleBuscarProtocolo}
-                className="flex flex-col sm:flex-row gap-3"
-              >
+              <form onSubmit={handleBuscarProtocolo} className="flex flex-col sm:flex-row gap-3">
                 <div className="flex-1">
                   <label htmlFor="protocolo-busca" className="sr-only">
                     Número do protocolo

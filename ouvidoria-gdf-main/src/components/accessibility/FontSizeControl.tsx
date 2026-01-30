@@ -9,7 +9,8 @@ import {
 import { useAccessibility } from "@/hooks/useAccessibility";
 
 const FontSizeControl = () => {
-  const { fontSize, increaseFontSize, decreaseFontSize, resetFontSize, fontSizeLabel } = useAccessibility();
+  const { fontSize, increaseFontSize, decreaseFontSize, resetFontSize, fontSizeLabel } =
+    useAccessibility();
 
   return (
     <DropdownMenu>
@@ -24,8 +25,8 @@ const FontSizeControl = () => {
           <span className="sr-only">Ajustar tamanho da fonte</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent 
-        align="end" 
+      <DropdownMenuContent
+        align="end"
         className="bg-popover border-border z-50 min-w-[180px]"
         role="menu"
         aria-label="Opções de tamanho de fonte"
@@ -33,7 +34,7 @@ const FontSizeControl = () => {
         <div className="px-2 py-1.5 text-sm font-medium text-muted-foreground">
           Tamanho da Fonte
         </div>
-        <DropdownMenuItem 
+        <DropdownMenuItem
           onClick={decreaseFontSize}
           className="cursor-pointer gap-2"
           disabled={fontSize <= 0.875}
@@ -42,7 +43,7 @@ const FontSizeControl = () => {
           <Minus className="h-4 w-4" aria-hidden="true" />
           <span>Diminuir (A-)</span>
         </DropdownMenuItem>
-        <DropdownMenuItem 
+        <DropdownMenuItem
           onClick={resetFontSize}
           className="cursor-pointer gap-2"
           aria-label="Restaurar tamanho padrão da fonte"
@@ -50,7 +51,7 @@ const FontSizeControl = () => {
           <Type className="h-4 w-4" aria-hidden="true" />
           <span>Padrão (A)</span>
         </DropdownMenuItem>
-        <DropdownMenuItem 
+        <DropdownMenuItem
           onClick={increaseFontSize}
           className="cursor-pointer gap-2"
           disabled={fontSize >= 1.5}

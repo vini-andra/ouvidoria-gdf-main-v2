@@ -52,10 +52,7 @@ export function ThemeProvider({
     // Update meta theme-color for PWA
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
-      metaThemeColor.setAttribute(
-        "content",
-        effectiveTheme === "dark" ? "#1a1a2e" : "#005CA9"
-      );
+      metaThemeColor.setAttribute("content", effectiveTheme === "dark" ? "#1a1a2e" : "#005CA9");
     }
   }, [theme]);
 
@@ -64,7 +61,7 @@ export function ThemeProvider({
     if (theme !== "system") return;
 
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    
+
     const handleChange = (e: MediaQueryListEvent) => {
       const root = window.document.documentElement;
       root.classList.remove("light", "dark");

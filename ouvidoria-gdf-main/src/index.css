@@ -4,32 +4,32 @@
 
 /* Visby CF - Fonte Oficial GDF */
 @font-face {
-  font-family: 'Visby CF';
-  src: url('/fonts/VisbyCF-Regular.otf') format('opentype');
+  font-family: "Visby CF";
+  src: url("/fonts/VisbyCF-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Visby CF';
-  src: url('/fonts/VisbyCF-Medium.otf') format('opentype');
+  font-family: "Visby CF";
+  src: url("/fonts/VisbyCF-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Visby CF';
-  src: url('/fonts/VisbyCF-DemiBold.otf') format('opentype');
+  font-family: "Visby CF";
+  src: url("/fonts/VisbyCF-DemiBold.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Visby CF';
-  src: url('/fonts/VisbyCF-Bold.otf') format('opentype');
+  font-family: "Visby CF";
+  src: url("/fonts/VisbyCF-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -143,7 +143,11 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Visby CF', system-ui, -apple-system, sans-serif;
+    font-family:
+      "Visby CF",
+      system-ui,
+      -apple-system,
+      sans-serif;
   }
 
   /* Focus indicators para acessibilidade - WCAG 2.1 AA */
@@ -179,8 +183,14 @@
   }
 
   /* Transições suaves para estados de foco */
-  input, textarea, select, button, [role="button"] {
-    transition: box-shadow 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  input,
+  textarea,
+  select,
+  button,
+  [role="button"] {
+    transition:
+      box-shadow 0.15s ease-in-out,
+      border-color 0.15s ease-in-out;
   }
 
   /* Screen reader only - para anúncios acessíveis */

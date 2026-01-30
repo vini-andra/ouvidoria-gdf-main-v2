@@ -28,8 +28,8 @@ export function Step3InfoComplementares({
   return (
     <div className="space-y-6">
       <p className="text-muted-foreground">
-        Forneça informações adicionais para ajudar na análise da sua manifestação.
-        Todos os campos desta etapa são opcionais.
+        Forneça informações adicionais para ajudar na análise da sua manifestação. Todos os campos
+        desta etapa são opcionais.
       </p>
 
       <CamposEstendidos

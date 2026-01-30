@@ -13,7 +13,7 @@ const QRCodeDisplay = ({ protocolo, senha, className }: QRCodeDisplayProps) => {
   const trackingUrl = `${baseUrl}/consulta?protocolo=${encodeURIComponent(protocolo)}&senha=${encodeURIComponent(senha)}`;
 
   return (
-    <div 
+    <div
       className={cn("flex flex-col items-center gap-3", className)}
       aria-label="QR Code para acompanhamento"
     >

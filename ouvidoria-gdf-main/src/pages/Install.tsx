@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  Download, 
-  Smartphone, 
-  Share, 
-  MoreVertical, 
+import {
+  Download,
+  Smartphone,
+  Share,
+  MoreVertical,
   PlusSquare,
   CheckCircle,
   ArrowRight,
   Apple,
-  Chrome
+  Chrome,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { useToast } from "@/hooks/use-toast";
@@ -31,7 +31,7 @@ const Install = () => {
     const userAgent = navigator.userAgent.toLowerCase();
     const isIOS = /iphone|ipad|ipod/.test(userAgent);
     const isAndroid = /android/.test(userAgent);
-    
+
     if (isIOS) {
       setPlatform("ios");
     } else if (isAndroid) {
@@ -83,7 +83,7 @@ const Install = () => {
 
     await deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    
+
     if (outcome === "accepted") {
       setDeferredPrompt(null);
     }
@@ -114,7 +114,7 @@ const Install = () => {
             </p>
           </div>
         </div>
-        
+
         <div className="flex items-start gap-4 p-4 bg-muted/50 rounded-lg">
           <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shrink-0">
             2
@@ -124,12 +124,10 @@ const Install = () => {
               Toque em Compartilhar
               <Share className="w-5 h-5 text-primary" />
             </p>
-            <p className="text-sm text-muted-foreground">
-              Na barra inferior do Safari
-            </p>
+            <p className="text-sm text-muted-foreground">Na barra inferior do Safari</p>
           </div>
         </div>
-        
+
         <div className="flex items-start gap-4 p-4 bg-muted/50 rounded-lg">
           <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shrink-0">
             3
@@ -139,12 +137,10 @@ const Install = () => {
               Adicionar à Tela de Início
               <PlusSquare className="w-5 h-5 text-primary" />
             </p>
-            <p className="text-sm text-muted-foreground">
-              Role para baixo e selecione esta opção
-            </p>
+            <p className="text-sm text-muted-foreground">Role para baixo e selecione esta opção</p>
           </div>
         </div>
-        
+
         <div className="flex items-start gap-4 p-4 bg-secondary/10 rounded-lg">
           <div className="w-8 h-8 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-sm font-bold shrink-0">
             4
@@ -176,17 +172,15 @@ const Install = () => {
       <CardContent className="space-y-4">
         {deferredPrompt ? (
           <div className="text-center py-4">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               onClick={handleInstallClick}
               className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground"
             >
               <Download className="w-5 h-5 mr-2" />
               Instalar Agora
             </Button>
-            <p className="text-sm text-muted-foreground mt-3">
-              Clique para instalar diretamente
-            </p>
+            <p className="text-sm text-muted-foreground mt-3">Clique para instalar diretamente</p>
           </div>
         ) : (
           <>
@@ -204,7 +198,7 @@ const Install = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-start gap-4 p-4 bg-muted/50 rounded-lg">
               <div className="w-8 h-8 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-sm font-bold shrink-0">
                 2
@@ -214,12 +208,10 @@ const Install = () => {
                   Instalar aplicativo
                   <Download className="w-5 h-5 text-secondary" />
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  Ou "Adicionar à tela inicial"
-                </p>
+                <p className="text-sm text-muted-foreground">Ou "Adicionar à tela inicial"</p>
               </div>
             </div>
-            
+
             <div className="flex items-start gap-4 p-4 bg-secondary/10 rounded-lg">
               <div className="w-8 h-8 rounded-full bg-secondary text-secondary-foreground flex items-center justify-center text-sm font-bold shrink-0">
                 3
@@ -253,17 +245,11 @@ const Install = () => {
       <CardContent className="space-y-4">
         {deferredPrompt ? (
           <div className="text-center py-4">
-            <Button 
-              size="lg" 
-              onClick={handleInstallClick}
-              className="w-full"
-            >
+            <Button size="lg" onClick={handleInstallClick} className="w-full">
               <Download className="w-5 h-5 mr-2" />
               Instalar Aplicativo
             </Button>
-            <p className="text-sm text-muted-foreground mt-3">
-              Clique para instalar diretamente
-            </p>
+            <p className="text-sm text-muted-foreground mt-3">Clique para instalar diretamente</p>
           </div>
         ) : (
           <>
@@ -278,7 +264,7 @@ const Install = () => {
                 </p>
               </div>
             </div>
-            
+
             <div className="flex items-start gap-4 p-4 bg-primary/5 rounded-lg">
               <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold shrink-0">
                 2
@@ -304,11 +290,10 @@ const Install = () => {
             <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-secondary/10 flex items-center justify-center">
               <CheckCircle className="w-10 h-10 text-secondary" />
             </div>
-            <h1 className="text-2xl md:text-3xl font-bold mb-4">
-              App Já Instalado!
-            </h1>
+            <h1 className="text-2xl md:text-3xl font-bold mb-4">App Já Instalado!</h1>
             <p className="text-muted-foreground mb-8">
-              O Participa DF já está instalado no seu dispositivo. Você pode acessá-lo diretamente pela tela inicial.
+              O Participa DF já está instalado no seu dispositivo. Você pode acessá-lo diretamente
+              pela tela inicial.
             </p>
             <Button asChild size="lg">
               <a href="/">
@@ -334,7 +319,8 @@ const Install = () => {
             Instale o Participa DF
           </h1>
           <p className="text-primary-foreground/90 max-w-lg mx-auto">
-            Tenha acesso rápido ao sistema de ouvidoria direto da sua tela inicial, sem precisar abrir o navegador.
+            Tenha acesso rápido ao sistema de ouvidoria direto da sua tela inicial, sem precisar
+            abrir o navegador.
           </p>
         </div>
       </section>
@@ -365,7 +351,7 @@ const Install = () => {
             {platform === "ios" && <IOSInstructions />}
             {platform === "android" && <AndroidInstructions />}
             {platform === "desktop" && <DesktopInstructions />}
-            
+
             {/* Show all instructions on desktop or if platform unknown */}
             {(platform === "desktop" || platform === "unknown") && (
               <>
@@ -378,14 +364,12 @@ const Install = () => {
                 <AndroidInstructions />
               </>
             )}
-            
+
             {/* Show desktop instructions on mobile */}
             {(platform === "ios" || platform === "android") && (
               <>
                 <div className="text-center py-4">
-                  <p className="text-sm text-muted-foreground">
-                    Usando um computador?
-                  </p>
+                  <p className="text-sm text-muted-foreground">Usando um computador?</p>
                 </div>
                 <DesktopInstructions />
               </>

@@ -9,15 +9,15 @@ import { Timeline } from "@/components/acompanhamento/Timeline";
 import { RespostaCard } from "@/components/acompanhamento/RespostaCard";
 import { StatusBadge, type StatusManifestacao } from "@/components/dashboard/StatusBadge";
 import { supabase } from "@/integrations/supabase/client";
-import { 
-  ArrowLeft, 
-  FileText, 
-  Mic, 
-  ImageIcon, 
+import {
+  ArrowLeft,
+  FileText,
+  Mic,
+  ImageIcon,
   Video,
   AlertCircle,
   Calendar,
-  Building2
+  Building2,
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -82,10 +82,12 @@ const Acompanhamento = () => {
       // Buscar manifestação
       const { data: manifestacaoData, error: manifestacaoError } = await supabase
         .from("manifestacoes")
-        .select(`
+        .select(
+          `
           id, protocolo, tipo, conteudo, categoria_tipo, status, created_at,
           orgaos (nome, sigla)
-        `)
+        `
+        )
         .eq("protocolo", protocolo)
         .maybeSingle();
 
@@ -140,11 +142,7 @@ const Acompanhamento = () => {
       <main id="main-content" className="container py-6 md:py-8">
         <div className="max-w-3xl mx-auto space-y-6">
           {/* Back button */}
-          <Button
-            asChild
-            variant="ghost"
-            className="gap-2 -ml-2"
-          >
+          <Button asChild variant="ghost" className="gap-2 -ml-2">
             <Link to="/dashboard">
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               Voltar ao painel
@@ -184,7 +182,9 @@ const Acompanhamento = () => {
                         )}
                         <span className="flex items-center gap-1">
                           <Calendar className="h-3 w-3" aria-hidden="true" />
-                          {format(new Date(manifestacao.created_at), "dd/MM/yyyy", { locale: ptBR })}
+                          {format(new Date(manifestacao.created_at), "dd/MM/yyyy", {
+                            locale: ptBR,
+                          })}
                         </span>
                         {manifestacao.orgaos && (
                           <>
@@ -200,7 +200,7 @@ const Acompanhamento = () => {
                     <StatusBadge status={manifestacao.status} />
                   </div>
                 </CardHeader>
-                
+
                 {manifestacao.conteudo && (
                   <CardContent>
                     <div className="p-4 rounded-lg bg-muted/50">
@@ -235,9 +235,7 @@ const Acompanhamento = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="text-lg">Histórico</CardTitle>
-                  <CardDescription>
-                    Acompanhe as atualizações da sua manifestação
-                  </CardDescription>
+                  <CardDescription>Acompanhe as atualizações da sua manifestação</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Timeline historico={historico} />

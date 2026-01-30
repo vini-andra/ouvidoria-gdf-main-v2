@@ -17,7 +17,11 @@ interface AuthContextType {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
-  signUp: (email: string, password: string, profileData: Omit<Profile, "id">) => Promise<{ error: Error | null }>;
+  signUp: (
+    email: string,
+    password: string,
+    profileData: Omit<Profile, "id">
+  ) => Promise<{ error: Error | null }>;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
@@ -48,27 +52,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        // Defer profile fetch with setTimeout to prevent deadlock
-        if (session?.user) {
-          setTimeout(() => {
-            fetchProfile(session.user.id).then(setProfile);
-          }, 0);
-        } else {
-          setProfile(null);
-        }
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+
+      // Defer profile fetch with setTimeout to prevent deadlock
+      if (session?.user) {
+        setTimeout(() => {
+          fetchProfile(session.user.id).then(setProfile);
+        }, 0);
+      } else {
+        setProfile(null);
       }
-    );
+    });
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      
+
       if (session?.user) {
         fetchProfile(session.user.id).then((p) => {
           setProfile(p);
@@ -89,7 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   ): Promise<{ error: Error | null }> => {
     try {
       const redirectUrl = `${window.location.origin}/`;
-      
+
       const { data, error: authError } = await supabase.auth.signUp({
         email,
         password,
@@ -136,10 +140,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const signIn = async (
-    email: string,
-    password: string
-  ): Promise<{ error: Error | null }> => {
+  const signIn = async (email: string, password: string): Promise<{ error: Error | null }> => {
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,

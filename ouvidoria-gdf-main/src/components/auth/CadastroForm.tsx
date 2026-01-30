@@ -22,52 +22,54 @@ import { Loader2, Eye, EyeOff, AlertCircle } from "lucide-react";
 import { validateCPF, formatCPF, unformatCPF } from "@/lib/cpf";
 import { formatTelefone, unformatTelefone, validateTelefone } from "@/lib/telefone";
 
-const cadastroSchema = z.object({
-  nome_completo: z
-    .string()
-    .min(1, "Nome completo é obrigatório")
-    .min(3, "Nome deve ter no mínimo 3 caracteres")
-    .max(255, "Nome muito longo"),
-  cpf: z
-    .string()
-    .min(1, "CPF é obrigatório")
-    .refine((val) => validateCPF(val), "CPF inválido"),
-  email: z
-    .string()
-    .min(1, "E-mail é obrigatório")
-    .email("E-mail inválido")
-    .max(255, "E-mail muito longo"),
-  data_nascimento: z
-    .string()
-    .min(1, "Data de nascimento é obrigatória")
-    .refine((val) => {
-      const date = new Date(val);
-      const today = new Date();
-      const age = today.getFullYear() - date.getFullYear();
-      return age >= 16 && age <= 120;
-    }, "Você deve ter entre 16 e 120 anos"),
-  sexo: z.enum(["masculino", "feminino", "outro"], {
-    required_error: "Selecione o sexo",
-  }),
-  telefone: z
-    .string()
-    .optional()
-    .refine((val) => !val || validateTelefone(val), "Telefone inválido"),
-  password: z
-    .string()
-    .min(1, "Senha é obrigatória")
-    .min(8, "Senha deve ter no mínimo 8 caracteres")
-    .regex(/[A-Z]/, "Senha deve conter pelo menos uma letra maiúscula")
-    .regex(/[a-z]/, "Senha deve conter pelo menos uma letra minúscula")
-    .regex(/[0-9]/, "Senha deve conter pelo menos um número"),
-  confirmPassword: z.string().min(1, "Confirme sua senha"),
-  acceptTerms: z.boolean().refine((val) => val === true, {
-    message: "Você deve aceitar os termos de uso",
-  }),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "As senhas não coincidem",
-  path: ["confirmPassword"],
-});
+const cadastroSchema = z
+  .object({
+    nome_completo: z
+      .string()
+      .min(1, "Nome completo é obrigatório")
+      .min(3, "Nome deve ter no mínimo 3 caracteres")
+      .max(255, "Nome muito longo"),
+    cpf: z
+      .string()
+      .min(1, "CPF é obrigatório")
+      .refine((val) => validateCPF(val), "CPF inválido"),
+    email: z
+      .string()
+      .min(1, "E-mail é obrigatório")
+      .email("E-mail inválido")
+      .max(255, "E-mail muito longo"),
+    data_nascimento: z
+      .string()
+      .min(1, "Data de nascimento é obrigatória")
+      .refine((val) => {
+        const date = new Date(val);
+        const today = new Date();
+        const age = today.getFullYear() - date.getFullYear();
+        return age >= 16 && age <= 120;
+      }, "Você deve ter entre 16 e 120 anos"),
+    sexo: z.enum(["masculino", "feminino", "outro"], {
+      required_error: "Selecione o sexo",
+    }),
+    telefone: z
+      .string()
+      .optional()
+      .refine((val) => !val || validateTelefone(val), "Telefone inválido"),
+    password: z
+      .string()
+      .min(1, "Senha é obrigatória")
+      .min(8, "Senha deve ter no mínimo 8 caracteres")
+      .regex(/[A-Z]/, "Senha deve conter pelo menos uma letra maiúscula")
+      .regex(/[a-z]/, "Senha deve conter pelo menos uma letra minúscula")
+      .regex(/[0-9]/, "Senha deve conter pelo menos um número"),
+    confirmPassword: z.string().min(1, "Confirme sua senha"),
+    acceptTerms: z.boolean().refine((val) => val === true, {
+      message: "Você deve aceitar os termos de uso",
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "As senhas não coincidem",
+    path: ["confirmPassword"],
+  });
 
 type CadastroFormData = z.infer<typeof cadastroSchema>;
 
@@ -119,14 +121,20 @@ export default function CadastroForm() {
     }
   };
 
-  const handleCPFChange = (e: React.ChangeEvent<HTMLInputElement>, onChange: (value: string) => void) => {
+  const handleCPFChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    onChange: (value: string) => void
+  ) => {
     const formatted = formatCPF(e.target.value);
     if (formatted.length <= 14) {
       onChange(formatted);
     }
   };
 
-  const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>, onChange: (value: string) => void) => {
+  const handleTelefoneChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    onChange: (value: string) => void
+  ) => {
     const formatted = formatTelefone(e.target.value);
     if (formatted.length <= 15) {
       onChange(formatted);
@@ -271,8 +279,8 @@ export default function CadastroForm() {
                   aria-required="true"
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem 
-                      value="masculino" 
+                    <RadioGroupItem
+                      value="masculino"
                       id="sexo-masculino"
                       className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                     />
@@ -284,8 +292,8 @@ export default function CadastroForm() {
                     </label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem 
-                      value="feminino" 
+                    <RadioGroupItem
+                      value="feminino"
                       id="sexo-feminino"
                       className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                     />
@@ -297,8 +305,8 @@ export default function CadastroForm() {
                     </label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem 
-                      value="outro" 
+                    <RadioGroupItem
+                      value="outro"
                       id="sexo-outro"
                       className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                     />
@@ -448,7 +456,7 @@ export default function CadastroForm() {
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
-                <label 
+                <label
                   htmlFor="cadastro-accept-terms"
                   className="text-sm font-normal cursor-pointer"
                 >

@@ -3,16 +3,17 @@
  */
 
 export function formatTelefone(value: string): string {
-  const numbers = value.replace(/\D/g, '');
-  
+  const numbers = value.replace(/\D/g, "");
+
   if (numbers.length <= 2) return numbers;
   if (numbers.length <= 7) return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
-  if (numbers.length <= 10) return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
+  if (numbers.length <= 10)
+    return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 6)}-${numbers.slice(6)}`;
   return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7, 11)}`;
 }
 
 export function unformatTelefone(value: string): string {
-  return value.replace(/\D/g, '');
+  return value.replace(/\D/g, "");
 }
 
 export function validateTelefone(telefone: string): boolean {

@@ -36,15 +36,12 @@ export function AnonymityToggle({
             <User className="h-5 w-5 text-primary" aria-hidden="true" />
           )}
           <div>
-            <Label 
-              htmlFor="anonymous-toggle" 
-              className="text-base font-medium cursor-pointer"
-            >
+            <Label htmlFor="anonymous-toggle" className="text-base font-medium cursor-pointer">
               Desejo permanecer anônimo
             </Label>
             <p className="text-sm text-muted-foreground">
-              {isAnonymous 
-                ? "Sua identidade será preservada" 
+              {isAnonymous
+                ? "Sua identidade será preservada"
                 : "Você pode se identificar opcionalmente"}
             </p>
           </div>
@@ -61,8 +58,8 @@ export function AnonymityToggle({
         <Alert className="border-accent/50 bg-accent/10 animate-fade-in">
           <EyeOff className="h-4 w-4" />
           <AlertDescription id="anonymous-description">
-            Manifestações anônimas não recebem resposta direta por e-mail. 
-            Você poderá acompanhar pelo número de protocolo.
+            Manifestações anônimas não recebem resposta direta por e-mail. Você poderá acompanhar
+            pelo número de protocolo.
           </AlertDescription>
         </Alert>
       )}

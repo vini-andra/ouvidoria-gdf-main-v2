@@ -18,7 +18,7 @@ export default function Cadastro() {
 
   if (loading) {
     return (
-      <div 
+      <div
         className="min-h-screen flex items-center justify-center bg-background"
         role="status"
         aria-label="Carregando"
@@ -31,8 +31,8 @@ export default function Cadastro() {
 
   return (
     <Layout>
-      <main 
-        id="main-content" 
+      <main
+        id="main-content"
         className="flex-1 flex items-center justify-center py-12 px-4"
         role="main"
         aria-label="Página de cadastro"

@@ -20,7 +20,7 @@ export function AudioChannel({ audioBlob, onAudioChange, error }: AudioChannelPr
   const [playbackTime, setPlaybackTime] = useState(0);
   const [audioDuration, setAudioDuration] = useState(0);
   const [permissionError, setPermissionError] = useState<string | null>(null);
-  
+
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -37,30 +37,30 @@ export function AudioChannel({ audioBlob, onAudioChange, error }: AudioChannelPr
     try {
       setPermissionError(null);
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      
+
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType: MediaRecorder.isTypeSupported("audio/webm") ? "audio/webm" : "audio/ogg",
       });
-      
+
       mediaRecorderRef.current = mediaRecorder;
       audioChunksRef.current = [];
-      
+
       mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
           audioChunksRef.current.push(event.data);
         }
       };
-      
+
       mediaRecorder.onstop = () => {
         const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" });
         onAudioChange(audioBlob);
-        stream.getTracks().forEach(track => track.stop());
+        stream.getTracks().forEach((track) => track.stop());
       };
-      
+
       mediaRecorder.start(1000);
       setIsRecording(true);
       setRecordingTime(0);
-      
+
       timerRef.current = setInterval(() => {
         setRecordingTime((prev) => {
           if (prev >= MAX_DURATION_SECONDS - 1) {
@@ -70,10 +70,11 @@ export function AudioChannel({ audioBlob, onAudioChange, error }: AudioChannelPr
           return prev + 1;
         });
       }, 1000);
-      
     } catch (err) {
       console.error("Error accessing microphone:", err);
-      setPermissionError("Não foi possível acessar o microfone. Verifique as permissões do navegador.");
+      setPermissionError(
+        "Não foi possível acessar o microfone. Verifique as permissões do navegador."
+      );
     }
   };
 
@@ -124,7 +125,7 @@ export function AudioChannel({ audioBlob, onAudioChange, error }: AudioChannelPr
 
   const togglePlayback = () => {
     if (!audioRef.current) return;
-    
+
     if (isPlaying) {
       audioRef.current.pause();
     } else {
@@ -139,7 +140,7 @@ export function AudioChannel({ audioBlob, onAudioChange, error }: AudioChannelPr
         URL.revokeObjectURL(audioUrlRef.current);
       }
       audioUrlRef.current = URL.createObjectURL(audioBlob);
-      
+
       const audio = new Audio(audioUrlRef.current);
       audio.onloadedmetadata = () => {
         setAudioDuration(Math.floor(audio.duration));
@@ -153,7 +154,7 @@ export function AudioChannel({ audioBlob, onAudioChange, error }: AudioChannelPr
       };
       audioRef.current = audio;
     }
-    
+
     return () => {
       if (audioUrlRef.current) {
         URL.revokeObjectURL(audioUrlRef.current);
@@ -169,18 +170,16 @@ export function AudioChannel({ audioBlob, onAudioChange, error }: AudioChannelPr
     };
   }, []);
 
-  const progressPercent = isRecording 
-    ? (recordingTime / MAX_DURATION_SECONDS) * 100 
-    : audioDuration > 0 
-      ? (playbackTime / audioDuration) * 100 
+  const progressPercent = isRecording
+    ? (recordingTime / MAX_DURATION_SECONDS) * 100
+    : audioDuration > 0
+      ? (playbackTime / audioDuration) * 100
       : 0;
 
   return (
     <div className="space-y-4">
       <div className="text-center space-y-2">
-        <p className="text-muted-foreground">
-          Grave sua manifestação em áudio (máximo 5 minutos)
-        </p>
+        <p className="text-muted-foreground">Grave sua manifestação em áudio (máximo 5 minutos)</p>
       </div>
 
       {permissionError && (
@@ -217,13 +216,13 @@ export function AudioChannel({ audioBlob, onAudioChange, error }: AudioChannelPr
                 <Mic className="h-8 w-8 text-destructive-foreground" />
               </div>
             </div>
-            
+
             <div className="text-2xl font-bold tabular-nums" aria-live="polite">
               {formatTime(recordingTime)} / {formatTime(MAX_DURATION_SECONDS)}
             </div>
-            
+
             <Progress value={progressPercent} className="w-full max-w-xs h-2" />
-            
+
             <div className="flex gap-3">
               <Button
                 type="button"
@@ -252,9 +251,9 @@ export function AudioChannel({ audioBlob, onAudioChange, error }: AudioChannelPr
             <div className="text-2xl font-bold tabular-nums">
               {formatTime(playbackTime)} / {formatTime(audioDuration || recordingTime)}
             </div>
-            
+
             <Progress value={progressPercent} className="w-full max-w-xs h-2" />
-            
+
             <div className="flex gap-3">
               <Button
                 type="button"
@@ -275,7 +274,7 @@ export function AudioChannel({ audioBlob, onAudioChange, error }: AudioChannelPr
                 Excluir
               </Button>
             </div>
-            
+
             <p className="text-sm text-secondary font-medium" role="status">
               ✓ Áudio gravado com sucesso
             </p>

@@ -45,7 +45,7 @@ export default function RecuperarSenhaForm() {
 
     try {
       const redirectUrl = `${window.location.origin}/redefinir-senha`;
-      
+
       const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
         redirectTo: redirectUrl,
       });
@@ -70,27 +70,20 @@ export default function RecuperarSenhaForm() {
 
   if (success) {
     return (
-      <div 
-        className="space-y-6 text-center"
-        role="status"
-        aria-live="polite"
-      >
+      <div className="space-y-6 text-center" role="status" aria-live="polite">
         <div className="flex justify-center">
           <div className="rounded-full bg-success/10 p-3">
             <CheckCircle className="h-8 w-8 text-success" aria-hidden="true" />
           </div>
         </div>
-        
+
         <div className="space-y-2">
-          <h2 className="text-xl font-semibold text-foreground">
-            E-mail enviado!
-          </h2>
+          <h2 className="text-xl font-semibold text-foreground">E-mail enviado!</h2>
           <p className="text-muted-foreground">
-            Se o e-mail informado estiver cadastrado, você receberá um link para redefinir sua senha.
+            Se o e-mail informado estiver cadastrado, você receberá um link para redefinir sua
+            senha.
           </p>
-          <p className="text-sm text-muted-foreground">
-            Verifique também sua pasta de spam.
-          </p>
+          <p className="text-sm text-muted-foreground">Verifique também sua pasta de spam.</p>
         </div>
 
         <div className="pt-4 space-y-3">
@@ -104,7 +97,7 @@ export default function RecuperarSenhaForm() {
               Voltar para login
             </Link>
           </Button>
-          
+
           <Button
             type="button"
             variant="ghost"

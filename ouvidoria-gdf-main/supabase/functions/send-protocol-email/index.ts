@@ -1,8 +1,9 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 interface SendProtocolRequest {
@@ -12,8 +13,8 @@ interface SendProtocolRequest {
 
 serve(async (req: Request): Promise<Response> => {
   // Handle CORS preflight requests
-  if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders });
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
   }
 
   try {
@@ -22,58 +23,52 @@ serve(async (req: Request): Promise<Response> => {
     // Validate inputs
     if (!email || !protocolo) {
       console.error("Missing required fields:", { email: !!email, protocolo: !!protocolo });
-      return new Response(
-        JSON.stringify({ error: "E-mail e protocolo são obrigatórios" }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, "Content-Type": "application/json" } 
-        }
-      );
+      return new Response(JSON.stringify({ error: "E-mail e protocolo são obrigatórios" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       console.error("Invalid email format:", email);
-      return new Response(
-        JSON.stringify({ error: "Formato de e-mail inválido" }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, "Content-Type": "application/json" } 
-        }
-      );
+      return new Response(JSON.stringify({ error: "Formato de e-mail inválido" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     // Check for RESEND_API_KEY - if not configured, simulate success (MVP/prototype mode)
     const resendApiKey = Deno.env.get("RESEND_API_KEY");
-    
+
     if (!resendApiKey) {
       // MVP/Prototype mode: simulate email sending
       console.log(`[PROTOTYPE MODE] Simulating email to: ${email} with protocol: ${protocolo}`);
-      
+
       // Simulate a small delay like a real email service
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       return new Response(
-        JSON.stringify({ 
-          success: true, 
+        JSON.stringify({
+          success: true,
           message: "E-mail enviado com sucesso!",
-          prototype: true
+          prototype: true,
         }),
-        { 
-          status: 200, 
-          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }
 
     // Send email using Resend
     console.log("Sending protocol email to:", email);
-    
+
     const emailResponse = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${resendApiKey}`,
+        Authorization: `Bearer ${resendApiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -127,36 +122,29 @@ serve(async (req: Request): Promise<Response> => {
     if (!emailResponse.ok) {
       console.error("Resend API error:", responseData);
       return new Response(
-        JSON.stringify({ 
-          success: false, 
-          error: "Erro ao enviar e-mail. Por favor, anote seu protocolo." 
+        JSON.stringify({
+          success: false,
+          error: "Erro ao enviar e-mail. Por favor, anote seu protocolo.",
         }),
-        { 
-          status: 500, 
-          headers: { ...corsHeaders, "Content-Type": "application/json" } 
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
         }
       );
     }
 
     console.log("Email sent successfully:", responseData);
 
-    return new Response(
-      JSON.stringify({ success: true, message: "E-mail enviado com sucesso!" }),
-      { 
-        status: 200, 
-        headers: { ...corsHeaders, "Content-Type": "application/json" } 
-      }
-    );
-
+    return new Response(JSON.stringify({ success: true, message: "E-mail enviado com sucesso!" }), {
+      status: 200,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (error: unknown) {
     console.error("Error in send-protocol-email:", error);
     const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
-    return new Response(
-      JSON.stringify({ success: false, error: errorMessage }),
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, "Content-Type": "application/json" } 
-      }
-    );
+    return new Response(JSON.stringify({ success: false, error: errorMessage }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });

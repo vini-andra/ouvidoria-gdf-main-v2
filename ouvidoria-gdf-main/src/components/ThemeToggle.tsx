@@ -31,24 +31,24 @@ const ThemeToggle = () => {
           className="h-10 w-10 rounded-md"
           aria-label={`Alterar tema. ${getThemeLabel()}`}
         >
-          <Sun 
-            className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" 
+          <Sun
+            className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
             aria-hidden="true"
           />
-          <Moon 
-            className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" 
+          <Moon
+            className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
             aria-hidden="true"
           />
           <span className="sr-only">Alterar tema</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent 
-        align="end" 
+      <DropdownMenuContent
+        align="end"
         className="bg-popover border-border z-50"
         role="menu"
         aria-label="Opções de tema"
       >
-        <DropdownMenuItem 
+        <DropdownMenuItem
           onClick={() => setTheme("light")}
           className="cursor-pointer gap-2"
           role="menuitemradio"
@@ -56,11 +56,9 @@ const ThemeToggle = () => {
         >
           <Sun className="h-4 w-4" aria-hidden="true" />
           <span>Claro</span>
-          {theme === "light" && (
-            <span className="sr-only">(selecionado)</span>
-          )}
+          {theme === "light" && <span className="sr-only">(selecionado)</span>}
         </DropdownMenuItem>
-        <DropdownMenuItem 
+        <DropdownMenuItem
           onClick={() => setTheme("dark")}
           className="cursor-pointer gap-2"
           role="menuitemradio"
@@ -68,11 +66,9 @@ const ThemeToggle = () => {
         >
           <Moon className="h-4 w-4" aria-hidden="true" />
           <span>Escuro</span>
-          {theme === "dark" && (
-            <span className="sr-only">(selecionado)</span>
-          )}
+          {theme === "dark" && <span className="sr-only">(selecionado)</span>}
         </DropdownMenuItem>
-        <DropdownMenuItem 
+        <DropdownMenuItem
           onClick={() => setTheme("system")}
           className="cursor-pointer gap-2"
           role="menuitemradio"
@@ -80,9 +76,7 @@ const ThemeToggle = () => {
         >
           <Monitor className="h-4 w-4" aria-hidden="true" />
           <span>Sistema</span>
-          {theme === "system" && (
-            <span className="sr-only">(selecionado)</span>
-          )}
+          {theme === "system" && <span className="sr-only">(selecionado)</span>}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

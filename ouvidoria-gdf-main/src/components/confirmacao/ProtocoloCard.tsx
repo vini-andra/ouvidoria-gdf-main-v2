@@ -60,18 +60,12 @@ const ProtocoloCard = ({ protocolo, senha }: ProtocoloCardProps) => {
   };
 
   return (
-    <div 
-      className="bg-muted p-6 rounded-lg space-y-4"
-      role="status"
-      aria-live="polite"
-    >
+    <div className="bg-muted p-6 rounded-lg space-y-4" role="status" aria-live="polite">
       {/* Protocolo */}
       <div className="space-y-1">
         <p className="text-sm text-muted-foreground">Seu Protocolo:</p>
         <div className="flex items-center justify-center gap-2">
-          <p className="text-xl md:text-2xl font-mono font-bold text-primary">
-            {protocolo}
-          </p>
+          <p className="text-xl md:text-2xl font-mono font-bold text-primary">{protocolo}</p>
           <Button
             variant="ghost"
             size="icon"
@@ -107,11 +101,7 @@ const ProtocoloCard = ({ protocolo, senha }: ProtocoloCardProps) => {
       </div>
 
       {/* Copiar tudo */}
-      <Button 
-        onClick={handleCopiarTudo}
-        variant="outline"
-        className="w-full mt-4"
-      >
+      <Button onClick={handleCopiarTudo} variant="outline" className="w-full mt-4">
         <Copy className="w-4 h-4 mr-2" aria-hidden="true" />
         Copiar Protocolo e Senha
       </Button>

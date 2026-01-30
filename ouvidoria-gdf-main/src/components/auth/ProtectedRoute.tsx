@@ -8,16 +8,13 @@ interface ProtectedRouteProps {
   requireProfile?: boolean;
 }
 
-export default function ProtectedRoute({ 
-  children, 
-  requireProfile = true 
-}: ProtectedRouteProps) {
+export default function ProtectedRoute({ children, requireProfile = true }: ProtectedRouteProps) {
   const { user, profile, loading } = useAuth();
   const location = useLocation();
 
   if (loading) {
     return (
-      <div 
+      <div
         className="min-h-screen flex items-center justify-center bg-background"
         role="status"
         aria-label="Carregando autenticação"

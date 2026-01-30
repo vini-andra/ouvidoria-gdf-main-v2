@@ -31,9 +31,7 @@ export function StepProgress({
           <span className="text-sm font-medium text-foreground">
             Etapa {currentStep} de {steps.length}
           </span>
-          <span className="text-sm text-muted-foreground">
-            {steps[currentStep - 1]?.name}
-          </span>
+          <span className="text-sm text-muted-foreground">{steps[currentStep - 1]?.name}</span>
         </div>
         <Progress
           value={progressPercentage}
@@ -50,7 +48,8 @@ export function StepProgress({
                 "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all",
                 "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
                 stepStatuses[index] === "completed" && "bg-primary text-primary-foreground",
-                stepStatuses[index] === "active" && "bg-primary text-primary-foreground ring-2 ring-primary ring-offset-2",
+                stepStatuses[index] === "active" &&
+                  "bg-primary text-primary-foreground ring-2 ring-primary ring-offset-2",
                 stepStatuses[index] === "pending" && "bg-muted text-muted-foreground",
                 stepStatuses[index] === "error" && "bg-destructive text-destructive-foreground",
                 step.id <= currentStep && "cursor-pointer hover:opacity-80",
@@ -109,10 +108,15 @@ export function StepProgress({
                     isClickable && "cursor-pointer",
                     !isClickable && "cursor-not-allowed"
                   )}
-                  aria-label={`Etapa ${step.id}: ${step.name} - ${status === "completed" ? "Concluída" :
-                      status === "active" ? "Atual" :
-                        status === "error" ? "Com erro" : "Pendente"
-                    }`}
+                  aria-label={`Etapa ${step.id}: ${step.name} - ${
+                    status === "completed"
+                      ? "Concluída"
+                      : status === "active"
+                        ? "Atual"
+                        : status === "error"
+                          ? "Com erro"
+                          : "Pendente"
+                  }`}
                   aria-current={status === "active" ? "step" : undefined}
                 >
                   {/* Step indicator */}
@@ -126,25 +130,21 @@ export function StepProgress({
                     )}
                     aria-hidden="true"
                   >
-                    {status === "completed" ? (
-                      <Check className="h-4 w-4" />
-                    ) : (
-                      step.id
-                    )}
+                    {status === "completed" ? <Check className="h-4 w-4" /> : step.id}
                   </span>
 
                   {/* Step info */}
                   <div className="flex-1 min-w-0">
-                    <p className={cn(
-                      "font-medium text-sm truncate",
-                      status === "active" && "text-primary"
-                    )}>
+                    <p
+                      className={cn(
+                        "font-medium text-sm truncate",
+                        status === "active" && "text-primary"
+                      )}
+                    >
                       {step.name}
                     </p>
                     {status === "active" && (
-                      <p className="text-xs text-muted-foreground truncate">
-                        {step.description}
-                      </p>
+                      <p className="text-xs text-muted-foreground truncate">{step.description}</p>
                     )}
                   </div>
 

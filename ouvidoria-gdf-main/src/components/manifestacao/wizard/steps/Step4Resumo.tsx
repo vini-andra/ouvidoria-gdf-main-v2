@@ -2,17 +2,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { 
-  FileText, 
-  Mic, 
-  Image, 
-  Video, 
-  MapPin, 
-  Calendar, 
-  Users, 
+import {
+  FileText,
+  Mic,
+  Image,
+  Video,
+  MapPin,
+  Calendar,
+  Users,
   Building2,
   Shield,
-  Edit2
+  Edit2,
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -79,8 +79,8 @@ export function Step4Resumo({
   return (
     <div className="space-y-6">
       <p className="text-muted-foreground">
-        Revise todas as informações antes de prosseguir. Clique em "Editar" para 
-        corrigir qualquer informação.
+        Revise todas as informações antes de prosseguir. Clique em "Editar" para corrigir qualquer
+        informação.
       </p>
 
       {/* Etapa 1: Relato */}
@@ -91,9 +91,9 @@ export function Step4Resumo({
               {tipoInfo.icon}
               Relato ({tipoInfo.label})
             </CardTitle>
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => onEditStep(1)}
               aria-label="Editar relato"
             >
@@ -113,25 +113,29 @@ export function Step4Resumo({
               )}
             </div>
           )}
-          
+
           {tipo === "audio" && audioBlob && (
             <div className="flex items-center gap-2 text-sm">
               <Mic className="h-4 w-4 text-primary" />
               <span>Áudio gravado ({(audioBlob.size / 1024).toFixed(1)} KB)</span>
             </div>
           )}
-          
+
           {tipo === "imagem" && imageFile && (
             <div className="flex items-center gap-2 text-sm">
               <Image className="h-4 w-4 text-primary" />
-              <span>{imageFile.name} ({(imageFile.size / 1024).toFixed(1)} KB)</span>
+              <span>
+                {imageFile.name} ({(imageFile.size / 1024).toFixed(1)} KB)
+              </span>
             </div>
           )}
-          
+
           {tipo === "video" && videoFile && (
             <div className="flex items-center gap-2 text-sm">
               <Video className="h-4 w-4 text-primary" />
-              <span>{videoFile.name} ({(videoFile.size / 1024 / 1024).toFixed(2)} MB)</span>
+              <span>
+                {videoFile.name} ({(videoFile.size / 1024 / 1024).toFixed(2)} MB)
+              </span>
             </div>
           )}
 
@@ -156,9 +160,9 @@ export function Step4Resumo({
               <Building2 className="h-4 w-4" />
               Assunto
             </CardTitle>
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => onEditStep(2)}
               aria-label="Editar assunto"
             >
@@ -193,9 +197,9 @@ export function Step4Resumo({
               <FileText className="h-4 w-4" />
               Informações Complementares
             </CardTitle>
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => onEditStep(3)}
               aria-label="Editar informações complementares"
             >
@@ -216,7 +220,7 @@ export function Step4Resumo({
                   </div>
                 </div>
               )}
-              
+
               {dataOcorrencia && (
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
@@ -228,7 +232,7 @@ export function Step4Resumo({
                   </div>
                 </div>
               )}
-              
+
               {envolvidos && (
                 <div className="flex items-start gap-2">
                   <Users className="h-4 w-4 text-muted-foreground mt-0.5" />
@@ -238,7 +242,7 @@ export function Step4Resumo({
                   </div>
                 </div>
               )}
-              
+
               {testemunhas && (
                 <div className="flex items-start gap-2">
                   <Users className="h-4 w-4 text-muted-foreground mt-0.5" />

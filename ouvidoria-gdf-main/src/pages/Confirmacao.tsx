@@ -24,7 +24,7 @@ const Confirmacao = () => {
   const protocolo = state?.protocolo || "OUV-20260129-000001";
   const senha = state?.senha || "ABC123";
   const submittedEmail = state?.email;
-  
+
   const { toast } = useToast();
   const [email, setEmail] = useState(submittedEmail || "");
   const [isSendingEmail, setIsSendingEmail] = useState(false);
@@ -93,15 +93,13 @@ const Confirmacao = () => {
         <div className="max-w-lg mx-auto">
           <Card className="text-center">
             <CardHeader>
-              <div 
+              <div
                 className="w-20 h-20 mx-auto mb-4 rounded-full bg-success/10 flex items-center justify-center"
                 aria-hidden="true"
               >
                 <CheckCircle className="w-12 h-12 text-success" />
               </div>
-              <CardTitle className="text-2xl text-success">
-                Manifestação Registrada!
-              </CardTitle>
+              <CardTitle className="text-2xl text-success">Manifestação Registrada!</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Protocolo e Senha */}
@@ -119,10 +117,8 @@ const Confirmacao = () => {
 
               {/* Email Section */}
               <div className="border-t pt-6 space-y-4">
-                <p className="text-sm font-medium">
-                  Deseja receber o protocolo por e-mail?
-                </p>
-                
+                <p className="text-sm font-medium">Deseja receber o protocolo por e-mail?</p>
+
                 {emailSent ? (
                   <div className="bg-success/10 text-success p-4 rounded-lg flex items-center justify-center gap-2">
                     <CheckCircle className="w-5 h-5" />
@@ -176,11 +172,7 @@ const Confirmacao = () => {
                     Acompanhar Manifestação
                   </Link>
                 </Button>
-                <Button 
-                  asChild 
-                  variant="ghost" 
-                  className="w-full"
-                >
+                <Button asChild variant="ghost" className="w-full">
                   <Link to="/">
                     <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
                     Voltar ao Início

@@ -5,11 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Building2, Search, Check, ChevronDown } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface Orgao {
   id: string;
@@ -50,9 +46,7 @@ export function OrgaoSelect({ value, onChange, error }: OrgaoSelectProps) {
     if (!search.trim()) return orgaos;
     const term = search.toLowerCase();
     return orgaos.filter(
-      (o) =>
-        o.nome.toLowerCase().includes(term) ||
-        o.sigla.toLowerCase().includes(term)
+      (o) => o.nome.toLowerCase().includes(term) || o.sigla.toLowerCase().includes(term)
     );
   }, [orgaos, search]);
 
@@ -114,7 +108,10 @@ export function OrgaoSelect({ value, onChange, error }: OrgaoSelectProps) {
         <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0 z-50" align="start">
           <div className="p-2 border-b">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
+                aria-hidden="true"
+              />
               <Input
                 placeholder="Buscar órgão..."
                 value={search}
@@ -124,16 +121,12 @@ export function OrgaoSelect({ value, onChange, error }: OrgaoSelectProps) {
               />
             </div>
           </div>
-          
+
           <ScrollArea className="h-[300px]">
             {loading ? (
-              <div className="p-4 text-center text-muted-foreground">
-                Carregando órgãos...
-              </div>
+              <div className="p-4 text-center text-muted-foreground">Carregando órgãos...</div>
             ) : filteredOrgaos.length === 0 ? (
-              <div className="p-4 text-center text-muted-foreground">
-                Nenhum órgão encontrado
-              </div>
+              <div className="p-4 text-center text-muted-foreground">Nenhum órgão encontrado</div>
             ) : (
               <div className="p-1">
                 {value && (
@@ -148,7 +141,7 @@ export function OrgaoSelect({ value, onChange, error }: OrgaoSelectProps) {
                     Limpar seleção
                   </Button>
                 )}
-                
+
                 {Object.entries(groupedOrgaos).map(([tipo, items]) => {
                   if (items.length === 0) return null;
                   return (

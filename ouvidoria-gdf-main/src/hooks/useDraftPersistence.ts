@@ -28,54 +28,57 @@ const DRAFT_EXPIRY_HOURS = 24;
 
 export function useDraftPersistence() {
   // Save draft to localStorage
-  const saveDraft = useCallback((formState: {
-    tipo: TipoManifestacao;
-    conteudo: string;
-    selectedCategories: string[];
-    isAnonymous: boolean;
-    nome: string;
-    email: string;
-    categoriaTipo: CategoriaManifestacao | null;
-    orgaoId: string | null;
-    localOcorrencia: string;
-    dataOcorrencia: Date | null;
-    envolvidos: string;
-    testemunhas: string;
-    sigiloDados: boolean;
-  }) => {
-    try {
-      const draftData: DraftData = {
-        tipo: formState.tipo,
-        conteudo: formState.conteudo,
-        selectedCategories: formState.selectedCategories,
-        isAnonymous: formState.isAnonymous,
-        nome: formState.nome,
-        email: formState.email,
-        categoriaTipo: formState.categoriaTipo,
-        orgaoId: formState.orgaoId,
-        localOcorrencia: formState.localOcorrencia,
-        dataOcorrencia: formState.dataOcorrencia?.toISOString() || null,
-        envolvidos: formState.envolvidos,
-        testemunhas: formState.testemunhas,
-        sigiloDados: formState.sigiloDados,
-        savedAt: Date.now(),
-      };
+  const saveDraft = useCallback(
+    (formState: {
+      tipo: TipoManifestacao;
+      conteudo: string;
+      selectedCategories: string[];
+      isAnonymous: boolean;
+      nome: string;
+      email: string;
+      categoriaTipo: CategoriaManifestacao | null;
+      orgaoId: string | null;
+      localOcorrencia: string;
+      dataOcorrencia: Date | null;
+      envolvidos: string;
+      testemunhas: string;
+      sigiloDados: boolean;
+    }) => {
+      try {
+        const draftData: DraftData = {
+          tipo: formState.tipo,
+          conteudo: formState.conteudo,
+          selectedCategories: formState.selectedCategories,
+          isAnonymous: formState.isAnonymous,
+          nome: formState.nome,
+          email: formState.email,
+          categoriaTipo: formState.categoriaTipo,
+          orgaoId: formState.orgaoId,
+          localOcorrencia: formState.localOcorrencia,
+          dataOcorrencia: formState.dataOcorrencia?.toISOString() || null,
+          envolvidos: formState.envolvidos,
+          testemunhas: formState.testemunhas,
+          sigiloDados: formState.sigiloDados,
+          savedAt: Date.now(),
+        };
 
-      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draftData));
-      
-      toast({
-        title: "Rascunho salvo",
-        description: "Seu progresso foi salvo localmente.",
-      });
-    } catch (error) {
-      console.error("Error saving draft:", error);
-      toast({
-        title: "Erro ao salvar rascunho",
-        description: "Não foi possível salvar seu progresso.",
-        variant: "destructive",
-      });
-    }
-  }, []);
+        localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draftData));
+
+        toast({
+          title: "Rascunho salvo",
+          description: "Seu progresso foi salvo localmente.",
+        });
+      } catch (error) {
+        console.error("Error saving draft:", error);
+        toast({
+          title: "Erro ao salvar rascunho",
+          description: "Não foi possível salvar seu progresso.",
+          variant: "destructive",
+        });
+      }
+    },
+    []
+  );
 
   // Load draft from localStorage
   const loadDraft = useCallback((): Partial<{
@@ -98,7 +101,7 @@ export function useDraftPersistence() {
       if (!savedDraft) return null;
 
       const draftData: DraftData = JSON.parse(savedDraft);
-      
+
       // Check if draft has expired
       const expiryTime = DRAFT_EXPIRY_HOURS * 60 * 60 * 1000;
       if (Date.now() - draftData.savedAt > expiryTime) {
@@ -144,7 +147,7 @@ export function useDraftPersistence() {
 
       const draftData: DraftData = JSON.parse(savedDraft);
       const expiryTime = DRAFT_EXPIRY_HOURS * 60 * 60 * 1000;
-      
+
       if (Date.now() - draftData.savedAt > expiryTime) {
         localStorage.removeItem(DRAFT_STORAGE_KEY);
         return false;

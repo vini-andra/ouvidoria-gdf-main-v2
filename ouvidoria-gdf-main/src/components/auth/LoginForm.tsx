@@ -52,7 +52,7 @@ export default function LoginForm() {
 
     try {
       const { error } = await signIn(data.email, data.password);
-      
+
       if (error) {
         setError(error.message);
       } else {
@@ -67,8 +67,8 @@ export default function LoginForm() {
 
   return (
     <Form {...form}>
-      <form 
-        onSubmit={form.handleSubmit(onSubmit)} 
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-6"
         noValidate
         aria-label="Formulário de login"
@@ -163,9 +163,9 @@ export default function LoginForm() {
           </Link>
         </div>
 
-        <Button 
-          type="submit" 
-          className="w-full focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2" 
+        <Button
+          type="submit"
+          className="w-full focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           disabled={isLoading}
           size="lg"
           aria-busy={isLoading}

@@ -63,7 +63,7 @@ export function useManifestacaoWizard(initialStep = 1): UseManifestacaoWizardRet
         if (step <= currentStep || canNavigateToStep(step)) {
           setStepStatuses((prev) => {
             const newStatuses = [...prev];
-            newStatuses[currentStep - 1] = 
+            newStatuses[currentStep - 1] =
               newStatuses[currentStep - 1] === "error" ? "error" : "completed";
             newStatuses[step - 1] = "active";
             return newStatuses;

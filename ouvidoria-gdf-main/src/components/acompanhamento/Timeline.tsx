@@ -16,9 +16,7 @@ interface TimelineProps {
 export function Timeline({ historico }: TimelineProps) {
   if (historico.length === 0) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
-        Nenhum histórico disponível.
-      </div>
+      <div className="text-center py-8 text-muted-foreground">Nenhum histórico disponível.</div>
     );
   }
 
@@ -28,16 +26,8 @@ export function Timeline({ historico }: TimelineProps) {
   );
 
   return (
-    <div 
-      className="flow-root"
-      role="region"
-      aria-label="Histórico de acompanhamento"
-    >
-      <ul 
-        role="list" 
-        className="relative"
-        aria-label="Timeline de status da manifestação"
-      >
+    <div className="flow-root" role="region" aria-label="Histórico de acompanhamento">
+      <ul role="list" className="relative" aria-label="Timeline de status da manifestação">
         {sortedHistorico.map((item, index) => (
           <StatusStep
             key={item.id}

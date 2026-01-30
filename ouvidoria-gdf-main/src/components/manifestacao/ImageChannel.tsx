@@ -28,30 +28,36 @@ export function ImageChannel({ imageFile, onImageChange, error }: ImageChannelPr
     return null;
   };
 
-  const handleFile = useCallback((file: File) => {
-    const error = validateFile(file);
-    if (error) {
-      setValidationError(error);
-      return;
-    }
+  const handleFile = useCallback(
+    (file: File) => {
+      const error = validateFile(file);
+      if (error) {
+        setValidationError(error);
+        return;
+      }
 
-    setValidationError(null);
-    onImageChange(file);
-    
-    // Create preview
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
-  }, [onImageChange]);
+      setValidationError(null);
+      onImageChange(file);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      handleFile(file);
-    }
-  }, [handleFile]);
+      // Create preview
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    },
+    [onImageChange]
+  );
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
+
+      const file = e.dataTransfer.files[0];
+      if (file) {
+        handleFile(file);
+      }
+    },
+    [handleFile]
+  );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -98,9 +104,10 @@ export function ImageChannel({ imageFile, onImageChange, error }: ImageChannelPr
         <div
           className={`
             relative border-2 border-dashed rounded-lg p-8 text-center transition-colors
-            ${isDragging 
-              ? "border-primary bg-primary/5" 
-              : "border-muted-foreground/25 hover:border-primary/50"
+            ${
+              isDragging
+                ? "border-primary bg-primary/5"
+                : "border-muted-foreground/25 hover:border-primary/50"
             }
           `}
           onDrop={handleDrop}
@@ -114,21 +121,19 @@ export function ImageChannel({ imageFile, onImageChange, error }: ImageChannelPr
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             aria-label="Selecionar imagem"
           />
-          
+
           <div className="flex flex-col items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
               <ImagePlus className="h-8 w-8 text-muted-foreground" />
             </div>
-            
+
             <div>
-              <p className="font-medium">
-                Arraste uma imagem ou clique para selecionar
-              </p>
+              <p className="font-medium">Arraste uma imagem ou clique para selecionar</p>
               <p className="text-sm text-muted-foreground mt-1">
                 JPG, PNG ou WebP • Máximo {MAX_SIZE_MB}MB
               </p>
             </div>
-            
+
             <Button type="button" variant="outline" className="pointer-events-none">
               <Upload className="h-4 w-4 mr-2" />
               Selecionar imagem
@@ -146,18 +151,16 @@ export function ImageChannel({ imageFile, onImageChange, error }: ImageChannelPr
               />
             )}
           </div>
-          
+
           <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
             <div className="flex items-center gap-3 min-w-0">
               <ImagePlus className="h-5 w-5 text-secondary flex-shrink-0" />
               <div className="min-w-0">
                 <p className="font-medium truncate">{imageFile.name}</p>
-                <p className="text-sm text-muted-foreground">
-                  {formatFileSize(imageFile.size)}
-                </p>
+                <p className="text-sm text-muted-foreground">{formatFileSize(imageFile.size)}</p>
               </div>
             </div>
-            
+
             <Button
               type="button"
               variant="ghost"
@@ -169,7 +172,7 @@ export function ImageChannel({ imageFile, onImageChange, error }: ImageChannelPr
               <Trash2 className="h-5 w-5" />
             </Button>
           </div>
-          
+
           <p className="text-sm text-secondary font-medium text-center" role="status">
             ✓ Imagem selecionada com sucesso
           </p>

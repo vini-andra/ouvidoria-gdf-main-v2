@@ -21,10 +21,8 @@ export function RespostaCard({ conteudo, autor, createdAt }: RespostaCardProps) 
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        <p className="text-sm leading-relaxed whitespace-pre-wrap">
-          {conteudo}
-        </p>
-        
+        <p className="text-sm leading-relaxed whitespace-pre-wrap">{conteudo}</p>
+
         <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground pt-2 border-t">
           {autor && (
             <span className="flex items-center gap-1">

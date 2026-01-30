@@ -5,10 +5,7 @@ import ctaBackground from "@/assets/WhatsApp Image 2026-01-29 at 17.17.28.jpeg";
 
 const CTASection = () => {
   return (
-    <section
-      className="relative py-16 md:py-24 overflow-hidden"
-      aria-labelledby="cta-title"
-    >
+    <section className="relative py-16 md:py-24 overflow-hidden" aria-labelledby="cta-title">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
@@ -21,16 +18,10 @@ const CTASection = () => {
       </div>
 
       {/* Dark overlay for text legibility */}
-      <div
-        className="absolute inset-0 bg-black/50"
-        aria-hidden="true"
-      />
+      <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
 
       <div className="container relative z-10 text-center">
-        <h2
-          id="cta-title"
-          className="text-2xl md:text-4xl font-bold text-white mb-4"
-        >
+        <h2 id="cta-title" className="text-2xl md:text-4xl font-bold text-white mb-4">
           Pronto para participar?
         </h2>
         <p className="text-white/90 mb-8 max-w-lg mx-auto text-lg">

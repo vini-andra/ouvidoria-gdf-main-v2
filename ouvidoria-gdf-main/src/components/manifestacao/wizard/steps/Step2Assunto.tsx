@@ -1,4 +1,7 @@
-import { TipoManifestacaoSelect, CategoriaManifestacao } from "@/components/manifestacao/TipoManifestacaoSelect";
+import {
+  TipoManifestacaoSelect,
+  CategoriaManifestacao,
+} from "@/components/manifestacao/TipoManifestacaoSelect";
 import { OrgaoSelect } from "@/components/manifestacao/OrgaoSelect";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -47,11 +50,7 @@ export function Step2Assunto({
 
       <Separator />
 
-      <OrgaoSelect
-        value={orgaoId}
-        onChange={onOrgaoChange}
-        error={errors.orgao}
-      />
+      <OrgaoSelect value={orgaoId} onChange={onOrgaoChange} error={errors.orgao} />
     </div>
   );
 }

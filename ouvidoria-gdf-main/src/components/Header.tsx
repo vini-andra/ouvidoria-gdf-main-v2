@@ -15,10 +15,7 @@ const Header = () => {
   const { user, profile, signOut, loading } = useAuth();
 
   return (
-    <header
-      className="sticky top-0 z-40 w-full border-b bg-card shadow-sm"
-      role="banner"
-    >
+    <header className="sticky top-0 z-40 w-full border-b bg-card shadow-sm" role="banner">
       <div className="container flex h-14 sm:h-16 items-center justify-between gap-2">
         {/* Logo - mais compacto no mobile */}
         <Link

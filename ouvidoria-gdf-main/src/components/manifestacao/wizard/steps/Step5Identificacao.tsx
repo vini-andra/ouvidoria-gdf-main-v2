@@ -6,14 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  UserX,
-  User,
-  Mail,
-  AlertTriangle,
-  LogIn,
-  Shield
-} from "lucide-react";
+import { UserX, User, Mail, AlertTriangle, LogIn, Shield } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Link } from "react-router-dom";
 
@@ -62,8 +55,8 @@ export function Step5Identificacao({
   return (
     <div className="space-y-6">
       <p className="text-muted-foreground">
-        Escolha se deseja se identificar ou permanecer anônimo. Manifestações
-        identificadas permitem acompanhamento mais detalhado.
+        Escolha se deseja se identificar ou permanecer anônimo. Manifestações identificadas permitem
+        acompanhamento mais detalhado.
       </p>
 
       {/* Anonymous Toggle */}
@@ -78,9 +71,7 @@ export function Step5Identificacao({
               )}
               <div>
                 <CardTitle className="text-base">Manifestação Anônima</CardTitle>
-                <CardDescription>
-                  Sua identidade será preservada
-                </CardDescription>
+                <CardDescription>Sua identidade será preservada</CardDescription>
               </div>
             </div>
             <Switch
@@ -93,11 +84,14 @@ export function Step5Identificacao({
         </CardHeader>
         {isAnonymous && (
           <CardContent className="pt-0">
-            <Alert variant="default" className="bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800">
+            <Alert
+              variant="default"
+              className="bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800"
+            >
               <AlertTriangle className="h-4 w-4 text-amber-600" />
               <AlertDescription className="text-amber-800 dark:text-amber-200">
-                <strong>Atenção:</strong> Manifestações anônimas não recebem respostas
-                por e-mail. Você poderá acompanhar apenas pelo número do protocolo.
+                <strong>Atenção:</strong> Manifestações anônimas não recebem respostas por e-mail.
+                Você poderá acompanhar apenas pelo número do protocolo.
               </AlertDescription>
             </Alert>
           </CardContent>
@@ -283,8 +277,8 @@ export function Step5Identificacao({
                   aria-label="Abrir política de privacidade em nova aba"
                 >
                   Política de Privacidade
-                </Link>
-                {" "}e os{" "}
+                </Link>{" "}
+                e os{" "}
                 <Link
                   to="/termos"
                   className="text-primary hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-sm"
@@ -308,7 +302,8 @@ export function Step5Identificacao({
       {/* Privacy note */}
       <p className="text-xs text-muted-foreground text-center">
         Seus dados são protegidos de acordo com a Lei Geral de Proteção de Dados (LGPD).
-        {!isAnonymous && " O e-mail informado será usado apenas para comunicações sobre esta manifestação."}
+        {!isAnonymous &&
+          " O e-mail informado será usado apenas para comunicações sobre esta manifestação."}
       </p>
     </div>
   );

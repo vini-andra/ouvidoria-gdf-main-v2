@@ -18,7 +18,7 @@ export default function RecuperarSenha() {
 
   if (loading) {
     return (
-      <div 
+      <div
         className="min-h-screen flex items-center justify-center bg-background"
         role="status"
         aria-label="Carregando"
@@ -31,20 +31,16 @@ export default function RecuperarSenha() {
 
   return (
     <Layout>
-      <main 
-        id="main-content" 
+      <main
+        id="main-content"
         className="flex-1 flex items-center justify-center py-12 px-4"
         role="main"
         aria-label="Página de recuperação de senha"
       >
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1 text-center">
-            <CardTitle className="text-2xl font-bold">
-              Recuperar senha
-            </CardTitle>
-            <CardDescription>
-              Redefina sua senha de acesso
-            </CardDescription>
+            <CardTitle className="text-2xl font-bold">Recuperar senha</CardTitle>
+            <CardDescription>Redefina sua senha de acesso</CardDescription>
           </CardHeader>
           <CardContent>
             <RecuperarSenhaForm />

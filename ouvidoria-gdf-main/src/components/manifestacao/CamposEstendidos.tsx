@@ -74,8 +74,8 @@ export function CamposEstendidos({
               aria-describedby="data-help"
             >
               <CalendarIcon className="mr-2 h-4 w-4" aria-hidden="true" />
-              {dataOcorrencia 
-                ? format(dataOcorrencia, "PPP", { locale: ptBR }) 
+              {dataOcorrencia
+                ? format(dataOcorrencia, "PPP", { locale: ptBR })
                 : "Selecione a data..."}
             </Button>
           </PopoverTrigger>
@@ -137,16 +137,16 @@ export function CamposEstendidos({
       {/* Sigilo de Dados */}
       <div className="flex items-start gap-4 p-4 rounded-lg border bg-muted/30">
         <div className="flex-1 space-y-1">
-          <Label 
-            htmlFor="sigilo-dados" 
+          <Label
+            htmlFor="sigilo-dados"
             className="flex items-center gap-2 text-base font-medium cursor-pointer"
           >
             <ShieldCheck className="h-5 w-5 text-secondary" aria-hidden="true" />
             Solicitar sigilo dos meus dados
           </Label>
           <p id="sigilo-help" className="text-sm text-muted-foreground">
-            Seus dados pessoais não serão divulgados ao órgão responsável, 
-            apenas à Ouvidoria para análise.
+            Seus dados pessoais não serão divulgados ao órgão responsável, apenas à Ouvidoria para
+            análise.
           </p>
         </div>
         <Switch

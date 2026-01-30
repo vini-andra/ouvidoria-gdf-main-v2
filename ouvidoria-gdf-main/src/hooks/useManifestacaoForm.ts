@@ -1,57 +1,37 @@
 import { useState, useCallback, useEffect } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useDraftPersistence } from "@/hooks/useDraftPersistence";
 import { useOfflineQueue } from "@/hooks/useOfflineQueue";
-import type { Database } from "@/integrations/supabase/types";
-import type { CategoriaManifestacao } from "@/components/manifestacao/TipoManifestacaoSelect";
+import {
+  useManifestacaoValidation,
+  type ManifestacaoFormState,
+  type ValidationErrors,
+} from "@/hooks/useManifestacaoValidation";
+import {
+  processFileUploads,
+  prepareInsertData,
+  insertManifestacao,
+  prepareOfflineData,
+  isNetworkError,
+  type SubmitResult,
+} from "@/lib/manifestacaoSubmitService";
+import {
+  logError,
+  getUserFriendlyMessage,
+  ErrorCategory,
+  ErrorSeverity,
+} from "@/lib/errorHandling";
 
-type TipoManifestacao = Database["public"]["Enums"]["tipo_manifestacao"];
-
-interface ManifestacaoFormState {
-  tipo: TipoManifestacao;
-  conteudo: string;
-  audioBlob: Blob | null;
-  imageFile: File | null;
-  videoFile: File | null;
-  selectedCategories: string[];
-  isAnonymous: boolean;
-  nome: string;
-  email: string;
-  // Campos estendidos (Etapa 2)
-  categoriaTipo: CategoriaManifestacao | null;
-  orgaoId: string | null;
-  localOcorrencia: string;
-  dataOcorrencia: Date | null;
-  envolvidos: string;
-  testemunhas: string;
-  sigiloDados: boolean;
-  // LGPD (Etapa 5)
-  aceiteLGPD: boolean;
-  // Anexos adicionais (Etapa 6)
-  anexos: File[];
-}
-
-interface ValidationErrors {
-  conteudo?: string;
-  audio?: string;
-  image?: string;
-  video?: string;
-  nome?: string;
-  email?: string;
-  categoriaTipo?: string;
-  orgao?: string;
-  aceiteLGPD?: string;
-}
-
-const MIN_TEXT_CHARS = 50;
-const MAX_TEXT_CHARS = 5000;
-
-interface SubmitResult {
-  protocolo: string;
-  senha: string;
-}
+/**
+ * Main hook for managing manifestação form state and submission.
+ * Handles form state, validation, file uploads, and offline support.
+ *
+ * This hook has been refactored to separate concerns:
+ * - Validation logic → useManifestacaoValidation hook
+ * - File upload logic → fileUploadService
+ * - Submission logic → manifestacaoSubmitService
+ */
 
 export function useManifestacaoForm() {
   const { user } = useAuth();
@@ -86,7 +66,12 @@ export function useManifestacaoForm() {
     anexos: [],
   });
 
-  // Load draft on mount
+  // Initialize validation hook
+  const validation = useManifestacaoValidation(formState);
+
+  /**
+   * Load draft on mount if available
+   */
   useEffect(() => {
     if (hasDraft()) {
       const draft = loadDraft();
@@ -98,20 +83,26 @@ export function useManifestacaoForm() {
         });
       }
     }
-  }, []);
+  }, [hasDraft, loadDraft]);
 
-  const updateField = useCallback(<K extends keyof ManifestacaoFormState>(
-    field: K,
-    value: ManifestacaoFormState[K]
-  ) => {
-    setFormState((prev) => ({ ...prev, [field]: value }));
-    // Clear related errors when field changes
-    if (field === "conteudo") setErrors((prev) => ({ ...prev, conteudo: undefined }));
-    if (field === "audioBlob") setErrors((prev) => ({ ...prev, audio: undefined }));
-    if (field === "imageFile") setErrors((prev) => ({ ...prev, image: undefined }));
-    if (field === "videoFile") setErrors((prev) => ({ ...prev, video: undefined }));
-  }, []);
+  /**
+   * Update a single form field
+   */
+  const updateField = useCallback(
+    <K extends keyof ManifestacaoFormState>(field: K, value: ManifestacaoFormState[K]) => {
+      setFormState((prev) => ({ ...prev, [field]: value }));
+      // Clear related errors when field changes
+      if (field === "conteudo") setErrors((prev) => ({ ...prev, conteudo: undefined }));
+      if (field === "audioBlob") setErrors((prev) => ({ ...prev, audio: undefined }));
+      if (field === "imageFile") setErrors((prev) => ({ ...prev, image: undefined }));
+      if (field === "videoFile") setErrors((prev) => ({ ...prev, video: undefined }));
+    },
+    []
+  );
 
+  /**
+   * Toggle category selection
+   */
   const toggleCategory = useCallback((category: string) => {
     setFormState((prev) => ({
       ...prev,
@@ -121,134 +112,105 @@ export function useManifestacaoForm() {
     }));
   }, []);
 
-  // Validate Step 1 - Relato
-  const validateStep1 = useCallback((): boolean => {
-    const newErrors: ValidationErrors = {};
+  /**
+   * Validate a specific step and update errors state
+   * @param step - Step number (1-6)
+   * @returns True if step is valid
+   */
+  const validateStep = useCallback(
+    (step: number): boolean => {
+      const stepErrors = validation.validateStep(step);
+      setErrors((prev) => ({ ...prev, ...stepErrors }));
+      return Object.keys(stepErrors).length === 0;
+    },
+    [validation]
+  );
 
-    switch (formState.tipo) {
-      case "texto":
-        if (formState.conteudo.length < MIN_TEXT_CHARS) {
-          newErrors.conteudo = `O texto deve ter pelo menos ${MIN_TEXT_CHARS} caracteres`;
-        } else if (formState.conteudo.length > MAX_TEXT_CHARS) {
-          newErrors.conteudo = `O texto não pode exceder ${MAX_TEXT_CHARS} caracteres`;
-        }
-        break;
-      case "audio":
-        if (!formState.audioBlob) {
-          newErrors.audio = "Grave um áudio para enviar";
-        }
-        break;
-      case "imagem":
-        if (!formState.imageFile) {
-          newErrors.image = "Selecione uma imagem para enviar";
-        }
-        break;
-      case "video":
-        if (!formState.videoFile) {
-          newErrors.video = "Selecione um vídeo para enviar";
-        }
-        break;
-    }
-
-    setErrors((prev) => ({ ...prev, ...newErrors }));
-    return Object.keys(newErrors).length === 0;
-  }, [formState.tipo, formState.conteudo, formState.audioBlob, formState.imageFile, formState.videoFile]);
-
-  // Validate Step 2 - Assunto
-  const validateStep2 = useCallback((): boolean => {
-    const newErrors: ValidationErrors = {};
-
-    if (!formState.categoriaTipo) {
-      newErrors.categoriaTipo = "Selecione o tipo de manifestação";
-    }
-
-    if (!formState.orgaoId) {
-      newErrors.orgao = "Selecione o órgão responsável";
-    }
-
-    setErrors((prev) => ({ ...prev, ...newErrors }));
-    return Object.keys(newErrors).length === 0;
-  }, [formState.categoriaTipo, formState.orgaoId]);
-
-  // Validate Step 3 - Info Complementares (all optional)
-  const validateStep3 = useCallback((): boolean => {
-    return true; // All fields are optional
+  /**
+   * Clear error for a specific field
+   */
+  const clearError = useCallback((field: keyof ValidationErrors) => {
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
   }, []);
 
-  // Validate Step 4 - Resumo (just review, no validation needed)
-  const validateStep4 = useCallback((): boolean => {
-    return true;
-  }, []);
+  /**
+   * Validate entire form for submission
+   */
+  const validate = useCallback((): boolean => {
+    const allErrors = validation.validateAll();
+    setErrors(allErrors);
+    return Object.keys(allErrors).length === 0;
+  }, [validation]);
 
-  // Validate Step 5 - Identificação
-  const validateStep5 = useCallback((): boolean => {
-    const newErrors: ValidationErrors = {};
+  /**
+   * Handle online submission
+   */
+  const handleOnlineSubmit = useCallback(async (): Promise<void> => {
+    // Process file uploads
+    const { conteudo, arquivoUrl } = await processFileUploads(formState);
 
-    if (!formState.isAnonymous) {
-      // Validate email format if provided
-      if (formState.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) {
-        newErrors.email = "E-mail inválido";
-      }
+    // Prepare insert data
+    const insertData = prepareInsertData(
+      formState,
+      conteudo,
+      arquivoUrl,
+      user?.id || null
+    );
+
+    // Insert into database
+    const result = await insertManifestacao(insertData);
+
+    // Clear draft after successful submission
+    clearDraft();
+
+    // Store result for display
+    setSubmitResult(result);
+    setIsSubmitted(true);
+
+    toast({
+      title: "Manifestação registrada!",
+      description: "Sua manifestação foi enviada com sucesso.",
+    });
+  }, [formState, user, clearDraft]);
+
+  /**
+   * Handle offline submission (queue for later)
+   */
+  const handleOfflineSubmit = useCallback(async (): Promise<void> => {
+    const offlineData = prepareOfflineData(formState, user?.id || null);
+
+    try {
+      await addToQueue(offlineData);
+      clearDraft();
+
+      setSubmitResult({
+        protocolo: "PENDENTE-OFFLINE",
+        senha: "",
+      });
+      setIsSubmitted(true);
+
+      toast({
+        title: "Manifestação salva para envio posterior",
+        description: "Será enviada automaticamente quando a conexão for restabelecida.",
+      });
+    } catch (queueError) {
+      logError(
+        queueError instanceof Error ? queueError : new Error(String(queueError)),
+        ErrorCategory.STORAGE,
+        ErrorSeverity.CRITICAL,
+        { context: "offline_queue" }
+      );
+      toast({
+        title: "Erro ao salvar offline",
+        description: "Não foi possível salvar a manifestação. Tente novamente.",
+        variant: "destructive",
+      });
     }
+  }, [formState, user, addToQueue, clearDraft]);
 
-    // LGPD acceptance is required for everyone
-    if (!formState.aceiteLGPD) {
-      newErrors.aceiteLGPD = "Você deve aceitar a Política de Privacidade para continuar";
-    }
-
-    setErrors((prev) => ({ ...prev, ...newErrors }));
-    return Object.keys(newErrors).length === 0;
-  }, [formState.isAnonymous, formState.email, formState.aceiteLGPD]);
-
-  // Validate Step 6 - Anexos (optional)
-  const validateStep6 = useCallback((): boolean => {
-    return true; // Attachments are optional
-  }, []);
-
-  // Validate a specific step
-  const validateStep = useCallback((step: number): boolean => {
-    switch (step) {
-      case 1:
-        return validateStep1();
-      case 2:
-        return validateStep2();
-      case 3:
-        return validateStep3();
-      case 4:
-        return validateStep4();
-      case 5:
-        return validateStep5();
-      case 6:
-        return validateStep6();
-      default:
-        return true;
-    }
-  }, [validateStep1, validateStep2, validateStep3, validateStep4, validateStep5, validateStep6]);
-
-  // Full validation for submission
-  const validate = (): boolean => {
-    return validateStep1() && validateStep2() && validateStep5();
-  };
-
-  const uploadFile = async (
-    file: File | Blob,
-    fileName: string,
-    folder: string
-  ): Promise<string | null> => {
-    const filePath = `${folder}/${Date.now()}-${fileName}`;
-
-    const { error } = await supabase.storage
-      .from("manifestacoes-arquivos")
-      .upload(filePath, file);
-
-    if (error) {
-      console.error("Upload error:", error);
-      throw new Error("Erro ao fazer upload do arquivo");
-    }
-
-    return filePath;
-  };
-
+  /**
+   * Submit the manifestação form
+   */
   const submit = async (): Promise<void> => {
     if (!validate()) {
       toast({
@@ -262,152 +224,32 @@ export function useManifestacaoForm() {
     setIsSubmitting(true);
 
     try {
-      let arquivoUrl: string | null = null;
-      let conteudo: string | null = null;
-
-      // Handle file uploads based on type
-      switch (formState.tipo) {
-        case "texto":
-          conteudo = formState.conteudo;
-          break;
-        case "audio":
-          if (formState.audioBlob) {
-            arquivoUrl = await uploadFile(formState.audioBlob, "audio.webm", "audios");
-          }
-          break;
-        case "imagem":
-          if (formState.imageFile) {
-            arquivoUrl = await uploadFile(formState.imageFile, formState.imageFile.name, "imagens");
-          }
-          break;
-        case "video":
-          if (formState.videoFile) {
-            arquivoUrl = await uploadFile(formState.videoFile, formState.videoFile.name, "videos");
-          }
-          break;
-      }
-
-      // Determine category - use first selected or "geral"
-      const categoria = formState.selectedCategories.length > 0
-        ? formState.selectedCategories[0]
-        : "geral";
-
-      // Format data_ocorrencia for database
-      const dataOcorrenciaStr = formState.dataOcorrencia
-        ? formState.dataOcorrencia.toISOString().split('T')[0]
-        : null;
-
-      // Insert manifestation (protocolo is auto-generated by DB trigger)
-      const insertData = {
-        tipo: formState.tipo,
-        conteudo,
-        arquivo_url: arquivoUrl,
-        categoria,
-        anonimo: formState.isAnonymous,
-        nome: formState.isAnonymous ? null : formState.nome || null,
-        email: formState.isAnonymous ? null : formState.email || null,
-        // Campos estendidos
-        categoria_tipo: formState.categoriaTipo,
-        orgao_id: formState.orgaoId,
-        local_ocorrencia: formState.localOcorrencia || null,
-        data_ocorrencia: dataOcorrenciaStr,
-        envolvidos: formState.envolvidos || null,
-        testemunhas: formState.testemunhas || null,
-        sigilo_dados: formState.sigiloDados,
-        user_id: user?.id || null,
-      };
-
-      const { data, error } = await supabase
-        .from("manifestacoes")
-        .insert(insertData as unknown as Database["public"]["Tables"]["manifestacoes"]["Insert"])
-        .select("protocolo, senha_acompanhamento")
-        .single();
-
-      if (error) {
-        console.error("Insert error:", error);
-        throw new Error("Erro ao registrar manifestação");
-      }
-
-      // Clear draft after successful submission
-      clearDraft();
-
-      // Store result for display in wizard
-      setSubmitResult({
-        protocolo: data.protocolo,
-        senha: data.senha_acompanhamento || "",
-      });
-      setIsSubmitted(true);
-
-      toast({
-        title: "Manifestação registrada!",
-        description: "Sua manifestação foi enviada com sucesso.",
-      });
-
+      await handleOnlineSubmit();
     } catch (error) {
-      console.error("Submit error:", error);
+      // Log error with structured logging
+      logError(
+        error instanceof Error ? error : new Error(String(error)),
+        ErrorCategory.DATABASE,
+        ErrorSeverity.HIGH,
+        {
+          tipo: formState.tipo,
+          categoria: formState.selectedCategories,
+          isAnonymous: formState.isAnonymous,
+          hasUser: !!user,
+        }
+      );
 
       // Check if it's a network error - save to offline queue
-      const isNetworkError =
-        !navigator.onLine ||
-        (error instanceof Error && (
-          error.message.includes("fetch") ||
-          error.message.includes("network") ||
-          error.message.includes("Failed to fetch") ||
-          error.message.includes("NetworkError")
-        ));
-
-      if (isNetworkError) {
-        // Prepare data for offline queue (text-only, no file uploads in offline mode)
-        const offlineData = {
-          tipo: formState.tipo === "texto" ? "texto" : "texto", // Fallback to texto for offline
-          conteudo: formState.conteudo || "Manifestação enviada offline (anexos serão perdidos)",
-          arquivo_url: null,
-          categoria: formState.selectedCategories.length > 0
-            ? formState.selectedCategories[0]
-            : "geral",
-          anonimo: formState.isAnonymous,
-          nome: formState.isAnonymous ? null : formState.nome || null,
-          email: formState.isAnonymous ? null : formState.email || null,
-          categoria_tipo: formState.categoriaTipo,
-          orgao_id: formState.orgaoId,
-          local_ocorrencia: formState.localOcorrencia || null,
-          data_ocorrencia: formState.dataOcorrencia
-            ? formState.dataOcorrencia.toISOString().split('T')[0]
-            : null,
-          envolvidos: formState.envolvidos || null,
-          testemunhas: formState.testemunhas || null,
-          sigilo_dados: formState.sigiloDados,
-          user_id: user?.id || null,
-        };
-
-        try {
-          await addToQueue(offlineData);
-          // Clear draft since it's queued for sync
-          clearDraft();
-
-          // Show pending result with temporary protocol
-          setSubmitResult({
-            protocolo: "PENDENTE-OFFLINE",
-            senha: "",
-          });
-          setIsSubmitted(true);
-
-          toast({
-            title: "Manifestação salva para envio posterior",
-            description: "Será enviada automaticamente quando a conexão for restabelecida.",
-          });
-        } catch (queueError) {
-          console.error("Error queuing offline:", queueError);
-          toast({
-            title: "Erro ao salvar offline",
-            description: "Não foi possível salvar a manifestação. Tente novamente.",
-            variant: "destructive",
-          });
-        }
+      if (isNetworkError(error)) {
+        await handleOfflineSubmit();
       } else {
+        // Show user-friendly error message
+        const userMessage = getUserFriendlyMessage(
+          error instanceof Error ? error : String(error)
+        );
         toast({
           title: "Erro ao enviar",
-          description: error instanceof Error ? error.message : "Tente novamente mais tarde",
+          description: userMessage,
           variant: "destructive",
         });
       }
@@ -416,15 +258,12 @@ export function useManifestacaoForm() {
     }
   };
 
-  // Save current form state as draft
+  /**
+   * Save current form state as draft
+   */
   const saveCurrentDraft = useCallback(() => {
     saveDraft(formState);
   }, [formState, saveDraft]);
-
-  // Clear errors for a field
-  const clearError = useCallback((field: keyof ValidationErrors) => {
-    setErrors((prev) => ({ ...prev, [field]: undefined }));
-  }, []);
 
   return {
     formState,

@@ -3,15 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
-import { 
-  Upload, 
-  FileText, 
-  Image, 
-  File, 
-  X, 
+import {
+  Upload,
+  FileText,
+  Image,
+  File,
+  X,
   AlertCircle,
   CheckCircle2,
-  Paperclip
+  Paperclip,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -59,7 +59,7 @@ export function Step6Anexos({
   maxFiles = 5,
   maxSizeMB = 10,
 }: Step6AnexosProps) {
-  const [files, setFiles] = useState<AnexoFile[]>(() => 
+  const [files, setFiles] = useState<AnexoFile[]>(() =>
     anexos.map((file, index) => ({
       id: `existing-${index}`,
       file,
@@ -71,73 +71,82 @@ export function Step6Anexos({
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const validateFile = (file: File): string | null => {
-    // Check size
-    if (file.size > maxSizeMB * 1024 * 1024) {
-      return `Arquivo muito grande. Máximo: ${maxSizeMB}MB`;
-    }
-
-    // Check type
-    const extension = `.${file.name.split(".").pop()?.toLowerCase()}`;
-    if (!ACCEPTED_EXTENSIONS.includes(extension)) {
-      return `Tipo de arquivo não permitido. Use: ${ACCEPTED_EXTENSIONS.join(", ")}`;
-    }
-
-    return null;
-  };
-
-  const addFiles = useCallback((newFiles: FileList | File[]) => {
-    const fileArray = Array.from(newFiles);
-    setError(null);
-
-    // Check max files
-    if (files.length + fileArray.length > maxFiles) {
-      setError(`Máximo de ${maxFiles} arquivos permitidos`);
-      return;
-    }
-
-    const validFiles: AnexoFile[] = [];
-    
-    for (const file of fileArray) {
-      const validationError = validateFile(file);
-      if (validationError) {
-        setError(validationError);
-        continue;
+  const validateFile = useCallback(
+    (file: File): string | null => {
+      // Check size
+      if (file.size > maxSizeMB * 1024 * 1024) {
+        return `Arquivo muito grande. Máximo: ${maxSizeMB}MB`;
       }
 
-      // Check for duplicates
-      if (files.some(f => f.file.name === file.name && f.file.size === file.size)) {
-        continue;
+      // Check type
+      const extension = `.${file.name.split(".").pop()?.toLowerCase()}`;
+      if (!ACCEPTED_EXTENSIONS.includes(extension)) {
+        return `Tipo de arquivo não permitido. Use: ${ACCEPTED_EXTENSIONS.join(", ")}`;
       }
 
-      const newFile: AnexoFile = {
-        id: `file-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        file,
-        status: "complete", // In real implementation, this would be "pending" and then uploaded
-        progress: 100,
-        preview: file.type.startsWith("image/") ? URL.createObjectURL(file) : undefined,
-      };
+      return null;
+    },
+    [maxSizeMB]
+  );
 
-      validFiles.push(newFile);
-    }
+  const addFiles = useCallback(
+    (newFiles: FileList | File[]) => {
+      const fileArray = Array.from(newFiles);
+      setError(null);
 
-    if (validFiles.length > 0) {
-      const updatedFiles = [...files, ...validFiles];
+      // Check max files
+      if (files.length + fileArray.length > maxFiles) {
+        setError(`Máximo de ${maxFiles} arquivos permitidos`);
+        return;
+      }
+
+      const validFiles: AnexoFile[] = [];
+
+      for (const file of fileArray) {
+        const validationError = validateFile(file);
+        if (validationError) {
+          setError(validationError);
+          continue;
+        }
+
+        // Check for duplicates
+        if (files.some((f) => f.file.name === file.name && f.file.size === file.size)) {
+          continue;
+        }
+
+        const newFile: AnexoFile = {
+          id: `file-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          file,
+          status: "complete", // In real implementation, this would be "pending" and then uploaded
+          progress: 100,
+          preview: file.type.startsWith("image/") ? URL.createObjectURL(file) : undefined,
+        };
+
+        validFiles.push(newFile);
+      }
+
+      if (validFiles.length > 0) {
+        const updatedFiles = [...files, ...validFiles];
+        setFiles(updatedFiles);
+        onAnexosChange(updatedFiles.map((f) => f.file));
+      }
+    },
+    [files, maxFiles, onAnexosChange, validateFile]
+  );
+
+  const removeFile = useCallback(
+    (id: string) => {
+      const fileToRemove = files.find((f) => f.id === id);
+      if (fileToRemove?.preview) {
+        URL.revokeObjectURL(fileToRemove.preview);
+      }
+
+      const updatedFiles = files.filter((f) => f.id !== id);
       setFiles(updatedFiles);
-      onAnexosChange(updatedFiles.map(f => f.file));
-    }
-  }, [files, maxFiles, maxSizeMB, onAnexosChange]);
-
-  const removeFile = useCallback((id: string) => {
-    const fileToRemove = files.find(f => f.id === id);
-    if (fileToRemove?.preview) {
-      URL.revokeObjectURL(fileToRemove.preview);
-    }
-
-    const updatedFiles = files.filter(f => f.id !== id);
-    setFiles(updatedFiles);
-    onAnexosChange(updatedFiles.map(f => f.file));
-  }, [files, onAnexosChange]);
+      onAnexosChange(updatedFiles.map((f) => f.file));
+    },
+    [files, onAnexosChange]
+  );
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -149,22 +158,28 @@ export function Step6Anexos({
     }
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setDragActive(false);
 
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      addFiles(e.dataTransfer.files);
-    }
-  }, [addFiles]);
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        addFiles(e.dataTransfer.files);
+      }
+    },
+    [addFiles]
+  );
 
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      addFiles(e.target.files);
-      e.target.value = ""; // Reset input
-    }
-  }, [addFiles]);
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files && e.target.files.length > 0) {
+        addFiles(e.target.files);
+        e.target.value = ""; // Reset input
+      }
+    },
+    [addFiles]
+  );
 
   const openFileDialog = () => {
     inputRef.current?.click();
@@ -173,8 +188,7 @@ export function Step6Anexos({
   return (
     <div className="space-y-6">
       <p className="text-muted-foreground">
-        Adicione documentos ou imagens que complementem sua manifestação.
-        Esta etapa é opcional.
+        Adicione documentos ou imagens que complementem sua manifestação. Esta etapa é opcional.
       </p>
 
       {/* Drop Zone */}
@@ -200,10 +214,9 @@ export function Step6Anexos({
         }}
       >
         <CardContent className="flex flex-col items-center justify-center py-10">
-          <Upload className={cn(
-            "h-10 w-10 mb-4",
-            dragActive ? "text-primary" : "text-muted-foreground"
-          )} />
+          <Upload
+            className={cn("h-10 w-10 mb-4", dragActive ? "text-primary" : "text-muted-foreground")}
+          />
           <p className="text-sm font-medium mb-1">
             {dragActive ? "Solte os arquivos aqui" : "Arraste arquivos ou clique para selecionar"}
           </p>
@@ -242,9 +255,7 @@ export function Step6Anexos({
               <Paperclip className="h-4 w-4" />
               Arquivos Anexados ({files.length}/{maxFiles})
             </CardTitle>
-            <CardDescription>
-              Clique no X para remover um arquivo
-            </CardDescription>
+            <CardDescription>Clique no X para remover um arquivo</CardDescription>
           </CardHeader>
           <CardContent>
             <ul className="space-y-2" role="list" aria-label="Lista de arquivos anexados">
@@ -256,11 +267,7 @@ export function Step6Anexos({
                   {/* Preview or icon */}
                   <div className="flex-shrink-0">
                     {file.preview ? (
-                      <img
-                        src={file.preview}
-                        alt=""
-                        className="h-10 w-10 rounded object-cover"
-                      />
+                      <img src={file.preview} alt="" className="h-10 w-10 rounded object-cover" />
                     ) : (
                       <div className="h-10 w-10 rounded bg-muted flex items-center justify-center">
                         {getFileIcon(file.file.type)}
@@ -277,9 +284,7 @@ export function Step6Anexos({
                     {file.status === "uploading" && (
                       <Progress value={file.progress} className="h-1 mt-1" />
                     )}
-                    {file.error && (
-                      <p className="text-xs text-destructive">{file.error}</p>
-                    )}
+                    {file.error && <p className="text-xs text-destructive">{file.error}</p>}
                   </div>
 
                   {/* Status/Actions */}

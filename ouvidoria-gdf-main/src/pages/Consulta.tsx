@@ -4,11 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Search, 
-  FileText, 
-  Calendar, 
-  User, 
+import {
+  Search,
+  FileText,
+  Calendar,
+  User,
   Tag,
   Loader2,
   AlertCircle,
@@ -17,7 +17,7 @@ import {
   Mic,
   Image,
   Video,
-  Type
+  Type,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import { supabase } from "@/integrations/supabase/client";
@@ -59,7 +59,7 @@ const Consulta = () => {
   const formatProtocolo = (value: string) => {
     // Remove non-alphanumeric characters
     const cleaned = value.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
-    
+
     // Format as YYYY-DF-XXXXX
     if (cleaned.length <= 4) {
       return cleaned;
@@ -78,7 +78,7 @@ const Consulta = () => {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!protocolo || protocolo.length < 13) {
       toast({
         title: "Protocolo inválido",
@@ -188,10 +188,10 @@ const Consulta = () => {
                       Formato: AAAA-DF-XXXXX (ex: 2026-DF-00001)
                     </p>
                   </div>
-                  
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
+
+                  <Button
+                    type="submit"
+                    className="w-full"
                     size="lg"
                     disabled={isLoading || protocolo.length < 13}
                   >
@@ -221,8 +221,9 @@ const Consulta = () => {
                     </div>
                     <h3 className="font-semibold text-lg mb-2">Protocolo não encontrado</h3>
                     <p className="text-muted-foreground text-sm">
-                      Não encontramos nenhuma manifestação com o protocolo <strong className="font-mono">{protocolo}</strong>. 
-                      Verifique se o número está correto e tente novamente.
+                      Não encontramos nenhuma manifestação com o protocolo{" "}
+                      <strong className="font-mono">{protocolo}</strong>. Verifique se o número está
+                      correto e tente novamente.
                     </p>
                   </div>
                 </CardContent>
@@ -234,7 +235,10 @@ const Consulta = () => {
               <Card className="mt-6 border-2 border-secondary/30 bg-secondary/5">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
-                    <Badge variant="outline" className="bg-secondary/10 text-secondary border-secondary/30">
+                    <Badge
+                      variant="outline"
+                      className="bg-secondary/10 text-secondary border-secondary/30"
+                    >
                       <CheckCircle className="w-3 h-3 mr-1" />
                       Manifestação Encontrada
                     </Badge>
@@ -243,9 +247,7 @@ const Consulta = () => {
                       {tipoLabels[manifestacao.tipo]}
                     </Badge>
                   </div>
-                  <CardTitle className="text-xl mt-4 font-mono">
-                    {manifestacao.protocolo}
-                  </CardTitle>
+                  <CardTitle className="text-xl mt-4 font-mono">{manifestacao.protocolo}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Status */}
@@ -291,7 +293,9 @@ const Consulta = () => {
 
                     {manifestacao.tipo === "texto" && manifestacao.conteudo && (
                       <div className="pt-3 border-t">
-                        <p className="text-sm text-muted-foreground mb-2">Conteúdo da Manifestação</p>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          Conteúdo da Manifestação
+                        </p>
                         <p className="text-sm bg-muted/50 p-3 rounded-lg line-clamp-4">
                           {manifestacao.conteudo}
                         </p>

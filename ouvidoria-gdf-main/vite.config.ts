@@ -23,7 +23,8 @@ export default defineConfig(({ mode }) => ({
       manifest: {
         name: "Participa DF - Sistema de Ouvidoria",
         short_name: "Participa DF",
-        description: "Registre sua manifestação de forma fácil, rápida e acessível. Sistema de ouvidoria do Governo do Distrito Federal.",
+        description:
+          "Registre sua manifestação de forma fácil, rápida e acessível. Sistema de ouvidoria do Governo do Distrito Federal.",
         theme_color: "#005CA9",
         background_color: "#F5F5F5",
         display: "standalone",
@@ -37,20 +38,20 @@ export default defineConfig(({ mode }) => ({
             src: "/pwa-192x192.png",
             sizes: "192x192",
             type: "image/png",
-            purpose: "any"
+            purpose: "any",
           },
           {
             src: "/pwa-512x512.png",
             sizes: "512x512",
             type: "image/png",
-            purpose: "any"
+            purpose: "any",
           },
           {
             src: "/pwa-512x512.png",
             sizes: "512x512",
             type: "image/png",
-            purpose: "maskable"
-          }
+            purpose: "maskable",
+          },
         ],
         shortcuts: [
           {
@@ -58,15 +59,15 @@ export default defineConfig(({ mode }) => ({
             short_name: "Manifestar",
             description: "Registrar uma nova manifestação",
             url: "/manifestacao",
-            icons: [{ src: "/pwa-192x192.png", sizes: "192x192" }]
+            icons: [{ src: "/pwa-192x192.png", sizes: "192x192" }],
           },
           {
             name: "Acompanhar Protocolo",
             short_name: "Acompanhar",
             description: "Consultar status de manifestação",
             url: "/acompanhamento",
-            icons: [{ src: "/pwa-192x192.png", sizes: "192x192" }]
-          }
+            icons: [{ src: "/pwa-192x192.png", sizes: "192x192" }],
+          },
         ],
         screenshots: [
           {
@@ -74,16 +75,16 @@ export default defineConfig(({ mode }) => ({
             sizes: "1280x720",
             type: "image/png",
             form_factor: "wide",
-            label: "Tela inicial do Participa DF"
+            label: "Tela inicial do Participa DF",
           },
           {
             src: "/screenshots/mobile-home.png",
             sizes: "640x1136",
             type: "image/png",
             form_factor: "narrow",
-            label: "Versão mobile do Participa DF"
-          }
-        ]
+            label: "Versão mobile do Participa DF",
+          },
+        ],
       },
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,svg,otf,woff,woff2}"],
@@ -96,16 +97,16 @@ export default defineConfig(({ mode }) => ({
               cacheName: "google-fonts-cache",
               expiration: {
                 maxEntries: 10,
-                maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
               },
               cacheableResponse: {
-                statuses: [0, 200]
-              }
-            }
-          }
-        ]
-      }
-    })
+                statuses: [0, 200],
+              },
+            },
+          },
+        ],
+      },
+    }),
   ].filter(Boolean),
   resolve: {
     alias: {

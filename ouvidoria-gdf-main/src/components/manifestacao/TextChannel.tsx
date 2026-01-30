@@ -23,7 +23,7 @@ export function TextChannel({
   const charCount = content.length;
   const isValid = charCount >= MIN_CHARS && charCount <= MAX_CHARS;
   const isNearLimit = charCount > MAX_CHARS * 0.9;
-  
+
   return (
     <div className="space-y-4">
       <div className="space-y-2">
@@ -40,18 +40,18 @@ export function TextChannel({
           aria-invalid={!!error || (charCount > 0 && !isValid)}
           aria-describedby="texto-help texto-counter"
         />
-        
+
         <div className="flex items-center justify-between text-sm">
           <p id="texto-help" className="text-muted-foreground">
             Mínimo de {MIN_CHARS} caracteres
           </p>
-          <p 
+          <p
             id="texto-counter"
             className={`font-medium ${
-              charCount < MIN_CHARS 
-                ? "text-muted-foreground" 
-                : isNearLimit 
-                  ? "text-destructive" 
+              charCount < MIN_CHARS
+                ? "text-muted-foreground"
+                : isNearLimit
+                  ? "text-destructive"
                   : "text-secondary"
             }`}
             aria-live="polite"
@@ -59,20 +59,20 @@ export function TextChannel({
             {charCount}/{MAX_CHARS}
           </p>
         </div>
-        
+
         {error && (
           <p className="text-sm text-destructive" role="alert">
             {error}
           </p>
         )}
-        
+
         {charCount > 0 && charCount < MIN_CHARS && (
           <p className="text-sm text-accent" role="status">
             Faltam {MIN_CHARS - charCount} caracteres para o mínimo
           </p>
         )}
       </div>
-      
+
       <IzaCategorySuggestions
         text={content}
         selectedCategories={selectedCategories}

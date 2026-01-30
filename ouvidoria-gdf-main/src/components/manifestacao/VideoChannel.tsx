@@ -32,49 +32,55 @@ export function VideoChannel({ videoFile, onVideoChange, error }: VideoChannelPr
     return null;
   };
 
-  const handleFile = useCallback((file: File) => {
-    const error = validateFile(file);
-    if (error) {
-      setValidationError(error);
-      return;
-    }
+  const handleFile = useCallback(
+    (file: File) => {
+      const error = validateFile(file);
+      if (error) {
+        setValidationError(error);
+        return;
+      }
 
-    setValidationError(null);
-    setIsProcessing(true);
-    setUploadProgress(0);
-    
-    // Simulate processing progress
-    const progressInterval = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
-        }
-        return prev + 10;
-      });
-    }, 100);
+      setValidationError(null);
+      setIsProcessing(true);
+      setUploadProgress(0);
 
-    // Create preview after "processing"
-    setTimeout(() => {
-      clearInterval(progressInterval);
-      setUploadProgress(100);
-      onVideoChange(file);
-      
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
-      setIsProcessing(false);
-    }, 1000);
-  }, [onVideoChange]);
+      // Simulate processing progress
+      const progressInterval = setInterval(() => {
+        setUploadProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(progressInterval);
+            return 100;
+          }
+          return prev + 10;
+        });
+      }, 100);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    
-    const file = e.dataTransfer.files[0];
-    if (file) {
-      handleFile(file);
-    }
-  }, [handleFile]);
+      // Create preview after "processing"
+      setTimeout(() => {
+        clearInterval(progressInterval);
+        setUploadProgress(100);
+        onVideoChange(file);
+
+        const url = URL.createObjectURL(file);
+        setPreviewUrl(url);
+        setIsProcessing(false);
+      }, 1000);
+    },
+    [onVideoChange]
+  );
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setIsDragging(false);
+
+      const file = e.dataTransfer.files[0];
+      if (file) {
+        handleFile(file);
+      }
+    },
+    [handleFile]
+  );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -122,9 +128,7 @@ export function VideoChannel({ videoFile, onVideoChange, error }: VideoChannelPr
         <div className="p-6 bg-muted/30 rounded-lg space-y-3">
           <p className="text-center font-medium">Processando vídeo...</p>
           <Progress value={uploadProgress} className="h-2" />
-          <p className="text-center text-sm text-muted-foreground">
-            {uploadProgress}%
-          </p>
+          <p className="text-center text-sm text-muted-foreground">{uploadProgress}%</p>
         </div>
       )}
 
@@ -132,9 +136,10 @@ export function VideoChannel({ videoFile, onVideoChange, error }: VideoChannelPr
         <div
           className={`
             relative border-2 border-dashed rounded-lg p-8 text-center transition-colors
-            ${isDragging 
-              ? "border-primary bg-primary/5" 
-              : "border-muted-foreground/25 hover:border-primary/50"
+            ${
+              isDragging
+                ? "border-primary bg-primary/5"
+                : "border-muted-foreground/25 hover:border-primary/50"
             }
           `}
           onDrop={handleDrop}
@@ -148,70 +153,69 @@ export function VideoChannel({ videoFile, onVideoChange, error }: VideoChannelPr
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             aria-label="Selecionar vídeo"
           />
-          
+
           <div className="flex flex-col items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center">
               <Video className="h-8 w-8 text-muted-foreground" />
             </div>
-            
+
             <div>
-              <p className="font-medium">
-                Arraste um vídeo ou clique para selecionar
-              </p>
+              <p className="font-medium">Arraste um vídeo ou clique para selecionar</p>
               <p className="text-sm text-muted-foreground mt-1">
                 MP4 ou WebM • Máximo {MAX_SIZE_MB}MB
               </p>
             </div>
-            
+
             <Button type="button" variant="outline" className="pointer-events-none">
               <Upload className="h-4 w-4 mr-2" />
               Selecionar vídeo
             </Button>
           </div>
         </div>
-      ) : videoFile && !isProcessing && (
-        <div className="space-y-4 animate-fade-in">
-          <div className="relative rounded-lg overflow-hidden bg-black">
-            {previewUrl && (
-              <video
-                ref={videoRef}
-                src={previewUrl}
-                controls
-                className="w-full max-h-[400px]"
-                aria-label="Prévia do vídeo"
-              >
-                Seu navegador não suporta a reprodução de vídeo.
-              </video>
-            )}
-          </div>
-          
-          <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
-            <div className="flex items-center gap-3 min-w-0">
-              <Video className="h-5 w-5 text-secondary flex-shrink-0" />
-              <div className="min-w-0">
-                <p className="font-medium truncate">{videoFile.name}</p>
-                <p className="text-sm text-muted-foreground">
-                  {formatFileSize(videoFile.size)}
-                </p>
-              </div>
+      ) : (
+        videoFile &&
+        !isProcessing && (
+          <div className="space-y-4 animate-fade-in">
+            <div className="relative rounded-lg overflow-hidden bg-black">
+              {previewUrl && (
+                <video
+                  ref={videoRef}
+                  src={previewUrl}
+                  controls
+                  className="w-full max-h-[400px]"
+                  aria-label="Prévia do vídeo"
+                >
+                  Seu navegador não suporta a reprodução de vídeo.
+                </video>
+              )}
             </div>
-            
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={removeVideo}
-              className="flex-shrink-0 text-destructive hover:text-destructive hover:bg-destructive/10"
-              aria-label="Remover vídeo"
-            >
-              <Trash2 className="h-5 w-5" />
-            </Button>
+
+            <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
+              <div className="flex items-center gap-3 min-w-0">
+                <Video className="h-5 w-5 text-secondary flex-shrink-0" />
+                <div className="min-w-0">
+                  <p className="font-medium truncate">{videoFile.name}</p>
+                  <p className="text-sm text-muted-foreground">{formatFileSize(videoFile.size)}</p>
+                </div>
+              </div>
+
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                onClick={removeVideo}
+                className="flex-shrink-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                aria-label="Remover vídeo"
+              >
+                <Trash2 className="h-5 w-5" />
+              </Button>
+            </div>
+
+            <p className="text-sm text-secondary font-medium text-center" role="status">
+              ✓ Vídeo selecionado com sucesso
+            </p>
           </div>
-          
-          <p className="text-sm text-secondary font-medium text-center" role="status">
-            ✓ Vídeo selecionado com sucesso
-          </p>
-        </div>
+        )
       )}
     </div>
   );

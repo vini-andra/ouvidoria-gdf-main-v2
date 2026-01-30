@@ -11,23 +11,13 @@ const Layout = ({ children }: LayoutProps) => {
     <div className="min-h-screen flex flex-col">
       <SkipLink />
       <Header />
-      <main 
-        id="main-content" 
-        className="flex-1"
-        role="main"
-        tabIndex={-1}
-      >
+      <main id="main-content" className="flex-1" role="main" tabIndex={-1}>
         {children}
       </main>
-      <footer 
-        className="border-t bg-card py-6"
-        role="contentinfo"
-      >
+      <footer className="border-t bg-card py-6" role="contentinfo">
         <div className="container text-center text-sm text-muted-foreground">
           <p>© 2026 Governo do Distrito Federal - Todos os direitos reservados</p>
-          <p className="mt-1">
-            Sistema de Ouvidoria Digital - Participa DF
-          </p>
+          <p className="mt-1">Sistema de Ouvidoria Digital - Participa DF</p>
         </div>
       </footer>
     </div>

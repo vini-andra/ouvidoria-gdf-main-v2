@@ -1,14 +1,7 @@
 import { Badge } from "@/components/ui/badge";
-import { 
-  Clock, 
-  Search, 
-  Send, 
-  MessageCircle, 
-  CheckCircle2, 
-  Archive 
-} from "lucide-react";
+import { Clock, Search, Send, MessageCircle, CheckCircle2, Archive } from "lucide-react";
 
-export type StatusManifestacao = 
+export type StatusManifestacao =
   | "registrado"
   | "em_analise"
   | "encaminhado"
@@ -21,12 +14,15 @@ interface StatusBadgeProps {
   size?: "sm" | "default";
 }
 
-const STATUS_CONFIG: Record<StatusManifestacao, {
-  label: string;
-  icon: typeof Clock;
-  variant: "default" | "secondary" | "outline" | "destructive";
-  className: string;
-}> = {
+const STATUS_CONFIG: Record<
+  StatusManifestacao,
+  {
+    label: string;
+    icon: typeof Clock;
+    variant: "default" | "secondary" | "outline" | "destructive";
+    className: string;
+  }
+> = {
   registrado: {
     label: "Registrado",
     icon: Clock,
@@ -68,16 +64,13 @@ const STATUS_CONFIG: Record<StatusManifestacao, {
 export function StatusBadge({ status, size = "default" }: StatusBadgeProps) {
   const config = STATUS_CONFIG[status] || STATUS_CONFIG.registrado;
   const Icon = config.icon;
-  
+
   return (
-    <Badge 
+    <Badge
       variant={config.variant}
       className={`${config.className} ${size === "sm" ? "text-xs px-2 py-0.5" : "px-3 py-1"} gap-1.5`}
     >
-      <Icon 
-        className={size === "sm" ? "h-3 w-3" : "h-4 w-4"} 
-        aria-hidden="true" 
-      />
+      <Icon className={size === "sm" ? "h-3 w-3" : "h-4 w-4"} aria-hidden="true" />
       <span>{config.label}</span>
     </Badge>
   );

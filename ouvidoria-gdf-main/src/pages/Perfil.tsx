@@ -127,9 +127,7 @@ export default function Perfil() {
                     <Calendar className="h-4 w-4" aria-hidden="true" />
                     Data de nascimento
                   </Label>
-                  <p className="font-medium">
-                    {formatDate(profile?.data_nascimento || "")}
-                  </p>
+                  <p className="font-medium">{formatDate(profile?.data_nascimento || "")}</p>
                 </div>
 
                 <div className="space-y-2">
@@ -157,9 +155,7 @@ export default function Perfil() {
                     />
                   ) : (
                     <p className="font-medium">
-                      {profile?.telefone
-                        ? formatTelefone(profile.telefone)
-                        : "Não informado"}
+                      {profile?.telefone ? formatTelefone(profile.telefone) : "Não informado"}
                     </p>
                   )}
                 </div>
@@ -172,9 +168,7 @@ export default function Perfil() {
                       variant="outline"
                       onClick={() => {
                         setIsEditing(false);
-                        setTelefone(
-                          profile?.telefone ? formatTelefone(profile.telefone) : ""
-                        );
+                        setTelefone(profile?.telefone ? formatTelefone(profile.telefone) : "");
                       }}
                       disabled={isLoading}
                     >
@@ -192,9 +186,7 @@ export default function Perfil() {
                     </Button>
                   </>
                 ) : (
-                  <Button onClick={() => setIsEditing(true)}>
-                    Editar telefone
-                  </Button>
+                  <Button onClick={() => setIsEditing(true)}>Editar telefone</Button>
                 )}
               </div>
             </CardContent>

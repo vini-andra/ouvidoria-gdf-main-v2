@@ -69,7 +69,7 @@ export function ManifestacaoList({ userId }: ManifestacaoListProps) {
 
   if (manifestacoes.length === 0) {
     return (
-      <div 
+      <div
         className="text-center py-12 space-y-3"
         role="status"
         aria-label="Nenhuma manifestação encontrada"
@@ -80,19 +80,13 @@ export function ManifestacaoList({ userId }: ManifestacaoListProps) {
         <p className="text-muted-foreground text-lg">
           Você ainda não possui manifestações registradas.
         </p>
-        <p className="text-sm text-muted-foreground">
-          Clique em "Nova Manifestação" para começar.
-        </p>
+        <p className="text-sm text-muted-foreground">Clique em "Nova Manifestação" para começar.</p>
       </div>
     );
   }
 
   return (
-    <div 
-      className="space-y-3"
-      role="list"
-      aria-label="Lista de manifestações"
-    >
+    <div className="space-y-3" role="list" aria-label="Lista de manifestações">
       {manifestacoes.map((m) => (
         <div key={m.id} role="listitem">
           <ManifestacaoCard

@@ -11,7 +11,7 @@ import {
   Mic,
   Image,
   Video,
-  Type
+  Type,
 } from "lucide-react";
 import Layout from "@/components/Layout";
 import HeroBanner from "@/components/home/HeroBanner";
@@ -27,9 +27,7 @@ const Index = () => {
       <section className="py-12 md:py-16 bg-card">
         <div className="container">
           <div className="text-center mb-10">
-            <h2 className="text-xl md:text-2xl font-bold mb-3">
-              Escolha seu canal preferido
-            </h2>
+            <h2 className="text-xl md:text-2xl font-bold mb-3">Escolha seu canal preferido</h2>
             <p className="text-muted-foreground max-w-lg mx-auto">
               Manifeste-se da forma que for mais conveniente para você
             </p>
@@ -73,10 +71,7 @@ const Index = () => {
             <span className="inline-block px-3 py-1 mb-4 text-xs font-medium bg-secondary/10 text-secondary rounded-full">
               Passo a passo
             </span>
-            <h2
-              id="como-funciona-title"
-              className="text-2xl md:text-3xl font-bold mb-3"
-            >
+            <h2 id="como-funciona-title" className="text-2xl md:text-3xl font-bold mb-3">
               Como funciona
             </h2>
             <p className="text-muted-foreground max-w-lg mx-auto">
@@ -105,7 +100,10 @@ const Index = () => {
                 </p>
               </div>
               {/* Connector line */}
-              <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary/50 to-secondary/50" aria-hidden="true" />
+              <div
+                className="hidden md:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-primary/50 to-secondary/50"
+                aria-hidden="true"
+              />
             </div>
 
             {/* Step 2 */}
@@ -124,11 +122,15 @@ const Index = () => {
                 </div>
                 <h3 className="font-bold text-lg mb-2">Descreva o Problema</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
-                  Relate sua manifestação com detalhes. Nossa IA <strong>IZA</strong> ajuda a categorizar automaticamente.
+                  Relate sua manifestação com detalhes. Nossa IA <strong>IZA</strong> ajuda a
+                  categorizar automaticamente.
                 </p>
               </div>
               {/* Connector line */}
-              <div className="hidden md:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-secondary/50 to-accent/50" aria-hidden="true" />
+              <div
+                className="hidden md:block absolute top-10 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-secondary/50 to-accent/50"
+                aria-hidden="true"
+              />
             </div>
 
             {/* Step 3 */}
@@ -154,19 +156,13 @@ const Index = () => {
       </section>
 
       {/* Benefícios */}
-      <section
-        className="py-12 md:py-20 bg-muted/50"
-        aria-labelledby="beneficios-title"
-      >
+      <section className="py-12 md:py-20 bg-muted/50" aria-labelledby="beneficios-title">
         <div className="container">
           <div className="text-center mb-12">
             <span className="inline-block px-3 py-1 mb-4 text-xs font-medium bg-primary/10 text-primary rounded-full">
               Por que usar
             </span>
-            <h2
-              id="beneficios-title"
-              className="text-2xl md:text-3xl font-bold mb-3"
-            >
+            <h2 id="beneficios-title" className="text-2xl md:text-3xl font-bold mb-3">
               Benefícios do Participa DF
             </h2>
           </div>
@@ -176,38 +172,43 @@ const Index = () => {
               {
                 icon: Shield,
                 title: "100% Seguro",
-                description: "Suas informações são protegidas. Você pode se manifestar de forma anônima.",
-                color: "primary"
+                description:
+                  "Suas informações são protegidas. Você pode se manifestar de forma anônima.",
+                color: "primary",
               },
               {
                 icon: Clock,
                 title: "Rápido e Fácil",
-                description: "Processo simplificado que leva menos de 5 minutos para ser concluído.",
-                color: "secondary"
+                description:
+                  "Processo simplificado que leva menos de 5 minutos para ser concluído.",
+                color: "secondary",
               },
               {
                 icon: Users,
                 title: "Acessível a Todos",
-                description: "Interface inclusiva com suporte a leitores de tela e navegação por teclado.",
-                color: "accent"
+                description:
+                  "Interface inclusiva com suporte a leitores de tela e navegação por teclado.",
+                color: "accent",
               },
               {
                 icon: MessageSquare,
                 title: "Múltiplos Canais",
                 description: "Envie texto, áudio, imagem ou vídeo conforme sua preferência.",
-                color: "primary"
+                color: "primary",
               },
               {
                 icon: FileText,
                 title: "IA Integrada",
-                description: "A IZA categoriza automaticamente sua manifestação para agilizar o processo.",
-                color: "secondary"
+                description:
+                  "A IZA categoriza automaticamente sua manifestação para agilizar o processo.",
+                color: "secondary",
               },
               {
                 icon: CheckCircle,
                 title: "Acompanhamento",
-                description: "Receba um protocolo único para consultar o status da sua manifestação.",
-                color: "accent"
+                description:
+                  "Receba um protocolo único para consultar o status da sua manifestação.",
+                color: "accent",
               },
             ].map((benefit) => (
               <Card
@@ -216,16 +217,24 @@ const Index = () => {
               >
                 <CardContent className="p-6">
                   <div
-                    className={`w-12 h-12 mb-4 rounded-xl flex items-center justify-center ${benefit.color === 'primary' ? 'bg-primary/10' :
-                        benefit.color === 'secondary' ? 'bg-secondary/10' :
-                          'bg-accent/20 dark:bg-accent/10'
-                      }`}
+                    className={`w-12 h-12 mb-4 rounded-xl flex items-center justify-center ${
+                      benefit.color === "primary"
+                        ? "bg-primary/10"
+                        : benefit.color === "secondary"
+                          ? "bg-secondary/10"
+                          : "bg-accent/20 dark:bg-accent/10"
+                    }`}
                     aria-hidden="true"
                   >
-                    <benefit.icon className={`w-6 h-6 ${benefit.color === 'primary' ? 'text-primary' :
-                        benefit.color === 'secondary' ? 'text-secondary' :
-                          'text-accent dark:text-accent'
-                      }`} />
+                    <benefit.icon
+                      className={`w-6 h-6 ${
+                        benefit.color === "primary"
+                          ? "text-primary"
+                          : benefit.color === "secondary"
+                            ? "text-secondary"
+                            : "text-accent dark:text-accent"
+                      }`}
+                    />
                   </div>
                   <h3 className="font-bold text-lg mb-2">{benefit.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">
@@ -253,7 +262,10 @@ const Index = () => {
               />
               <span>Ouvidoria-Geral do Distrito Federal</span>
             </div>
-            <p>© {new Date().getFullYear()} Governo do Distrito Federal. Todos os direitos reservados.</p>
+            <p>
+              © {new Date().getFullYear()} Governo do Distrito Federal. Todos os direitos
+              reservados.
+            </p>
           </div>
         </div>
       </footer>

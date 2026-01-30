@@ -60,10 +60,7 @@ export function ManifestacaoWizard({
   };
 
   return (
-    <div className={cn(
-      "min-h-screen flex",
-      isMobile ? "flex-col" : "flex-row"
-    )}>
+    <div className={cn("min-h-screen flex", isMobile ? "flex-col" : "flex-row")}>
       {/* Sidebar / Mobile Progress */}
       <StepProgress
         steps={steps}
@@ -75,20 +72,16 @@ export function ManifestacaoWizard({
       />
 
       {/* Main content area */}
-      <main 
-        className="flex-1 p-4 md:p-8"
-        id="main-content"
-        role="main"
-      >
+      <main className="flex-1 p-4 md:p-8" id="main-content" role="main">
         <div className="max-w-2xl mx-auto">
           <Card>
             <CardHeader className="pb-4">
               <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                <span>Etapa {currentStep} de {steps.length}</span>
+                <span>
+                  Etapa {currentStep} de {steps.length}
+                </span>
                 {currentStepData?.isOptional && (
-                  <span className="bg-muted px-2 py-0.5 rounded text-xs">
-                    Opcional
-                  </span>
+                  <span className="bg-muted px-2 py-0.5 rounded text-xs">Opcional</span>
                 )}
               </div>
               <CardTitle className="text-2xl md:text-3xl font-bold">
@@ -101,7 +94,7 @@ export function ManifestacaoWizard({
 
             <CardContent>
               {/* Step content rendered by children */}
-              <div 
+              <div
                 className="min-h-[300px]"
                 role="region"
                 aria-label={`Conteúdo da etapa ${currentStep}: ${currentStepData?.name}`}

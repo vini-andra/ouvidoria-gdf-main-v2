@@ -10,10 +10,10 @@ declare global {
 
 /**
  * VLibras Widget - Integração com a Suíte VLibras
- * 
+ *
  * O VLibras é uma ferramenta gratuita desenvolvida pelo Governo Federal
  * que traduz automaticamente conteúdos digitais para Libras (Língua Brasileira de Sinais).
- * 
+ *
  * @see https://www.gov.br/governodigital/pt-br/vlibras
  */
 const VLibrasWidget = () => {
