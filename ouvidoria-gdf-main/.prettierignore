@@ -1,0 +1,38 @@
+# Dependencies
+node_modules
+package-lock.json
+bun.lockb
+
+# Build outputs
+dist
+build
+.next
+out
+
+# Cache
+.cache
+.turbo
+.vite
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+
+# Generated files
+*.min.js
+*.min.css
+
+# Logs
+*.log
+
+# PWA
+sw.js
+workbox-*.js
+
+# Coverage
+coverage

@@ -1,0 +1,1 @@
+cd ouvidoria-gdf-main && npx lint-staged
