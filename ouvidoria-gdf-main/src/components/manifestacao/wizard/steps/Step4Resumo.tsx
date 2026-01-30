@@ -13,6 +13,7 @@ import {
   Building2,
   Shield,
   Edit2,
+  Sparkles,
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -140,13 +141,18 @@ export function Step4Resumo({
           )}
 
           {selectedCategories.length > 0 && (
-            <div className="flex flex-wrap gap-2 pt-2">
-              <span className="text-sm text-muted-foreground">Categorias sugeridas:</span>
-              {selectedCategories.map((cat) => (
-                <Badge key={cat} variant="secondary" className="text-xs">
-                  {cat}
-                </Badge>
-              ))}
+            <div className="mt-3 p-3 bg-secondary/30 rounded-lg border border-secondary/50">
+              <div className="flex items-center gap-2 text-sm font-medium text-secondary-foreground mb-2">
+                <Sparkles className="h-4 w-4 text-amber-500" aria-hidden="true" />
+                <span>IZA identificou:</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {selectedCategories.map((cat) => (
+                  <Badge key={cat} variant="secondary" className="text-xs capitalize">
+                    {cat}
+                  </Badge>
+                ))}
+              </div>
             </div>
           )}
         </CardContent>
