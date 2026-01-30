@@ -46,7 +46,47 @@ export function ManifestacaoCard({
   return (
     <Card className="group hover:shadow-md transition-shadow">
       <CardContent className="p-4">
-        <div className="flex items-center justify-between gap-4">
+        {/* Mobile layout: vertical stack */}
+        <div className="sm:hidden space-y-3">
+          {/* Header row: Icon + Protocol */}
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0" aria-hidden="true">
+              <TipoIcon className="h-5 w-5" />
+            </div>
+            <p className="font-semibold text-base break-all">{protocolo}</p>
+          </div>
+
+          {/* Info row: Category + Date + Status */}
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              {categoriaLabel && (
+                <span className="font-medium">{categoriaLabel}</span>
+              )}
+              <span className="flex items-center gap-1">
+                <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
+                {dataFormatada}
+              </span>
+            </div>
+            <StatusBadge status={status} size="sm" />
+          </div>
+
+          {/* Action button */}
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            className="w-full"
+            aria-label={`Ver detalhes da manifestação ${protocolo}`}
+          >
+            <Link to={`/acompanhamento/${protocolo}`}>
+              Ver detalhes
+              <ChevronRight className="h-4 w-4 ml-1" />
+            </Link>
+          </Button>
+        </div>
+
+        {/* Desktop layout: horizontal (unchanged) */}
+        <div className="hidden sm:flex items-center justify-between gap-4">
           {/* Left side: Icon + Protocol + Category */}
           <div className="flex items-center gap-3 min-w-0 flex-1">
             <div className="p-2 rounded-lg bg-primary/10 text-primary shrink-0" aria-hidden="true">
@@ -54,7 +94,7 @@ export function ManifestacaoCard({
             </div>
 
             <div className="min-w-0 flex-1">
-              <p className="font-semibold text-sm sm:text-base truncate">{protocolo}</p>
+              <p className="font-semibold text-base truncate">{protocolo}</p>
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 {categoriaLabel && (
                   <>
@@ -71,7 +111,7 @@ export function ManifestacaoCard({
           </div>
 
           {/* Right side: Status + Action */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-3 shrink-0">
             <StatusBadge status={status} size="sm" />
 
             <Button
