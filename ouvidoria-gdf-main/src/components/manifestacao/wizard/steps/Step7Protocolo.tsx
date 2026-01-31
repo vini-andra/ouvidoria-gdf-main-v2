@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ArrowLeft, Search, Loader2, Eye, AlertCircle } from "lucide-react";
-import QRCodeDisplay from "@/components/confirmacao/QRCodeDisplay";
 import ProtocoloCard from "@/components/confirmacao/ProtocoloCard";
 import CompartilharButtons from "@/components/confirmacao/CompartilharButtons";
 import { useAuth } from "@/hooks/useAuth";
@@ -136,9 +135,6 @@ export function Step7Protocolo({
             <ProtocoloCard protocolo={protocolo} senha={senha} />
           </div>
           <div className="fade-in-up-delay-2">
-            <QRCodeDisplay protocolo={protocolo} senha={senha} />
-          </div>
-          <div className="fade-in-up-delay-3">
             <CompartilharButtons protocolo={protocolo} senha={senha} />
           </div>
         </>
