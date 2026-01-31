@@ -84,13 +84,13 @@ export function Step4Resumo({
         informação.
       </p>
 
-      {/* Etapa 1: Relato */}
+      {/* Etapa 1: Relatório */}
       <Card>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <CardTitle className="text-lg flex items-center gap-2">
               {tipoInfo.icon}
-              Relato ({tipoInfo.label})
+              Relatório ({tipoInfo.label})
             </CardTitle>
             <Button
               variant="ghost"

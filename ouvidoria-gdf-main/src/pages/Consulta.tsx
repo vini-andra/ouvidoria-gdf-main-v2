@@ -308,12 +308,12 @@ const Consulta = () => {
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {/* Status */}
-                  <div className="p-4 bg-accent/10 rounded-lg border border-accent/20">
-                    <div className="flex items-center gap-2 text-accent-foreground">
+                  <div className="p-4 bg-accent/20 dark:bg-accent/30 rounded-lg border border-accent/40 dark:border-accent/50">
+                    <div className="flex items-center gap-2 text-accent-foreground dark:text-accent">
                       <Clock className="w-5 h-5" />
                       <span className="font-medium">Status: Em Análise</span>
                     </div>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <p className="text-sm text-muted-foreground dark:text-foreground/80 mt-1">
                       Sua manifestação está sendo analisada pela ouvidoria competente.
                     </p>
                   </div>

@@ -1,4 +1,4 @@
-import { Check, Circle } from "lucide-react";
+import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { WizardStep, StepStatus } from "@/hooks/useManifestacaoWizard";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -25,33 +25,33 @@ export function StepProgress({
 
   if (isMobile) {
     return (
-      <div className="w-full mb-6">
+      <div className="w-full mb-6 px-4">
         {/* Mobile: Horizontal stepper */}
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-foreground">
             Etapa {currentStep} de {steps.length}
           </span>
-          <span className="text-sm text-muted-foreground">{steps[currentStep - 1]?.name}</span>
+          <span className="text-sm text-muted-foreground truncate max-w-[120px]">{steps[currentStep - 1]?.name}</span>
         </div>
         <Progress
           value={progressPercentage}
           className="h-2"
           aria-label={`Progresso: ${progressPercentage}%`}
         />
-        <div className="flex justify-between mt-2">
+        <div className="flex justify-between mt-2 gap-1 overflow-x-auto">
           {steps.map((step, index) => (
             <button
               key={step.id}
               onClick={() => onStepClick(step.id)}
               disabled={!canNavigateToStep(step.id) && step.id > currentStep}
               className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all",
-                "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-                stepStatuses[index] === "completed" && "bg-primary text-primary-foreground",
+                "w-7 h-7 min-w-[28px] rounded-full flex items-center justify-center text-xs font-medium transition-all shrink-0 border-2",
+                "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1",
+                stepStatuses[index] === "completed" && "bg-primary text-primary-foreground border-primary",
                 stepStatuses[index] === "active" &&
-                  "bg-primary text-primary-foreground ring-2 ring-primary ring-offset-2",
-                stepStatuses[index] === "pending" && "bg-muted text-muted-foreground",
-                stepStatuses[index] === "error" && "bg-destructive text-destructive-foreground",
+                "bg-primary text-primary-foreground border-primary-foreground",
+                stepStatuses[index] === "pending" && "bg-muted text-muted-foreground border-transparent",
+                stepStatuses[index] === "error" && "bg-destructive text-destructive-foreground border-destructive",
                 step.id <= currentStep && "cursor-pointer hover:opacity-80",
                 step.id > currentStep && "cursor-not-allowed opacity-50"
               )}
@@ -59,7 +59,7 @@ export function StepProgress({
               aria-current={stepStatuses[index] === "active" ? "step" : undefined}
             >
               {stepStatuses[index] === "completed" ? (
-                <Check className="h-4 w-4" aria-hidden="true" />
+                <Check className="h-3 w-3" aria-hidden="true" />
               ) : (
                 step.id
               )}
@@ -108,15 +108,14 @@ export function StepProgress({
                     isClickable && "cursor-pointer",
                     !isClickable && "cursor-not-allowed"
                   )}
-                  aria-label={`Etapa ${step.id}: ${step.name} - ${
-                    status === "completed"
-                      ? "Concluída"
-                      : status === "active"
-                        ? "Atual"
-                        : status === "error"
-                          ? "Com erro"
-                          : "Pendente"
-                  }`}
+                  aria-label={`Etapa ${step.id}: ${step.name} - ${status === "completed"
+                    ? "Concluída"
+                    : status === "active"
+                      ? "Atual"
+                      : status === "error"
+                        ? "Com erro"
+                        : "Pendente"
+                    }`}
                   aria-current={status === "active" ? "step" : undefined}
                 >
                   {/* Step indicator */}

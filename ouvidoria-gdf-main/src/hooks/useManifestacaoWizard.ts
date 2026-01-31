@@ -8,7 +8,7 @@ export interface WizardStep {
 }
 
 export const WIZARD_STEPS: WizardStep[] = [
-  { id: 1, name: "Relato", description: "Descreva sua manifestação", isOptional: false },
+  { id: 1, name: "Relatório", description: "Descreva sua manifestação", isOptional: false },
   { id: 2, name: "Assunto", description: "Tipo e órgão responsável", isOptional: false },
   { id: 3, name: "Informações", description: "Dados complementares", isOptional: true },
   { id: 4, name: "Resumo", description: "Revise os dados", isOptional: false },
