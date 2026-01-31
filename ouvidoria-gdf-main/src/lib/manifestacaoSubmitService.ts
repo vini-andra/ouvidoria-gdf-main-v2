@@ -156,32 +156,62 @@ export function prepareInsertData(
  * Insert manifestação into database
  * @param insertData - The data to insert
  * @returns Submit result with protocol, password, and manifestacao ID
- * @throws Error if insertion fails
+ * @throws Error if insertion fails or if protocolo/senha are not generated
  */
 export async function insertManifestacao(
   insertData: Database["public"]["Tables"]["manifestacoes"]["Insert"]
 ): Promise<SubmitResult & { id: string }> {
+  console.log("[insertManifestacao] Inserindo manifestação...");
+
   const { data, error } = await supabase
     .from("manifestacoes")
     .insert(insertData)
     .select("id, protocolo, senha_acompanhamento")
     .single();
 
+  console.log("[insertManifestacao] Resposta:", { data, error: error ? JSON.stringify(error) : null });
+
   if (error) {
-    console.error("Insert error:", error);
+    console.error("[insertManifestacao] Erro ao inserir:", error);
     logError(
       error.message,
       ErrorCategory.DATABASE,
       ErrorSeverity.HIGH,
-      { insertData }
+      { insertData, errorCode: error.code, errorDetails: error.details }
     );
     throw new Error("Erro ao registrar manifestação");
   }
 
+  // Verificar se protocolo foi gerado pelo trigger
+  if (!data.protocolo) {
+    console.error("[insertManifestacao] Trigger falhou - protocolo não gerado:", data);
+    logError(
+      "Protocolo não foi gerado pelo trigger",
+      ErrorCategory.DATABASE,
+      ErrorSeverity.CRITICAL,
+      { id: data.id }
+    );
+    throw new Error("Erro ao gerar protocolo. Tente novamente.");
+  }
+
+  // Verificar se senha foi gerada pelo trigger
+  if (!data.senha_acompanhamento) {
+    console.error("[insertManifestacao] Trigger falhou - senha não gerada:", data);
+    logError(
+      "Senha de acompanhamento não foi gerada pelo trigger",
+      ErrorCategory.DATABASE,
+      ErrorSeverity.CRITICAL,
+      { id: data.id, protocolo: data.protocolo }
+    );
+    throw new Error("Erro ao gerar senha de acompanhamento. Tente novamente.");
+  }
+
+  console.log("[insertManifestacao] Sucesso! Protocolo:", data.protocolo);
+
   return {
     id: data.id,
     protocolo: data.protocolo,
-    senha: data.senha_acompanhamento || "",
+    senha: data.senha_acompanhamento,
   };
 }
 

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, ArrowLeft, Search, Loader2, Eye } from "lucide-react";
+import { CheckCircle, ArrowLeft, Search, Loader2, Eye, AlertCircle } from "lucide-react";
 import QRCodeDisplay from "@/components/confirmacao/QRCodeDisplay";
 import ProtocoloCard from "@/components/confirmacao/ProtocoloCard";
 import CompartilharButtons from "@/components/confirmacao/CompartilharButtons";
@@ -67,6 +67,43 @@ export function Step7Protocolo({
               Confirmar e Enviar
             </>
           )}
+        </Button>
+      </div>
+    );
+  }
+
+  // Estado: Manifestação enviada mas sem senha (erro parcial)
+  if (isSubmitted && protocolo && !senha) {
+    return (
+      <div className="space-y-6 text-center">
+        <div
+          className="w-20 h-20 mx-auto rounded-full bg-amber-500/10 flex items-center justify-center"
+          aria-hidden="true"
+        >
+          <AlertCircle className="w-12 h-12 text-amber-500" />
+        </div>
+
+        <div className="space-y-2">
+          <h3 className="text-xl font-semibold text-amber-600">
+            Manifestação Registrada com Ressalva
+          </h3>
+          <p className="text-muted-foreground">
+            Sua manifestação foi registrada com o protocolo abaixo, porém não foi possível
+            gerar a senha de acompanhamento. Entre em contato com a ouvidoria informando
+            seu protocolo.
+          </p>
+        </div>
+
+        <div className="bg-muted/50 rounded-lg p-4">
+          <p className="text-sm text-muted-foreground mb-1">Protocolo</p>
+          <p className="font-mono text-lg font-semibold">{protocolo}</p>
+        </div>
+
+        <Button asChild variant="outline" className="w-full">
+          <Link to="/">
+            <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
+            Voltar ao Início
+          </Link>
         </Button>
       </div>
     );

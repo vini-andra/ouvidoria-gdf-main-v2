@@ -117,24 +117,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { error: new Error("Erro ao criar usuário.") };
       }
 
-      // Create profile
-      const { error: profileError } = await supabase.from("profiles").insert({
-        id: data.user.id,
-        nome_completo: profileData.nome_completo,
-        cpf: profileData.cpf,
-        data_nascimento: profileData.data_nascimento,
-        sexo: profileData.sexo,
-        telefone: profileData.telefone,
-      });
+      // Verificar se a sessão está disponível
+      if (data.session) {
+        // Sessão disponível - criar perfil diretamente
+        const { error: profileError } = await supabase.from("profiles").insert({
+          id: data.user.id,
+          nome_completo: profileData.nome_completo,
+          cpf: profileData.cpf,
+          data_nascimento: profileData.data_nascimento,
+          sexo: profileData.sexo,
+          telefone: profileData.telefone,
+        });
 
-      if (profileError) {
-        if (profileError.message.includes("duplicate")) {
-          if (profileError.message.includes("cpf")) {
-            return { error: new Error("Este CPF já está cadastrado.") };
+        if (profileError) {
+          if (profileError.message.includes("duplicate")) {
+            if (profileError.message.includes("cpf")) {
+              return { error: new Error("Este CPF já está cadastrado.") };
+            }
           }
+          console.error("Profile creation error:", profileError);
+          return { error: new Error("Erro ao criar perfil. Tente novamente.") };
         }
-        console.error("Profile creation error:", profileError);
-        return { error: new Error("Erro ao criar perfil. Tente novamente.") };
+      } else {
+        // Sessão não disponível (confirmação por email habilitada)
+        // Armazenar dados do perfil no localStorage para completar depois
+        localStorage.setItem(
+          "pendingProfile",
+          JSON.stringify({
+            oderId: data.user.id,
+            ...profileData,
+          })
+        );
       }
 
       return { error: null };

@@ -45,7 +45,7 @@ const profileSchema = z.object({
     telefone: z
         .string()
         .optional()
-        .refine((val) => !val || validateTelefone(val), "Telefone inválido"),
+        .refine((val) => !val || validateTelefone(val), "Celular inválido"),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
@@ -244,7 +244,7 @@ export default function ProfileCompletionForm() {
                     name="telefone"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel htmlFor="profile-telefone">Telefone (opcional)</FormLabel>
+                            <FormLabel htmlFor="profile-telefone">Celular (opcional)</FormLabel>
                             <FormControl>
                                 <Input
                                     id="profile-telefone"

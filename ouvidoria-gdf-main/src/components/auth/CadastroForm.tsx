@@ -38,6 +38,7 @@ const cadastroSchema = z
       .min(1, "E-mail é obrigatório")
       .email("E-mail inválido")
       .max(255, "E-mail muito longo"),
+    confirmEmail: z.string().min(1, "Confirme seu e-mail"),
     data_nascimento: z
       .string()
       .min(1, "Data de nascimento é obrigatória")
@@ -53,7 +54,7 @@ const cadastroSchema = z
     telefone: z
       .string()
       .optional()
-      .refine((val) => !val || validateTelefone(val), "Telefone inválido"),
+      .refine((val) => !val || validateTelefone(val), "Celular inválido"),
     password: z
       .string()
       .min(1, "Senha é obrigatória")
@@ -65,6 +66,10 @@ const cadastroSchema = z
     acceptTerms: z.boolean().refine((val) => val === true, {
       message: "Você deve aceitar os termos de uso",
     }),
+  })
+  .refine((data) => data.email === data.confirmEmail, {
+    message: "Os e-mails não coincidem",
+    path: ["confirmEmail"],
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "As senhas não coincidem",
@@ -87,6 +92,7 @@ export default function CadastroForm() {
       nome_completo: "",
       cpf: "",
       email: "",
+      confirmEmail: "",
       data_nascimento: "",
       sexo: undefined,
       telefone: "",
@@ -239,6 +245,31 @@ export default function CadastroForm() {
 
         <FormField
           control={form.control}
+          name="confirmEmail"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel htmlFor="cadastro-confirm-email">Confirmar e-mail *</FormLabel>
+              <FormControl>
+                <Input
+                  id="cadastro-confirm-email"
+                  type="email"
+                  placeholder="Confirme seu e-mail"
+                  autoComplete="email"
+                  disabled={isLoading}
+                  aria-describedby="cadastro-confirm-email-error"
+                  aria-required="true"
+                  aria-invalid={!!form.formState.errors.confirmEmail}
+                  className="focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage id="cadastro-confirm-email-error" role="alert" />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
           name="data_nascimento"
           render={({ field }) => (
             <FormItem>
@@ -329,7 +360,7 @@ export default function CadastroForm() {
           name="telefone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel htmlFor="cadastro-telefone">Telefone (opcional)</FormLabel>
+              <FormLabel htmlFor="cadastro-telefone">Celular (opcional)</FormLabel>
               <FormControl>
                 <Input
                   id="cadastro-telefone"
