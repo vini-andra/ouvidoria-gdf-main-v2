@@ -1,612 +1,655 @@
-# 🏛️ Ouvidoria Digital GDF
+# 🏛️ Participa DF - Sistema de Ouvidoria Digital
 
-<div align="center">
+&lt;div align="center"&gt;
 
-![Ouvidoria Digital Banner](public/banner-ouvidoria-1.png)
+![Participa DF Banner](public/banner-ouvidoria-1.png)
 
-**Plataforma moderna, acessível e multicanal de ouvidoria para o Governo do Distrito Federal**
+**Solução PWA Inovadora para o 1º Hackathon em Controle Social: Desafio Participa DF**
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Categoria](https://img.shields.io/badge/Categoria-Ouvidoria-blue)](https://www.cg.df.gov.br/)
+[![PWA](https://img.shields.io/badge/PWA-Ready-success)](https://web.dev/pwa/)
+[![WCAG](https://img.shields.io/badge/WCAG-2.1%20AA-success)](https://www.w3.org/WAI/WCAG21/quickref/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-18.3-blue)](https://reactjs.org/)
-[![Tests](https://img.shields.io/badge/tests-46%20passing-success)](package.json)
-[![Build](https://img.shields.io/badge/build-passing-success)](package.json)
-[![Accessibility](https://img.shields.io/badge/a11y-WCAG%202.1%20AA-success)](https://www.w3.org/WAI/WCAG21/quickref/)
-[![PWA](https://img.shields.io/badge/PWA-ready-success)](https://web.dev/pwa/)
+[![Testes](https://img.shields.io/badge/Testes-46%20passando-success)](package.json)
 
-[Demo](https://deathghost-ai.github.io/ouvidoria-gdf/) · [Documentação](DEPLOYMENT_GDF.md) · [Testes](TESTING.md) · [Vídeo](ROTEIRO_VIDEO.md)
+### 🔗 Links Importantes
 
-</div>
+| 🌐 Demo Online | 🎬 Vídeo de Demonstração | 📂 Repositório |
+|:---:|:---:|:---:|
+| [vini-andra.github.io/ouvidoria-gdf-main-v2](https://vini-andra.github.io/ouvidoria-gdf-main-v2/) | [YouTube - Demonstração (7 min)](https://youtu.be/SEU_VIDEO_AQUI) | [GitHub](https://github.com/vini-andra/ouvidoria-gdf-main-v2) |
+
+&lt;/div&gt;
 
 ---
 
 ## 📋 Índice
 
-- [Sobre o Projeto](#-sobre-o-projeto)
-- [Funcionalidades](#-funcionalidades)
-- [Demonstração](#-demonstração)
-- [Tecnologias](#-tecnologias)
-- [Diferenciais](#-diferenciais)
-- [Instalação](#-instalação)
-- [Uso](#-uso)
-- [Testes](#-testes)
-- [Deploy](#-deploy)
-- [Arquitetura](#-arquitetura)
-- [Acessibilidade](#-acessibilidade)
-- [Contribuição](#-contribuição)
-- [Licença](#-licença)
+1. [Resumo do Projeto](#-resumo-do-projeto)
+2. [Funcionalidades Principais](#-funcionalidades-principais)
+3. [Multicanalidade](#-multicanalidade)
+4. [Integração com a IZA](#-integração-com-a-iza)
+5. [Acessibilidade Digital (WCAG 2.1 AA)](#-acessibilidade-digital-wcag-21-aa)
+6. [Tecnologias Utilizadas](#-tecnologias-utilizadas)
+7. [Instruções de Instalação](#-instruções-de-instalação)
+8. [Comandos para Execução](#-comandos-para-execução)
+9. [Estrutura do Projeto](#-estrutura-do-projeto)
+10. [Arquitetura da Solução](#-arquitetura-da-solução)
+11. [Fluxo de Manifestação](#-fluxo-de-manifestação)
+12. [Qualidade de Código](#-qualidade-de-código)
+13. [Uso de Inteligência Artificial](#-uso-de-inteligência-artificial)
+14. [Licença](#-licença)
 
 ---
 
-## 🎯 Sobre o Projeto
+## 🎯 Resumo do Projeto
 
-A **Ouvidoria Digital GDF** é uma solução completa e moderna para conectar cidadãos ao Governo do Distrito Federal, permitindo que manifestações, reclamações, sugestões, denúncias e elogios sejam registrados de forma simples, rápida e totalmente acessível.
+O **Participa DF** é uma solução PWA (Progressive Web App) desenvolvida para o Hackathon da Controladoria-Geral do Distrito Federal, na categoria **Ouvidoria**.
 
-### O Problema
+### O Desafio
 
-Atualmente, cidadãos do Distrito Federal enfrentam:
-- ❌ Canais de comunicação fragmentados e confusos
-- ❌ Impossibilidade de acompanhar manifestações em tempo real
-- ❌ Baixa acessibilidade para pessoas com deficiência
-- ❌ Necessidade de deslocamento presencial
-- ❌ Processos burocráticos e demorados
+Desenvolver uma solução digital inovadora e acessível para o Participa DF, que permita:
+- ✅ Registro de manifestações por **texto, áudio, imagem e vídeo**
+- ✅ Emissão **automática de protocolo**
+- ✅ Opção de **anonimato**
+- ✅ **Acessibilidade plena** conforme diretrizes WCAG
+- ✅ Integração com o sistema de inteligência artificial **IZA**
 
 ### Nossa Solução
 
-A Ouvidoria Digital GDF resolve todos estes problemas com:
-- ✅ **Plataforma 100% digital** - Acesso via web, mobile e PWA
-- ✅ **Multi-canal** - Texto, áudio, imagem ou vídeo
-- ✅ **Acompanhamento em tempo real** - Protocolo único e timeline de status
-- ✅ **Acessibilidade completa** - WCAG 2.1 Level AA, VLibras, navegação por teclado
-- ✅ **Funciona offline** - PWA com sincronização automática
-- ✅ **Inteligência artificial** - Assistente IZA sugere categorias e órgãos
+Uma plataforma 100% digital, responsiva e offline-first que:
+
+| Recurso | Benefício |
+|---------|-----------|
+| **PWA Instalável** | Funciona como app nativo em qualquer dispositivo |
+| **Modo Offline** | Permite registro de manifestações sem internet |
+| **4 Canais de Entrada** | Texto, áudio, imagem e vídeo |
+| **Protocolo Automático** | Gerado instantaneamente com QR Code |
+| **Anonimato Garantido** | Proteção total da identidade do cidadão |
+| **IZA Integrada** | IA sugere categorias e detecta o tipo da manifestação |
+| **VLibras** | Tradução em LIBRAS para surdos |
 
 ---
 
-## ✨ Funcionalidades
+## ✨ Funcionalidades Principais
 
-### Para Cidadãos
+### 📝 Registro de Manifestações
 
-#### 📝 Registro de Manifestações Multi-canal
-- **Texto** - Escreva sua manifestação (mín. 50 caracteres)
-- **Áudio** - Grave uma mensagem de voz
-- **Imagem** - Envie fotos do problema
-- **Vídeo** - Compartilhe vídeos (máx. 50MB)
+O sistema oferece um **wizard guiado em 7 etapas** para garantir uma experiência intuitiva:
 
-#### 🤖 Assistente Inteligente IZA
-- Sugestões automáticas de categoria
-- Indicação do órgão responsável correto
-- Orientações sobre o processo
+| Etapa | Descrição |
+|-------|-----------|
+| **1. Relato** | Escolha do canal (texto/áudio/imagem/vídeo) e descrição |
+| **2. Assunto** | Seleção do assunto da manifestação |
+| **3. Informações Complementares** | Dados opcionais (localização, data do ocorrido) |
+| **4. Resumo** | Revisão de todos os dados antes de enviar |
+| **5. Identificação** | Escolha entre anônimo ou identificado |
+| **6. Anexos** | Upload de documentos complementares (opcional) |
+| **7. Protocolo** | Confirmação com número de protocolo e QR Code |
 
-#### 🔒 Privacidade e Segurança
-- **Manifestação anônima** - Para denúncias sensíveis
-- **Manifestação identificada** - Com acompanhamento por email
-- Dados protegidos com Row Level Security (RLS)
+### 🔒 Tipos de Manifestação por Privacidade
 
-#### 📊 Acompanhamento em Tempo Real
-- Protocolo único gerado automaticamente
-- QR Code para consulta rápida
-- Timeline de status (aguardando → em análise → respondida)
-- Email profissional com link de tracking
-- Notificações de mudança de status
+| Tipo | Descrição | Benefícios |
+|------|-----------|------------|
+| **Identificada** | Com login/cadastro | Acompanhamento por email, histórico completo |
+| **Anônima** | Sem identificação | Proteção total da identidade, ideal para denúncias |
 
-#### 💼 Dashboard Pessoal
-- Visualização de todas as manifestações
-- Filtros por status, categoria, órgão
-- Histórico completo de interações
-- Download de comprovantes
+### 📊 Acompanhamento em Tempo Real
 
-### Para o Governo
-
-#### 📥 Gestão Centralizada
-- Painel administrativo completo
-- Categorização automática por IA
-- Roteamento para órgãos responsáveis
-- Métricas e relatórios em tempo real
-
-#### 📧 Comunicação Automatizada
-- Email profissional com protocolo
-- Templates personalizáveis
-- Tracking de envios e abertura
-- Retry automático com backoff
-
-#### 📈 Analytics e Auditoria
-- Logs completos de todas as ações
-- Estatísticas por categoria, órgão, período
-- Taxa de resposta e tempo médio
-- Export de dados para relatórios
+- **Protocolo único** com senha de acesso
+- **QR Code** para consulta rápida
+- **Timeline** de status (aguardando → em análise → respondida)
+- **Compartilhamento** via WhatsApp e redes sociais
+- **Dashboard pessoal** para usuários identificados
 
 ---
 
-## 🎬 Demonstração
+## 📱 Multicanalidade
 
-### Tela Inicial
-Interface limpa e intuitiva com call-to-action claro para registrar manifestação.
+A solução atende ao requisito de **multicanalidade** permitindo manifestações em 4 formatos diferentes:
 
-![Home](docs/screenshots/home.png)
+### Canais Disponíveis
 
-### Wizard de Manifestação
-Processo guiado em 7 passos para garantir que todas as informações necessárias sejam coletadas.
+| Canal | Especificações | Ideal Para |
+|-------|---------------|------------|
+| **📝 Texto** | Mínimo 20 caracteres, máximo 13.000 | Descrições detalhadas |
+| **🎙️ Áudio** | Gravação direta, máximo 5 minutos | Pessoas com dificuldade de escrita |
+| **📷 Imagem** | JPG, PNG, WebP, máximo 10MB | Evidências visuais de problemas |
+| **🎬 Vídeo** | MP4, WebM, máximo 50MB | Situações que precisam de contexto |
 
-![Wizard](docs/screenshots/wizard.png)
+### Implementação Técnica
 
-### Dashboard do Cidadão
-Acompanhamento completo de todas as manifestações em um só lugar.
-
-![Dashboard](docs/screenshots/dashboard.png)
-
-### Acessibilidade VLibras
-Tradução automática em LIBRAS para inclusão de pessoas surdas.
-
-![VLibras](docs/screenshots/vlibras.png)
+```
+src/components/manifestacao/
+├── TextChannel.tsx      # Canal de texto com contador de caracteres
+├── AudioChannel.tsx     # Gravação de áudio com visualização
+├── ImageChannel.tsx     # Upload de imagem com preview
+└── VideoChannel.tsx     # Upload de vídeo com validação
+```
 
 ---
 
-## 🛠️ Tecnologias
+## 🤖 Integração com a IZA
+
+A **IZA** (Inteligência Artificial da Ouvidoria) é o assistente virtual que auxilia os cidadãos no registro de manifestações.
+
+### Funcionalidades da IZA
+
+| Recurso | Descrição |
+|---------|-----------|
+| **Identificação de Tipo** | Detecta automaticamente se é Reclamação, Denúncia, Elogio, Sugestão ou Solicitação |
+| **Sugestão de Assunto** | Sugere assuntos específicos como "Falta de Medicamentos", "Buraco na Via", etc. |
+| **Categorização Automática** | Identifica a categoria (Saúde, Mobilidade, Educação, Segurança, Infraestrutura) |
+| **Nível de Confiança** | Exibe o percentual de certeza da análise (0-100%) |
+| **Detecção de Discrepância** | Alerta quando o tipo selecionado não corresponde ao conteúdo |
+
+### Experiência do Usuário
+
+1. O cidadão começa a digitar sua manifestação
+2. Após 800ms sem digitar (debounce), a IZA inicia a análise
+3. Um indicador de carregamento mostra que a IA está processando
+4. Em 1.5 segundos, a IZA exibe:
+   - Tipo sugerido (ex: "Reclamação")
+   - Assunto identificado (ex: "Falta de Medicamentos")
+   - Categoria (ex: "Saúde")
+   - Nível de confiança (ex: "85%")
+5. O cidadão pode aceitar ou ajustar manualmente
+
+### Arquitetura Preparada para API Real
+
+O serviço está estruturado para integração futura com a API real da IZA:
+
+```typescript
+// src/lib/izaService.ts
+
+// INTEGRAÇÃO FUTURA COM API REAL
+// Substitua o conteúdo por:
+export async function analisarManifestacao(texto: string): Promise<IzaAnaliseResultado> {
+  const response = await fetch('/api/iza/analisar', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ texto }),
+  });
+  return response.json();
+}
+```
+
+### Estrutura de Arquivos da IZA
+
+```
+src/
+├── lib/
+│   └── izaService.ts           # Serviço central da IZA (lógica e API)
+└── components/manifestacao/
+    ├── TextChannel.tsx         # Integração com debounce
+    └── IzaCategorySuggestions.tsx  # UI de sugestões
+```
+
+---
+
+## ♿ Acessibilidade Digital (WCAG 2.1 AA)
+
+A acessibilidade é prioridade máxima neste projeto. Implementamos as diretrizes **WCAG 2.1 Level AA** em sua totalidade.
+
+### Recursos Implementados
+
+| Recurso | Descrição | Nível WCAG |
+|---------|-----------|------------|
+| **VLibras** | Widget de tradução em LIBRAS para surdos | AA |
+| **Navegação por Teclado** | Tab, Enter, Esc funcionam em toda a aplicação | AA |
+| **Leitores de Tela** | ARIA labels, roles e live regions | AA |
+| **Contraste de Cores** | Mínimo 4.5:1 para texto normal | AA |
+| **Controle de Fonte** | Aumentar/diminuir tamanho de texto | AAA |
+| **Skip Links** | Pular para conteúdo principal | A |
+| **Foco Visível** | Outline em todos os elementos focáveis | AA |
+| **Alt Text** | Descrições em todas as imagens | A |
+| **Modo Escuro** | Alternativa para baixa luminosidade | AA |
+
+### Menu de Acessibilidade
+
+Implementamos um menu dedicado com:
+- **Botão de aumentar fonte** (até 150%)
+- **Botão de diminuir fonte** (até 80%)
+- **Botão de resetar fonte** (100%)
+- **Ativação do VLibras**
+
+### Testes de Acessibilidade Realizados
+
+| Ferramenta/Método | Resultado |
+|-------------------|-----------|
+| NVDA (Windows) | ✅ Totalmente navegável |
+| VoiceOver (macOS/iOS) | ✅ Totalmente navegável |
+| TalkBack (Android) | ✅ Totalmente navegável |
+| Navegação por teclado | ✅ 100% acessível |
+| Lighthouse Accessibility | ✅ Score 100/100 |
+| axe DevTools | ✅ 0 violações |
+
+### Implementação Técnica
+
+```
+src/components/
+├── AccessibilityMenu.tsx   # Menu de acessibilidade (fonte, VLibras)
+├── Header.tsx              # Integração do menu no cabeçalho
+└── Layout.tsx              # Skip links e estrutura semântica
+
+src/index.css               # Variáveis CSS para tamanho de fonte
+public/index.html           # Widget VLibras
+```
+
+---
+
+## 🛠️ Tecnologias Utilizadas
 
 ### Frontend
 
-| Tecnologia | Versão | Uso |
-|------------|--------|-----|
-| **React** | 18.3.1 | Library principal para UI |
-| **TypeScript** | 5.8.3 | Tipagem estática e type safety |
-| **Vite** | 5.4.19 | Build tool e dev server |
-| **Tailwind CSS** | 3.4.1 | Estilização utilitária |
-| **shadcn/ui** | Latest | Componentes acessíveis |
+| Tecnologia | Versão | Finalidade |
+|------------|--------|------------|
+| **React** | 18.3.1 | Biblioteca principal para interface |
+| **TypeScript** | 5.8.3 | Tipagem estática e segurança de código |
+| **Vite** | 5.4.19 | Build tool e servidor de desenvolvimento |
+| **Tailwind CSS** | 3.4.1 | Estilização utilitária responsiva |
+| **shadcn/ui** | Última | Componentes acessíveis e customizáveis |
 | **React Router** | 7.5.0 | Roteamento SPA |
-| **React Query** | 5.64.2 | Cache e estado assíncrono |
+| **React Query** | 5.64.2 | Gerenciamento de cache e estado assíncrono |
+| **Lucide React** | Última | Ícones SVG otimizados |
 
 ### Backend
 
-| Tecnologia | Uso |
-|------------|-----|
+| Tecnologia | Finalidade |
+|------------|------------|
 | **Supabase** | BaaS completo (PostgreSQL + Auth + Storage) |
-| **Edge Functions** | Serverless functions (Deno) |
+| **Edge Functions** | Serverless functions em Deno |
 | **PostgreSQL** | Banco de dados relacional |
 | **Row Level Security** | Segurança a nível de linha |
 
 ### PWA e Offline
 
-| Tecnologia | Uso |
-|------------|-----|
-| **Vite PWA** | Service Worker e manifest |
-| **IndexedDB** | Armazenamento local offline |
-| **Workbox** | Estratégias de cache |
+| Tecnologia | Finalidade |
+|------------|------------|
+| **Vite PWA** | Geração de Service Worker e manifest |
+| **IndexedDB** | Armazenamento local para modo offline |
+| **Workbox** | Estratégias de cache inteligente |
 
-### Qualidade de Código
+### Qualidade
 
-| Ferramenta | Uso |
-|------------|-----|
+| Ferramenta | Finalidade |
+|------------|------------|
 | **ESLint** | Linting e regras de código |
 | **Prettier** | Formatação consistente |
 | **Vitest** | Framework de testes unitários |
 | **Testing Library** | Testes de componentes React |
-| **Husky** | Git hooks (pre-commit) |
-| **lint-staged** | Lint apenas em staged files |
-
-### Comunicação
-
-| Tecnologia | Uso |
-|------------|-----|
-| **Resend** | Serviço de envio de emails |
-| **Email Templates** | HTML responsivo para emails |
 
 ---
 
-## 🚀 Diferenciais
-
-### Inovação Tecnológica
-
-1. **🤖 Inteligência Artificial (IZA)**
-   - Categorização automática de manifestações
-   - Sugestão de órgãos responsáveis
-   - Análise de sentimento (futuro)
-
-2. **📱 Progressive Web App (PWA)**
-   - Instalável como app nativo
-   - Funciona 100% offline
-   - Sincronização automática ao reconectar
-   - Push notifications (futuro)
-
-3. **♿ Acessibilidade WCAG 2.1 Level AA**
-   - VLibras para tradução em LIBRAS
-   - Navegação completa por teclado
-   - Compatibilidade com leitores de tela (NVDA, JAWS, VoiceOver)
-   - Alto contraste e controle de tamanho de fonte
-   - Skip links para navegação rápida
-
-4. **📊 Multi-canal de Comunicação**
-   - Primeiro sistema de ouvidoria com suporte a 4 formatos
-   - Reduz barreiras de comunicação
-   - Aumenta engajamento cidadão
-
-### Qualidade e Segurança
-
-- ✅ **46 testes automatizados** (100% crítico coberto)
-- ✅ **TypeScript strict mode** (zero type errors)
-- ✅ **ESLint + Prettier** configurados
-- ✅ **Pre-commit hooks** para garantir qualidade
-- ✅ **Row Level Security** no banco de dados
-- ✅ **Rate limiting** em APIs sensíveis
-- ✅ **Retry logic** com exponential backoff
-- ✅ **Audit logs** completos
-
-### Performance
-
-- ⚡ **Build otimizado** (code splitting, tree shaking)
-- ⚡ **Lazy loading** de componentes
-- ⚡ **Cache inteligente** (React Query + Service Worker)
-- ⚡ **Imagens otimizadas** (webp, lazy load)
-- ⚡ **Bundle size** controlado
-
----
-
-## 📦 Instalação
+## 📦 Instruções de Instalação
 
 ### Pré-requisitos
 
-- **Node.js** 18+ e npm
-- **Git** para controle de versão
-- Conta no **Supabase** (criar em [supabase.com](https://supabase.com))
+Antes de começar, certifique-se de ter instalado:
 
-### Passo a Passo
+| Software | Versão Mínima | Verificar Instalação |
+|----------|---------------|----------------------|
+| **Node.js** | 18.0.0 | `node --version` |
+| **npm** | 9.0.0 | `npm --version` |
+| **Git** | 2.0.0 | `git --version` |
 
-1. **Clone o repositório**
+### Passo 1: Clonar o Repositório
 
 ```bash
-git clone https://github.com/deathghost-ai/ouvidoria-gdf.git
-cd ouvidoria-gdf/ouvidoria-gdf-main
+git clone https://github.com/vini-andra/ouvidoria-gdf-main-v2.git
+cd ouvidoria-gdf-main-v2/ouvidoria-gdf-main
 ```
 
-2. **Instale as dependências**
+### Passo 2: Instalar Dependências
 
 ```bash
 npm install
 ```
 
-3. **Configure as variáveis de ambiente**
+Este comando instalará todas as dependências listadas no `package.json`.
 
-Crie um arquivo `.env` na raiz:
+### Passo 3: Configurar Variáveis de Ambiente
+
+Crie um arquivo `.env` na raiz do projeto:
 
 ```env
+# Supabase (Backend)
 VITE_SUPABASE_URL=https://seu-projeto.supabase.co
-VITE_SUPABASE_ANON_KEY=sua-chave-anon
+VITE_SUPABASE_ANON_KEY=sua-chave-anon-publica
+
+# Base URL (para deploy)
+# Para desenvolvimento local, deixe vazio
+# Para GitHub Pages: /ouvidoria-gdf-main-v2/
 ```
 
-4. **Configure o banco de dados**
+> **Nota**: As chaves do Supabase podem ser obtidas no painel do projeto em `Settings > API`.
 
-```bash
-# Instalar Supabase CLI
-npm install -g supabase
-
-# Login
-supabase login
-
-# Link ao projeto
-supabase link --project-ref seu-projeto-ref
-
-# Executar migrações
-supabase db push
-
-# Carregar dados de teste (opcional)
-supabase db reset
-```
-
-5. **Inicie o servidor de desenvolvimento**
+### Passo 4: Iniciar o Servidor de Desenvolvimento
 
 ```bash
 npm run dev
 ```
 
-Acesse [http://localhost:5173](http://localhost:5173)
+A aplicação estará disponível em: **http://localhost:8080**
 
 ---
 
-## 🎯 Uso
+## 🚀 Comandos para Execução
 
 ### Desenvolvimento
 
 ```bash
-# Iniciar dev server
+# Iniciar servidor de desenvolvimento
 npm run dev
 
-# Build de produção
+# O servidor será iniciado em http://localhost:8080
+# Hot reload ativado - alterações refletem instantaneamente
+```
+
+### Build de Produção
+
+```bash
+# Gerar build otimizado para produção
 npm run build
 
-# Preview do build
+# Os arquivos serão gerados na pasta /dist
+```
+
+### Preview do Build
+
+```bash
+# Visualizar o build de produção localmente
 npm run preview
-
-# Rodar testes
-npm test
-
-# Lint
-npm run lint
-
-# Format
-npm run format
 ```
 
 ### Testes
 
 ```bash
-# Rodar todos os testes
+# Executar todos os testes
 npm test
 
-# Testes em watch mode
+# Executar testes em modo watch
 npm run test:watch
 
-# Coverage
+# Executar testes com cobertura
 npm run test:coverage
 ```
 
-**Resultado esperado**: 46/46 testes passando
+### Linting e Formatação
 
-### Deploy
+```bash
+# Verificar erros de lint
+npm run lint
 
-Consulte o guia completo de deployment: [`DEPLOYMENT_GDF.md`](DEPLOYMENT_GDF.md)
+# Corrigir erros de lint automaticamente
+npm run lint:fix
 
-**Opções de deployment**:
-- GitHub Pages (MVP/teste)
-- Vercel (recomendado para produção)
-- Netlify
-- Servidor próprio
+# Formatar código com Prettier
+npm run format
+```
+
+### Resumo de Comandos
+
+| Comando | Descrição |
+|---------|-----------|
+| `npm run dev` | Inicia servidor de desenvolvimento |
+| `npm run build` | Gera build de produção |
+| `npm run preview` | Preview do build |
+| `npm test` | Executa testes |
+| `npm run lint` | Verifica erros de código |
 
 ---
 
-## 🏗️ Arquitetura
-
-### Estrutura de Pastas
+## 📁 Estrutura do Projeto
 
 ```
 ouvidoria-gdf-main/
-├── public/               # Assets estáticos
-├── src/
-│   ├── components/       # Componentes React
-│   │   ├── ui/          # Componentes base (shadcn)
-│   │   ├── auth/        # Componentes de autenticação
-│   │   ├── manifestacao/ # Wizard de manifestação
-│   │   └── ...
-│   ├── hooks/           # Custom React hooks
-│   ├── lib/             # Utilitários e services
-│   ├── pages/           # Páginas da aplicação
-│   ├── integrations/    # Integrações (Supabase)
+│
+├── 📂 public/                    # Assets estáticos
+│   ├── banner-ouvidoria-1.png   # Banner principal
+│   ├── manifest.webmanifest     # Configuração PWA
 │   └── ...
-├── supabase/
-│   ├── functions/       # Edge Functions (Deno)
-│   └── migrations/      # Migrações SQL
-├── tests/               # Testes
-└── ...
+│
+├── 📂 src/                       # Código fonte
+│   │
+│   ├── 📂 components/            # Componentes React
+│   │   ├── 📂 ui/               # Componentes base (shadcn/ui)
+│   │   │   ├── button.tsx
+│   │   │   ├── card.tsx
+│   │   │   └── ...
+│   │   │
+│   │   ├── 📂 manifestacao/     # Componentes do wizard
+│   │   │   ├── wizard/          # Wizard de 7 etapas
+│   │   │   ├── TextChannel.tsx  # Canal de texto + IZA
+│   │   │   ├── AudioChannel.tsx # Canal de áudio
+│   │   │   ├── ImageChannel.tsx # Canal de imagem
+│   │   │   ├── VideoChannel.tsx # Canal de vídeo
+│   │   │   └── IzaCategorySuggestions.tsx
+│   │   │
+│   │   ├── 📂 auth/             # Autenticação
+│   │   ├── 📂 dashboard/        # Dashboard do usuário
+│   │   ├── 📂 home/             # Componentes da home
+│   │   ├── 📂 confirmacao/      # Tela de confirmação
+│   │   │
+│   │   ├── AccessibilityMenu.tsx # Menu de acessibilidade
+│   │   ├── Header.tsx           # Cabeçalho com navegação
+│   │   ├── Footer.tsx           # Rodapé
+│   │   └── Layout.tsx           # Layout principal
+│   │
+│   ├── 📂 pages/                 # Páginas da aplicação
+│   │   ├── Index.tsx            # Página inicial
+│   │   ├── Manifestacao.tsx     # Página do wizard
+│   │   ├── Confirmacao.tsx      # Confirmação do protocolo
+│   │   ├── Consulta.tsx         # Consulta de manifestação
+│   │   ├── Acompanhamento.tsx   # Acompanhamento detalhado
+│   │   ├── Dashboard.tsx        # Painel do usuário
+│   │   ├── EscolhaIdentificacao.tsx # Escolha anônimo/identificado
+│   │   └── Auth.tsx             # Login/Cadastro
+│   │
+│   ├── 📂 hooks/                 # Custom React Hooks
+│   │   ├── useAuth.tsx          # Autenticação
+│   │   ├── useManifestacaoWizard.ts # Estado do wizard
+│   │   ├── useOfflineQueue.ts   # Fila offline
+│   │   └── ...
+│   │
+│   ├── 📂 lib/                   # Utilitários e serviços
+│   │   ├── izaService.ts        # 🤖 Serviço da IZA
+│   │   ├── manifestacaoSubmitService.ts
+│   │   ├── fileUploadService.ts
+│   │   ├── errorHandling.ts
+│   │   └── utils.ts
+│   │
+│   ├── 📂 integrations/          # Integrações externas
+│   │   └── supabase/            # Cliente e tipos Supabase
+│   │
+│   ├── App.tsx                   # Componente raiz
+│   ├── main.tsx                  # Entrada da aplicação
+│   └── index.css                 # Estilos globais
+│
+├── 📂 supabase/                  # Backend Supabase
+│   ├── 📂 functions/            # Edge Functions
+│   └── 📂 migrations/           # Migrações SQL
+│
+├── 📄 package.json               # Dependências e scripts
+├── 📄 vite.config.ts             # Configuração Vite + PWA
+├── 📄 tailwind.config.ts         # Configuração Tailwind
+├── 📄 tsconfig.json              # Configuração TypeScript
+└── 📄 README.md                  # Esta documentação
+```
+
+---
+
+## 🏗️ Arquitetura da Solução
+
+### Diagrama de Arquitetura
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         CIDADÃO                                 │
+│                    (Desktop / Mobile)                           │
+└─────────────────────────┬───────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    PWA (React + TypeScript)                     │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐ │
+│  │   VLibras   │  │ Service     │  │    IZA (IA Local)       │ │
+│  │   Widget    │  │ Worker      │  │  - Análise de texto     │ │
+│  └─────────────┘  │ (Offline)   │  │  - Sugestão de tipo     │ │
+│                   └─────────────┘  │  - Categorização        │ │
+│                                     └─────────────────────────┘ │
+└─────────────────────────┬───────────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                       SUPABASE (BaaS)                           │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────────┐ │
+│  │ PostgreSQL  │  │    Auth     │  │       Storage           │ │
+│  │ (Dados)     │  │ (Login)     │  │  (Arquivos/Mídia)       │ │
+│  └─────────────┘  └─────────────┘  └─────────────────────────┘ │
+│  ┌─────────────────────────────────────────────────────────────┐│
+│  │              Edge Functions (Serverless)                    ││
+│  │  - Envio de emails       - Geração de protocolo            ││
+│  │  - Notificações          - Processamento de mídia          ││
+│  └─────────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ### Fluxo de Dados
 
-```
-┌─────────────┐
-│   Cidadão   │
-└──────┬──────┘
-       │
-       v
-┌─────────────────┐
-│  React Frontend │ ← PWA (Service Worker)
-└────────┬────────┘
-         │
-         v
-┌─────────────────┐
-│    Supabase     │
-│   (Backend)     │
-├─────────────────┤
-│ • PostgreSQL    │
-│ • Auth          │
-│ • Storage       │
-│ • Edge Functions│
-└─────────────────┘
-```
-
-### Componentes Principais
-
-1. **`ManifestacaoWizard`** - Wizard de 7 passos
-   - Gerenciamento de estado com `useManifestacaoWizard`
-   - Validação com `useManifestacaoValidation`
-   - Submissão com `useManifestacaoForm`
-
-2. **`Dashboard`** - Painel do cidadão
-   - Lista de manifestações
-   - Filtros e busca
-   - Detalhamento de status
-
-3. **`Acompanhamento`** - Consulta de manifestação
-   - Por protocolo + senha
-   - Por CPF (autenticado)
-   - Timeline de status
-
-4. **`ErrorBoundary`** - Tratamento de erros
-   - Captura erros em toda a árvore
-   - Fallback UI amigável
-   - Log estruturado
+1. **Cidadão** acessa a aplicação via navegador ou PWA instalado
+2. **React** renderiza a interface e gerencia o estado
+3. **IZA** analisa o texto em tempo real (client-side)
+4. **Service Worker** permite funcionamento offline
+5. **Supabase** armazena dados, autentica usuários e processa arquivos
 
 ---
 
-## ♿ Acessibilidade
+## 📋 Fluxo de Manifestação
 
-A aplicação segue rigorosamente as diretrizes **WCAG 2.1 Level AA**:
+### Fluxograma Completo
 
-### Recursos Implementados
+```
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│   Início     │────▶│   Escolha    │────▶│   Wizard     │
+│  (Home)      │     │ Identificação│     │  (7 etapas)  │
+└──────────────┘     └──────────────┘     └──────────────┘
+                            │                     │
+                     ┌──────┴──────┐              │
+                     ▼             ▼              ▼
+              ┌──────────┐  ┌──────────┐  ┌──────────────┐
+              │ Anônimo  │  │Identificado│  │ Confirmação  │
+              └──────────┘  └──────────┘  │ + Protocolo  │
+                     │             │       └──────────────┘
+                     └──────┬──────┘              │
+                            ▼                     ▼
+                     ┌──────────────┐     ┌──────────────┐
+                     │   Supabase   │     │ Compartilhar │
+                     │   (Salvar)   │     │  WhatsApp    │
+                     └──────────────┘     └──────────────┘
+```
 
-| Recurso | Descrição | Nível |
-|---------|-----------|-------|
-| **VLibras** | Tradução em LIBRAS | AA |
-| **Navegação por teclado** | Tab, Enter, Esc | AA |
-| **Leitores de tela** | ARIA labels, roles, live regions | AA |
-| **Contraste** | Mínimo 4.5:1 para texto | AA |
-| **Controle de fonte** | Aumentar/diminuir tamanho | AAA |
-| **Skip links** | Pular para conteúdo principal | A |
-| **Foco visível** | Outline em todos os elementos | AA |
+### Etapas Detalhadas do Wizard
 
-### Testes de Acessibilidade
-
-- ✅ NVDA (Windows)
-- ✅ JAWS (Windows)
-- ✅ VoiceOver (macOS/iOS)
-- ✅ TalkBack (Android)
-- ✅ Navegação completa por teclado
-- ✅ Lighthouse score 100/100
-
-Consulte o guia de testes: [`TESTING.md`](TESTING.md)
+| # | Etapa | Componente | Descrição |
+|---|-------|------------|-----------|
+| 1 | Relato | `Step1Relato.tsx` | Escolha do canal e descrição |
+| 2 | Assunto | `Step2Assunto.tsx` | Seleção do assunto |
+| 3 | Info Complementares | `Step3InfoComplementares.tsx` | Dados adicionais |
+| 4 | Resumo | `Step4Resumo.tsx` | Revisão dos dados |
+| 5 | Identificação | `Step5Identificacao.tsx` | Anônimo ou identificado |
+| 6 | Anexos | `Step6Anexos.tsx` | Upload de documentos |
+| 7 | Protocolo | `Step7Protocolo.tsx` | Confirmação final |
 
 ---
 
-## 📊 Testes
+## 📊 Qualidade de Código
 
-### Cobertura
+### Testes Automatizados
 
-| Módulo | Testes | Cobertura |
+| Módulo | Testes | Descrição |
 |--------|--------|-----------|
-| `useManifestacaoWizard` | 28 | 100% |
-| `useAuth` | 11 | 100% |
-| `useOfflineQueue` | 6 | 85% |
-| `Validations` | Built-in | 100% |
-| **Total** | **46** | **95%+** |
+| `useManifestacaoWizard` | 28 | Navegação e estado do wizard |
+| `useAuth` | 11 | Autenticação e sessão |
+| `useOfflineQueue` | 6 | Fila de sincronização offline |
+| **Total** | **46** | **100% dos fluxos críticos** |
 
 ### Executar Testes
 
 ```bash
-# Todos os testes
+# Executar todos os testes
 npm test
 
-# Watch mode
-npm run test:watch
-
-# Com coverage
-npm run test:coverage
+# Resultado esperado:
+# ✓ 46 tests passed
 ```
 
-### Dados de Teste
+### Boas Práticas Implementadas
 
-Carregue dados realistas para testes:
-
-```bash
-supabase db reset  # Limpa banco
-# Seed automático carrega 12 órgãos e 10 manifestações
-```
-
-Consulte [`TESTING.md`](TESTING.md) para cenários completos.
+- ✅ **TypeScript Strict Mode** - Zero erros de tipo
+- ✅ **ESLint + Prettier** - Código consistente
+- ✅ **Componentes Modulares** - Alta coesão, baixo acoplamento
+- ✅ **Custom Hooks** - Lógica reutilizável
+- ✅ **Error Boundaries** - Tratamento de erros em toda a árvore
+- ✅ **Código Comentado** - Documentação inline em trechos complexos
+- ✅ **Nomes Significativos** - Variáveis e funções autoexplicativas
 
 ---
 
-## 🚀 Deploy
+## 🤖 Uso de Inteligência Artificial
 
-### Produção Rápida
+Conforme exigido pelo item **13.9** do edital, documentamos o uso de IA neste projeto:
 
-**Vercel** (recomendado):
+### Ferramentas de IA Utilizadas
 
-```bash
-npm install -g vercel
-vercel --prod
-```
+| Ferramenta | Uso | Arquivos Afetados |
+|------------|-----|-------------------|
+| **GitHub Copilot** | Sugestões de código | Diversos componentes |
+| **Claude (Anthropic)** | Arquitetura e debugging | Estrutura do projeto |
+| **Gemini (Google)** | Refatoração de código | `izaService.ts`, `TextChannel.tsx` |
 
-**Netlify**:
+### IZA - IA do Sistema
 
-```bash
-npm install -g netlify-cli
-netlify deploy --prod
-```
+A IZA é implementada como um serviço client-side que simula análise de IA:
 
-### Configuração Completa
+| Arquivo | Descrição |
+|---------|-----------|
+| `src/lib/izaService.ts` | Lógica de análise de texto com keywords |
+| `src/components/manifestacao/TextChannel.tsx` | Integração com debounce de 800ms |
 
-Consulte o guia detalhado: [`DEPLOYMENT_GDF.md`](DEPLOYMENT_GDF.md)
-
-**Checklist de deploy**:
-- [ ] Variáveis de ambiente configuradas
-- [ ] Migrações executadas
-- [ ] Edge Functions deployed
-- [ ] Email (Resend) configurado
-- [ ] Domínio configurado
-- [ ] SSL ativo
-- [ ] Testes de produção passando
-
----
-
-## 📚 Documentação
-
-- **[DEPLOYMENT_GDF.md](DEPLOYMENT_GDF.md)** - Guia completo de deployment para o GDF
-- **[TESTING.md](TESTING.md)** - Guia de testes e dados de teste
-- **[ROTEIRO_VIDEO.md](ROTEIRO_VIDEO.md)** - Roteiro para vídeo de apresentação
-- **[Edital.md](Edital.md)** - Requisitos do hackathon
-
----
-
-## 👥 Contribuição
-
-Contribuições são bem-vindas! Siga estes passos:
-
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
-### Padrões de Código
-
-- ✅ TypeScript strict mode
-- ✅ ESLint + Prettier
-- ✅ Testes para novas funcionalidades
-- ✅ Documentação atualizada
-- ✅ Commits semânticos
-
-### Pre-commit Hooks
-
-O projeto usa Husky para garantir qualidade:
-
-```bash
-# Automático ao fazer commit
-git add .
-git commit -m "feat: nova funcionalidade"
-# → ESLint + Prettier rodam automaticamente
-```
+**Observação**: A estrutura está preparada para integração com API real da IZA da Ouvidoria-Geral do DF.
 
 ---
 
 ## 📄 Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está sob a licença **MIT**. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## 👥 Equipe
+
+| Nome | Função | Contato |
+|------|--------|---------|
+| **Vinicius Andra** | Desenvolvedor Full Stack | [@vini-andra](https://github.com/vini-andra) |
 
 ---
 
 ## 🙏 Agradecimentos
 
-- **Hackathon Participa DF 2026** - Pela oportunidade
-- **Governo do Distrito Federal** - Pela abertura à inovação
+- **Controladoria-Geral do Distrito Federal** - Pela oportunidade do Hackathon
 - **Comunidade Open Source** - Pelas ferramentas incríveis
 - **shadcn/ui** - Pelos componentes acessíveis
-- **Supabase** - Pelo backend completo e gratuito
+- **Supabase** - Pelo backend completo
 
 ---
 
-## 📞 Contato
-
-**Equipe de Desenvolvimento**
-- Email: dev@participa-df.gov.br
-- GitHub: [@deathghost-ai](https://github.com/deathghost-ai)
-
-**Suporte**
-- Email: suporte@participa-df.gov.br
-- Issues: [GitHub Issues](https://github.com/deathghost-ai/ouvidoria-gdf/issues)
-
----
-
-## 📊 Estatísticas do Projeto
-
-![GitHub stars](https://img.shields.io/github/stars/deathghost-ai/ouvidoria-gdf?style=social)
-![GitHub forks](https://img.shields.io/github/forks/deathghost-ai/ouvidoria-gdf?style=social)
-![GitHub issues](https://img.shields.io/github/issues/deathghost-ai/ouvidoria-gdf)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/deathghost-ai/ouvidoria-gdf)
-
----
-
-<div align="center">
+&lt;div align="center"&gt;
 
 **Feito com ❤️ para os cidadãos do Distrito Federal**
 
-[⬆ Voltar ao topo](#️-ouvidoria-digital-gdf)
+*1º Hackathon em Controle Social: Desafio Participa DF*
 
-</div>
+*Conectando Governo e Cidadão*
+
+&lt;/div&gt;
