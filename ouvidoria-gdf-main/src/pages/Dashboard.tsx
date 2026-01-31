@@ -97,7 +97,7 @@ export default function Dashboard() {
                   </p>
                 </div>
                 <Button asChild size="lg" className="gap-2 w-full sm:w-auto">
-                  <Link to="/manifestacao">
+                  <Link to="/escolha-identificacao">
                     <Plus className="h-5 w-5" aria-hidden="true" />
                     Nova Manifestação
                   </Link>

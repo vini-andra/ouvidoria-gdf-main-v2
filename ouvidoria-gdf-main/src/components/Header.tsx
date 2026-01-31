@@ -95,7 +95,7 @@ const Header = () => {
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to="/manifestacao" className="cursor-pointer">
+                      <Link to="/escolha-identificacao" className="cursor-pointer">
                         Nova Manifestação
                       </Link>
                     </DropdownMenuItem>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { ManifestacaoCard } from "./ManifestacaoCard";
 import { FileX, Plus } from "lucide-react";
@@ -104,13 +105,13 @@ export function ManifestacaoList({ userId }: ManifestacaoListProps) {
             Que tal fazer sua voz ser ouvida? Registre sua primeira manifestação agora.
           </p>
         </div>
-        <a
-          href="/manifestacao"
+        <Link
+          to="/escolha-identificacao"
           className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-md bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors pulse-success"
         >
           <Plus className="h-4 w-4" aria-hidden="true" />
           Nova Manifestação
-        </a>
+        </Link>
       </div>
     );
   }

@@ -63,7 +63,7 @@ const HeroBanner = () => {
                 size="lg"
                 className="bg-accent text-accent-foreground hover:bg-accent/90 text-lg px-8 py-6 h-auto font-semibold shadow-lg group"
               >
-                <Link to="/manifestacao">
+                <Link to="/escolha-identificacao">
                   Nova Manifestação
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
