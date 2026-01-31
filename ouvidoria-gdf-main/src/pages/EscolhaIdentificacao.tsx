@@ -3,8 +3,17 @@ import { Button } from "@/components/ui/button";
 import { UserPlus, EyeOff, ArrowLeft } from "lucide-react";
 import Layout from "@/components/Layout";
 import { Card, CardContent } from "@/components/ui/card";
+import { useAuth } from "@/hooks/useAuth";
 
 const EscolhaIdentificacao = () => {
+    const { user, loading } = useAuth();
+
+    // Define o destino com base no estado de autenticação
+    const destinoIdentificado = user ? "/manifestacao?modo=identificado" : "/auth";
+    const labelIdentificado = user
+        ? "Continuar para manifestação identificada"
+        : "Fazer login para manifestação identificada";
+
     return (
         <Layout>
             {/* Header Section */}
@@ -38,18 +47,21 @@ const EscolhaIdentificacao = () => {
                                     Quero me identificar
                                 </h2>
                                 <p className="text-muted-foreground leading-relaxed">
-                                    Cadastre-se ou faça login para registrar sua manifestação de forma identificada.
-                                    Você receberá atualizações por e-mail e poderá acompanhar o andamento.
+                                    {user
+                                        ? "Você está conectado! Continue para registrar sua manifestação de forma identificada. Você receberá atualizações por e-mail."
+                                        : "Cadastre-se ou faça login para registrar sua manifestação de forma identificada. Você receberá atualizações por e-mail e poderá acompanhar o andamento."
+                                    }
                                 </p>
                                 <div className="pt-2">
                                     <Button
                                         asChild
                                         size="lg"
                                         className="w-full bg-accent text-accent-foreground hover:bg-accent/90 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 font-semibold h-14"
+                                        disabled={loading}
                                     >
                                         <Link
-                                            to="/auth"
-                                            aria-label="Fazer login para manifestação identificada"
+                                            to={destinoIdentificado}
+                                            aria-label={labelIdentificado}
                                         >
                                             Continuar
                                         </Link>
