@@ -10,7 +10,9 @@ interface CompartilharButtonsProps {
 const CompartilharButtons = ({ protocolo, senha }: CompartilharButtonsProps) => {
   const { toast } = useToast();
 
-  const textoCompartilhar = `Minha manifestação na Ouvidoria DF foi registrada!\n\nProtocolo: ${protocolo}\nSenha: ${senha}\n\nAcompanhe em: ${window.location.origin}/consulta`;
+  // Constrói a URL base correta incluindo o base path da aplicação
+  const baseUrl = `${window.location.origin}${import.meta.env.BASE_URL}`;
+  const textoCompartilhar = `Minha manifestação na Ouvidoria DF foi registrada!\n\nProtocolo: ${protocolo}\nSenha: ${senha}\n\nAcompanhe em: ${baseUrl}consulta`;
 
   const handleCompartilharNativo = async () => {
     if (navigator.share) {
